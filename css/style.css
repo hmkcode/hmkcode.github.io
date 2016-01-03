@@ -68,7 +68,12 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
   url("http://cdn.dzone.com/static/fonts/ProximaNova-Bold-webfont.ttf") format("truetype"), 
   url("http://cdn.dzone.com/static/fonts/ProximaNova-Bold-webfont.svg") format("svg");
 }
-
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Roboto"), local("Roboto-Regular"), url("https://fonts.gstatic.com/s/roboto/v15/CWB0XYA8bzo0kSThX0UTuA.woff2") format("woff2");
+}
 #masthead{
 		background:url('./bg-header.png') #ffffff repeat-x;
 
@@ -511,7 +516,7 @@ body {
 	color: #444;
 }
 body.custom-font-enabled {
-	font-family: "Open Sans", Helvetica, Arial, sans-serif;
+	font-family: Roboto, "Open Sans", Helvetica, Arial, sans-serif;
 }
 a {
 	outline: none;
