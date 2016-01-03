@@ -516,8 +516,25 @@ body {
 	color: #444;
 }
 body.custom-font-enabled {
-	font-family: Roboto, "Open Sans", Helvetica, Arial, sans-serif;
-	font-size: 16px/24px;
+
+	font-family: Roboto,sans-serif;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 24px;
+	font-size-adjust: none;
+	font-stretch: normal;
+	-x-system-font: none;
+	font-feature-settings: normal;
+	font-language-override: normal;
+	font-kerning: auto;
+	font-synthesis: weight style;
+	font-variant-alternates: normal;
+	font-variant-caps: normal;
+	font-variant-east-asian: normal;
+	font-variant-ligatures: normal;
+	font-variant-numeric: normal;
+	font-variant-position: normal;
 }
 a {
 	outline: none;
