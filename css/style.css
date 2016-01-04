@@ -74,6 +74,12 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
   font-weight: 400;
   src: local("Roboto"), local("Roboto-Regular"), url("https://fonts.gstatic.com/s/roboto/v15/CWB0XYA8bzo0kSThX0UTuA.woff2") format("woff2");
 }
+@font-face {
+  font-family: "PT Sans";
+  font-style: normal;
+  font-weight: 400;
+  src: local("PT Sans"), local("PTSans-Regular"), url("http://fonts.gstatic.com/s/ptsans/v8/ATKpv8nLYAKUYexo8iqqrg.woff2") format("woff2");
+}
 #masthead{
 		background:url('./bg-header.png') #ffffff repeat-x;
 
@@ -517,7 +523,7 @@ body {
 }
 body.custom-font-enabled {
 
-	font-family: Roboto,sans-serif;
+	font-family: "PT Sans", Roboto,sans-serif;
 	font-style: normal;
 	font-weight: 400;
 	font-size: 16px !important;
