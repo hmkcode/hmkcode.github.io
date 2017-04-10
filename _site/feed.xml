@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>HMKCODE</title>
+    <link>http://hmkcode.com</link>
+    <atom:link href="http://hmkcode.com/feed.xml" rel="self" type="application/rss+xml" />
+    
+      <item>
+        <title>Android | Connecting to the Network Using HttpUrlConnection</title>
+        <description>&lt;p style=&quot;text-align: justify;&quot;&gt;
+	&lt;a href=&quot;http://hmkcode.com/wp-content/uploads/2013/09/android-http-get_2.png&quot;&gt;
+		&lt;img class=&quot;size-full wp-image-315 aligncenter&quot; src=&quot;http://hmkcode.com/wp-content/uploads/2013/09/android-http-get_2.png&quot; alt=&quot;get-location&quot; /&gt;
+	&lt;/a&gt;
+	&lt;br /&gt;
+	One common task for most Android apps is connecting to the Internet. 
+	Most network-connected Android apps use HTTP to send and receive data.
+	This article shows you how to write a simple application that connects to the Internet, 
+	send HTTP GET request &amp;amp; display the response.
+	
+&lt;/p&gt;
+
+&lt;p&gt;###Objectives&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;How to send HTTP GET request to a web server and display the response?&lt;/li&gt;
+  &lt;li&gt;How to check network connection?&lt;/li&gt;
+  &lt;li&gt;How to use AsyncTask to perform network operations on a separate thread?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;environment-amp-tools&quot;&gt;Environment &amp;amp; Tools&lt;/h3&gt;
+&lt;p&gt;&lt;em&gt;Tools used in this post&lt;/em&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Windows 8&lt;/li&gt;
+  &lt;li&gt;Android Studio 2.1.2&lt;/li&gt;
+  &lt;li&gt;Nexus 5&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://hmkcode.com/examples/index.php&quot;&gt;http://hmkcode.com/examples/index.php&lt;/a&gt; this URL will return simple string &lt;strong&gt;“HMKCODE HTTP Example”&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;about-this-sample-app&quot;&gt;About this Sample App&lt;/h2&gt;
+
+&lt;p&gt;We will build an app that send HTTP GET request and display the response.&lt;/p&gt;
+
+&lt;h2 id=&quot;create-new-android-project&quot;&gt;( 1 ) Create new Android Project&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Application Name:&lt;/strong&gt; android-http&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Package Name:&lt;/strong&gt; com.hmkcode.android.http&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Minimum SDK:&lt;/strong&gt; API 8: Android 2.2 (Froyo)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;add-permissions&quot;&gt;( 2 ) Add Permissions&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Add the following two lines to the &lt;code class=&quot;highlighter-rouge&quot;&gt;AndroidMainifest.xml&lt;/code&gt; file&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre style=&quot;color:#000000;background:#f1f0f0;&quot;&gt;
+	&lt;span style=&quot;color:#a65700; &quot;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&quot;color:#5f5035; &quot;&gt;uses-permission&lt;/span&gt; &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;name&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;android.permission.INTERNET&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt; &lt;span style=&quot;color:#a65700; &quot;&gt;/&amp;gt;&lt;/span&gt;
+	&lt;span style=&quot;color:#a65700; &quot;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&quot;color:#5f5035; &quot;&gt;uses-permission&lt;/span&gt; &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;name&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;android.permission.ACCESS_NETWORK_STATE&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt; &lt;span style=&quot;color:#a65700; &quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;
+
+&lt;h2 id=&quot;design-app-layout&quot;&gt;( 2 ) Design App Layout&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Add two &lt;strong&gt;TextView&lt;/strong&gt; to &lt;code class=&quot;highlighter-rouge&quot;&gt;activity_main.xml&lt;/code&gt; .&lt;/li&gt;
+  &lt;li&gt;First &lt;strong&gt;TextView&lt;/strong&gt; for displaying network connection info.&lt;/li&gt;
+  &lt;li&gt;Second &lt;strong&gt;TextView&lt;/strong&gt; to display message from server.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img class=&quot;size-full wp-image-315 aligncenter&quot; src=&quot;http://hmkcode.github.io/images/2016/06/hmkcode-android-http.png&quot; alt=&quot;android-http&quot; /&gt;&lt;/p&gt;
+
+&lt;pre style=&quot;color:#000000;background:#f1f0f0;&quot;&gt;
+&lt;span style=&quot;color:#004a43; &quot;&gt;&amp;lt;?&lt;/span&gt;&lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;xml&lt;/span&gt;&lt;span style=&quot;color:#004a43; &quot;&gt; &lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;version&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#7d0045; &quot;&gt;1.0&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#004a43; &quot;&gt; &lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;encoding&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;utf-8&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#004a43; &quot;&gt;?&amp;gt;&lt;/span&gt;
+&lt;span style=&quot;color:#a65700; &quot;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&quot;color:#5f5035; &quot;&gt;LinearLayout&lt;/span&gt; &lt;span style=&quot;color:#666616; &quot;&gt;xmlns&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#666616; &quot;&gt;http&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color:#5555dd; &quot;&gt;schemas.android.com&lt;/span&gt;&lt;span style=&quot;color:#40015a; &quot;&gt;/apk/res/android&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+    &lt;span style=&quot;color:#666616; &quot;&gt;xmlns&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;tools&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#666616; &quot;&gt;http&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color:#5555dd; &quot;&gt;schemas.android.com&lt;/span&gt;&lt;span style=&quot;color:#40015a; &quot;&gt;/tools&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+    &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;layout_width&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;match_parent&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+    &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;layout_height&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;match_parent&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+    &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;paddingBottom&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;@dimen/activity_vertical_margin&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+    &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;paddingLeft&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;@dimen/activity_horizontal_margin&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+    &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;paddingRight&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;@dimen/activity_horizontal_margin&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+    &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;paddingTop&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;@dimen/activity_vertical_margin&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+    &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;orientation&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;vertical&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+    &lt;span style=&quot;color:#007997; &quot;&gt;tools&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;context&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;com.hmkcode.android.http.MainActivity&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#a65700; &quot;&gt;&amp;gt;&lt;/span&gt;
+
+
+
+    &lt;span style=&quot;color:#a65700; &quot;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&quot;color:#5f5035; &quot;&gt;TextView&lt;/span&gt;
+        &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;id&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;@+id/tvIsConnected&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+        &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;layout_width&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;wrap_content&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+        &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;layout_height&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;wrap_content&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+        &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;layout_gravity&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;center&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+        &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;background&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;#FF0000&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+        &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;textColor&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;#FFF&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+        &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;textSize&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;18dp&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+        &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;padding&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;5dp&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+        &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;layout_marginBottom&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;5dp&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+        &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;text&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;is connected? &lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt; &lt;span style=&quot;color:#a65700; &quot;&gt;/&amp;gt;&lt;/span&gt;
+
+    &lt;span style=&quot;color:#a65700; &quot;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&quot;color:#5f5035; &quot;&gt;TextView&lt;/span&gt;
+        &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;id&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;@+id/tvResult&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+        &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;layout_width&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;wrap_content&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+        &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;layout_height&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;wrap_content&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+        &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;layout_gravity&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;center&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+        &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;background&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;#ffffff&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+        &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;textColor&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;#000&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+        &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;textSize&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;18dp&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+        &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;padding&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;5dp&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+        &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;layout_marginBottom&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;5dp&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+        &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;text&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt; &lt;span style=&quot;color:#a65700; &quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span style=&quot;color:#a65700; &quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span style=&quot;color:#5f5035; &quot;&gt;LinearLayout&lt;/span&gt;&lt;span style=&quot;color:#a65700; &quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;
+
+&lt;h2 id=&quot;check-the-network-connection&quot;&gt;( 3 ) Check the Network Connection&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Before making any network operation you need to check if you are connected or not.&lt;/li&gt;
+  &lt;li&gt;To check whether a network connection is available use &lt;strong&gt;getActiveNetworkInfo()&lt;/strong&gt; and &lt;strong&gt;isConnected()&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre style=&quot;color:#000000;background:#f1f0f0;&quot;&gt;
+&lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;public&lt;/span&gt; boolean checkNetworkConnection() &lt;span style=&quot;color:#800080; &quot;&gt;{&lt;/span&gt;
+        ConnectivityManager connMgr &lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;ConnectivityManager&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;
+                getSystemService&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;Context&lt;span style=&quot;color:#808030; &quot;&gt;.&lt;/span&gt;CONNECTIVITY_SERVICE&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+
+        NetworkInfo networkInfo &lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt; connMgr&lt;span style=&quot;color:#808030; &quot;&gt;.&lt;/span&gt;getActiveNetworkInfo&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+        &lt;span style=&quot;color:#bb7977; &quot;&gt;boolean&lt;/span&gt; isConnected &lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;false&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+        &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;if&lt;/span&gt; &lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;networkInfo &lt;span style=&quot;color:#808030; &quot;&gt;!&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;null&lt;/span&gt; &lt;span style=&quot;color:#808030; &quot;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;&amp;amp;&lt;/span&gt; &lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;isConnected &lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt; networkInfo&lt;span style=&quot;color:#808030; &quot;&gt;.&lt;/span&gt;isConnected&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt; &lt;span style=&quot;color:#800080; &quot;&gt;{&lt;/span&gt;
+            &lt;span style=&quot;color:#696969; &quot;&gt;// show &quot;Connected&quot; &amp;amp; type of network &quot;WIFI or MOBILE&quot;&lt;/span&gt;
+            tvIsConnected&lt;span style=&quot;color:#808030; &quot;&gt;.&lt;/span&gt;setText&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;&quot;Connected &quot;&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;+&lt;/span&gt;networkInfo&lt;span style=&quot;color:#808030; &quot;&gt;.&lt;/span&gt;getTypeName&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+            &lt;span style=&quot;color:#696969; &quot;&gt;// change background color to red&lt;/span&gt;
+            tvIsConnected&lt;span style=&quot;color:#808030; &quot;&gt;.&lt;/span&gt;setBackgroundColor&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color:#008000; &quot;&gt;0xFF7CCC26&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+
+
+        &lt;span style=&quot;color:#800080; &quot;&gt;}&lt;/span&gt; &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;else&lt;/span&gt; &lt;span style=&quot;color:#800080; &quot;&gt;{&lt;/span&gt;
+            &lt;span style=&quot;color:#696969; &quot;&gt;// show &quot;Not Connected&quot;&lt;/span&gt;
+            tvIsConnected&lt;span style=&quot;color:#808030; &quot;&gt;.&lt;/span&gt;setText&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;&quot;Not Connected&quot;&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+            &lt;span style=&quot;color:#696969; &quot;&gt;// change background color to green&lt;/span&gt;
+            tvIsConnected&lt;span style=&quot;color:#808030; &quot;&gt;.&lt;/span&gt;setBackgroundColor&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color:#008000; &quot;&gt;0xFFFF0000&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+        &lt;span style=&quot;color:#800080; &quot;&gt;}&lt;/span&gt;
+
+        &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;return&lt;/span&gt; isConnected&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+    &lt;span style=&quot;color:#800080; &quot;&gt;}&lt;/span&gt;
+&lt;/pre&gt;
+
+&lt;h2 id=&quot;perform-http-get-request&quot;&gt;( 4 ) Perform HTTP GET Request&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The simplest example for network operation is HTTP GET request.&lt;/li&gt;
+  &lt;li&gt;We create a new &lt;strong&gt;URL&lt;/strong&gt; object by passing url string to the constructor.&lt;/li&gt;
+  &lt;li&gt;The &lt;strong&gt;URL&lt;/strong&gt; object is used to establish an &lt;strong&gt;HttpURLConnection&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;Then, we execute the operation and receive the response as &lt;strong&gt;InputStream&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;Finally, we use helper method to convert &lt;strong&gt;InputStream&lt;/strong&gt; to string.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre style=&quot;color:#000000;background:#f1f0f0;&quot;&gt;
+&lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;private&lt;/span&gt; String HttpGet(String myUrl) &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;throws&lt;/span&gt; IOException &lt;span style=&quot;color:#800080; &quot;&gt;{&lt;/span&gt;
+      &lt;span style=&quot;color:#bb7977; font-weight:bold; &quot;&gt;InputStream&lt;/span&gt; inputStream &lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;null&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+      &lt;span style=&quot;color:#bb7977; font-weight:bold; &quot;&gt;String&lt;/span&gt; result &lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#0000e6; &quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+
+          &lt;span style=&quot;color:#bb7977; font-weight:bold; &quot;&gt;URL&lt;/span&gt; url &lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color:#bb7977; font-weight:bold; &quot;&gt;URL&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;myUrl&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+
+          &lt;span style=&quot;color:#696969; &quot;&gt;// create HttpURLConnection&lt;/span&gt;
+          &lt;span style=&quot;color:#bb7977; font-weight:bold; &quot;&gt;HttpURLConnection&lt;/span&gt; conn &lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color:#bb7977; font-weight:bold; &quot;&gt;HttpURLConnection&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt; url&lt;span style=&quot;color:#808030; &quot;&gt;.&lt;/span&gt;openConnection&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+
+          &lt;span style=&quot;color:#696969; &quot;&gt;// make GET request to the given URL&lt;/span&gt;
+          conn&lt;span style=&quot;color:#808030; &quot;&gt;.&lt;/span&gt;connect&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+
+          &lt;span style=&quot;color:#696969; &quot;&gt;// receive response as inputStream&lt;/span&gt;
+          inputStream &lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt; conn&lt;span style=&quot;color:#808030; &quot;&gt;.&lt;/span&gt;getInputStream&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+
+          &lt;span style=&quot;color:#696969; &quot;&gt;// convert inputstream to string&lt;/span&gt;
+          &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;if&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;inputStream &lt;span style=&quot;color:#808030; &quot;&gt;!&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;null&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;
+              result &lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt; convertInputStreamToString&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;inputStream&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+          &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;else&lt;/span&gt;
+              result &lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#0000e6; &quot;&gt;&quot;Did not work!&quot;&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+
+      &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;return&lt;/span&gt; result&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+  &lt;span style=&quot;color:#800080; &quot;&gt;}&lt;/span&gt;
+&lt;/pre&gt;
+
+&lt;h2 id=&quot;perform-network-operations-on-a-separate-thread&quot;&gt;( 5 ) Perform Network Operations on a Separate Thread&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Network operation should always run on a seperate thread to avoid UI freeze.&lt;/li&gt;
+  &lt;li&gt;The &lt;strong&gt;AsyncTask&lt;/strong&gt; class provides one of the simplest ways to create separate thread from the UI thread.&lt;/li&gt;
+  &lt;li&gt;Create an inner class extending &lt;strong&gt;AsyncTask&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;Override &lt;strong&gt;doInBackground()&lt;/strong&gt; &amp;amp; &lt;strong&gt;onPostExecute&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre style=&quot;color:#000000;background:#f1f0f0;&quot;&gt;
+&lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;private&lt;/span&gt; &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;class&lt;/span&gt; HTTPAsyncTask &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;extends&lt;/span&gt; AsyncTask&amp;lt;String, Void, String&amp;gt; &lt;span style=&quot;color:#800080; &quot;&gt;{&lt;/span&gt;
+      &lt;span style=&quot;color:#808030; &quot;&gt;@&lt;/span&gt;Override
+      &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;protected&lt;/span&gt; &lt;span style=&quot;color:#bb7977; font-weight:bold; &quot;&gt;String&lt;/span&gt; doInBackground&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color:#bb7977; font-weight:bold; &quot;&gt;String&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;.&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;.&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;.&lt;/span&gt; urls&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt; &lt;span style=&quot;color:#800080; &quot;&gt;{&lt;/span&gt;
+
+          &lt;span style=&quot;color:#696969; &quot;&gt;// params comes from the execute() call: params[0] is the url.&lt;/span&gt;
+          &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;try&lt;/span&gt; &lt;span style=&quot;color:#800080; &quot;&gt;{&lt;/span&gt;
+              &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;return&lt;/span&gt; HttpGet&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;urls&lt;span style=&quot;color:#808030; &quot;&gt;[&lt;/span&gt;&lt;span style=&quot;color:#008c00; &quot;&gt;0&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;]&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+          &lt;span style=&quot;color:#800080; &quot;&gt;}&lt;/span&gt; &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;catch&lt;/span&gt; &lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color:#bb7977; font-weight:bold; &quot;&gt;IOException&lt;/span&gt; e&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt; &lt;span style=&quot;color:#800080; &quot;&gt;{&lt;/span&gt;
+              &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;return&lt;/span&gt; &lt;span style=&quot;color:#0000e6; &quot;&gt;&quot;Unable to retrieve web page. URL may be invalid.&quot;&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+          &lt;span style=&quot;color:#800080; &quot;&gt;}&lt;/span&gt;
+      &lt;span style=&quot;color:#800080; &quot;&gt;}&lt;/span&gt;
+      &lt;span style=&quot;color:#696969; &quot;&gt;// onPostExecute displays the results of the AsyncTask.&lt;/span&gt;
+      &lt;span style=&quot;color:#808030; &quot;&gt;@&lt;/span&gt;Override
+      &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;protected&lt;/span&gt; &lt;span style=&quot;color:#bb7977; &quot;&gt;void&lt;/span&gt; onPostExecute&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color:#bb7977; font-weight:bold; &quot;&gt;String&lt;/span&gt; result&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt; &lt;span style=&quot;color:#800080; &quot;&gt;{&lt;/span&gt;
+          tvResult&lt;span style=&quot;color:#808030; &quot;&gt;.&lt;/span&gt;setText&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;result&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+      &lt;span style=&quot;color:#800080; &quot;&gt;}&lt;/span&gt;
+  &lt;span style=&quot;color:#800080; &quot;&gt;}&lt;/span&gt;
+&lt;/pre&gt;
+
+&lt;h2 id=&quot;convert-the-inputstream-to-a-string&quot;&gt;( 6 ) Convert the InputStream to a String&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;We will use a helper method to convert InputStream byte into String&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre style=&quot;color:#000000;background:#f1f0f0;&quot;&gt;
+&lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;private&lt;/span&gt; &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;static&lt;/span&gt; String convertInputStreamToString(InputStream inputStream) &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;throws&lt;/span&gt; IOException&lt;span style=&quot;color:#800080; &quot;&gt;{&lt;/span&gt;
+          &lt;span style=&quot;color:#bb7977; font-weight:bold; &quot;&gt;BufferedReader&lt;/span&gt; bufferedReader &lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color:#bb7977; font-weight:bold; &quot;&gt;BufferedReader&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt; &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color:#bb7977; font-weight:bold; &quot;&gt;InputStreamReader&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;inputStream&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+          &lt;span style=&quot;color:#bb7977; font-weight:bold; &quot;&gt;String&lt;/span&gt; line &lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#0000e6; &quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+          &lt;span style=&quot;color:#bb7977; font-weight:bold; &quot;&gt;String&lt;/span&gt; result &lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#0000e6; &quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+          &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;while&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;line &lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt; bufferedReader&lt;span style=&quot;color:#808030; &quot;&gt;.&lt;/span&gt;readLine&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt; &lt;span style=&quot;color:#808030; &quot;&gt;!&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;null&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;
+              result &lt;span style=&quot;color:#808030; &quot;&gt;+&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt; line&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+
+          inputStream&lt;span style=&quot;color:#808030; &quot;&gt;.&lt;/span&gt;close&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+          &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;return&lt;/span&gt; result&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+
+      &lt;span style=&quot;color:#800080; &quot;&gt;}&lt;/span&gt;
+&lt;/pre&gt;
+
+&lt;h3 id=&quot;source-code--githubhttpsgithubcomhmkcodeandroidtreemasterandroid-http&quot;&gt;Source Code @ &lt;a href=&quot;https://github.com/hmkcode/Android/tree/master/android-http&quot;&gt;GitHub&lt;/a&gt;&lt;/h3&gt;
+
+</description>
+        <pubDate>Wed, 15 Jun 2016 13:32:00 +0000</pubDate>
+        <link>http://hmkcode.com/android/android-network-connection-httpurlconnection/</link>
+        <guid isPermaLink="true">http://hmkcode.com/android/android-network-connection-httpurlconnection/</guid>
+      </item>
+    
+      <item>
+        <title>Android | TextInputLayout</title>
+        <description>&lt;p style=&quot;text-align: justify;&quot;&gt;
+	&lt;a href=&quot;http://hmkcode.github.io/images/2015/05/android-location-api.png&quot;&gt;
+		&lt;img class=&quot;size-full wp-image-315 aligncenter&quot; src=&quot;http://hmkcode.github.io/images/2015/05/android-location-api.png&quot; alt=&quot;get-location&quot; /&gt;
+	&lt;/a&gt;
+	&lt;br /&gt;
+	&lt;a href=&quot;https://developer.android.com/reference/android/widget/EditText.html&quot;&gt;
+		EditText
+	&lt;/a&gt;, has a hint attribute that will show text inside the EditText telling the user what to enter in this text field. That hint text disappears 
+	due to the user inputting text. However, 
+	&lt;a href=&quot;https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html&quot;&gt;
+		TextInputLayout	
+	&lt;/a&gt;, &quot;a layout wrapping an EditText&quot;, shows hint as floating label when the hint is hidden due to the user inputting text. 
+	 TextInputLayout is part of &lt;i&gt;Design Support library&lt;/i&gt;.
+	
+&lt;/p&gt;
+
+&lt;h3 id=&quot;environment-amp-tools&quot;&gt;Environment &amp;amp; Tools&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Windows 7&lt;/li&gt;
+  &lt;li&gt;Eclipse ADT&lt;/li&gt;
+  &lt;li&gt;Nexus 5&lt;/li&gt;
+  &lt;li&gt;Android Support Library, revision 22.2.0 or higher&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;about-this-sample-app&quot;&gt;About this Sample App&lt;/h2&gt;
+
+&lt;p&gt;The code below is for a dummy app that will show how TextInputLayout will work on your screen.&lt;/p&gt;
+
+&lt;h2 id=&quot;create-new-android-project&quot;&gt;( 1 ) Create new Android Project&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Application Name:&lt;/strong&gt; InputTextLayout&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Project Name:&lt;/strong&gt; android-input-text-layout&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Package Name:&lt;/strong&gt; com.hmkcode.inputtextlayout&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;add-textinputlayotu-to-layout-xml&quot;&gt;( 2 ) Add TextInputLayotu to Layout XML&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;TextInputLayout&lt;/code&gt; will wrap &lt;code class=&quot;highlighter-rouge&quot;&gt;EditText&lt;/code&gt; view.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;EditText&lt;/code&gt; &lt;strong&gt;hint&lt;/strong&gt; attribute should not be empty.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre style=&quot;color:#000000;background:#f1f0f0;&quot;&gt;
+&lt;span style=&quot;color:#a65700; &quot;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&quot;color:#5f5035; &quot;&gt;RelativeLayout&lt;/span&gt; &lt;span style=&quot;color:#00dddd; &quot;&gt;xmlns&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#00dddd; &quot;&gt;http&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#400000; font-weight:bold; &quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color:#5555dd; &quot;&gt;schemas.android.com&lt;/span&gt;&lt;span style=&quot;color:#40015a; &quot;&gt;/apk/res/android&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+    &lt;span style=&quot;color:#00dddd; &quot;&gt;xmlns&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;tools&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#00dddd; &quot;&gt;http&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#400000; font-weight:bold; &quot;&gt;//&lt;/span&gt;&lt;span style=&quot;color:#5555dd; &quot;&gt;schemas.android.com&lt;/span&gt;&lt;span style=&quot;color:#40015a; &quot;&gt;/tools&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+    &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;layout_width&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#e60000; &quot;&gt;match_parent&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+    &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;layout_height&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#e60000; &quot;&gt;match_parent&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+    &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;paddingBottom&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#e60000; &quot;&gt;@dimen/activity_vertical_margin&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+    &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;paddingLeft&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#e60000; &quot;&gt;@dimen/activity_horizontal_margin&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+    &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;paddingRight&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#e60000; &quot;&gt;@dimen/activity_horizontal_margin&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+    &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;paddingTop&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#e60000; &quot;&gt;@dimen/activity_vertical_margin&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+    &lt;span style=&quot;color:#007997; &quot;&gt;tools&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;context&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#e60000; &quot;&gt;com.hmkcode.inputtextlayout.MainActivity&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt; &lt;span style=&quot;color:#a65700; &quot;&gt;&amp;gt;&lt;/span&gt;
+
+    
+     &lt;span style=&quot;color:#a65700; &quot;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&quot;color:#5f5035; &quot;&gt;android.support.design.widget.TextInputLayout&lt;/span&gt;
+        &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;id&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#e60000; &quot;&gt;@+id/til&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+      	&lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;layout_width&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#e60000; &quot;&gt;fill_parent&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+      	&lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;layout_height&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#e60000; &quot;&gt;wrap_content&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#a65700; &quot;&gt;&amp;gt;&lt;/span&gt;
+       	&lt;span style=&quot;color:#a65700; &quot;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&quot;color:#5f5035; &quot;&gt;EditText&lt;/span&gt;
+        	&lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;id&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#e60000; &quot;&gt;@+id/textDialog&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+        	&lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;layout_width&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#e60000; &quot;&gt;fill_parent&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+        	&lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;layout_height&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#e60000; &quot;&gt;wrap_content&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+        	&lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;hint&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#e60000; &quot;&gt;First Name&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#a65700; &quot;&gt;/&amp;gt;&lt;/span&gt;
+  	&lt;span style=&quot;color:#a65700; &quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span style=&quot;color:#5f5035; &quot;&gt;android.support.design.widget.TextInputLayout&lt;/span&gt;&lt;span style=&quot;color:#a65700; &quot;&gt;&amp;gt;&lt;/span&gt;
+  
+  	&lt;span style=&quot;color:#a65700; &quot;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&quot;color:#5f5035; &quot;&gt;android.support.design.widget.TextInputLayout&lt;/span&gt;
+    	&lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;id&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#e60000; &quot;&gt;@+id/til2&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+      	&lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;layout_width&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#e60000; &quot;&gt;fill_parent&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+      	&lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;layout_height&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#e60000; &quot;&gt;wrap_content&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+      	&lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;layout_below&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#e60000; &quot;&gt;@+id/til&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#a65700; &quot;&gt;&amp;gt;&lt;/span&gt;
+       	
+       	&lt;span style=&quot;color:#a65700; &quot;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&quot;color:#5f5035; &quot;&gt;EditText&lt;/span&gt;
+      	  	&lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;id&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#e60000; &quot;&gt;@+id/textDialog2&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+        	&lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;layout_width&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#e60000; &quot;&gt;fill_parent&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+        	&lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;layout_height&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#e60000; &quot;&gt;wrap_content&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;
+        	&lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#074726; &quot;&gt;hint&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#e60000; &quot;&gt;Last Name&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#a65700; &quot;&gt;/&amp;gt;&lt;/span&gt;
+  	&lt;span style=&quot;color:#a65700; &quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span style=&quot;color:#5f5035; &quot;&gt;android.support.design.widget.TextInputLayout&lt;/span&gt;&lt;span style=&quot;color:#a65700; &quot;&gt;&amp;gt;&lt;/span&gt;
+
+&lt;span style=&quot;color:#a65700; &quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span style=&quot;color:#5f5035; &quot;&gt;RelativeLayout&lt;/span&gt;&lt;span style=&quot;color:#a65700; &quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;
+
+&lt;p class=&quot;note&quot;&gt;
+&lt;b&gt;Note:&lt;/b&gt; This sample app was created in Eclipse ADT. You may need to go over the below steps to resolve 
+some issues.
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Make sure you have &lt;strong&gt;Android Support Library, revision 22.2.0&lt;/strong&gt; or higher.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;TextInputLayout&lt;/code&gt; is part of &lt;strong&gt;Design Support Library&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;You need to import &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;android-sdk&amp;gt;/extras/android/support/design&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;You need to import &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;android-sdk&amp;gt;/extras/android/support/v7/appcompat&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;After importing design library, you need to edit &lt;code class=&quot;highlighter-rouge&quot;&gt;project.proerties&lt;/code&gt; file as following:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre style=&quot;color:#000000;background:#f1f0f0;&quot;&gt;
+# Project target&lt;span style=&quot;color:#806030; &quot;&gt;.&lt;/span&gt;
+target&lt;span style=&quot;color:#806030; &quot;&gt;=&lt;/span&gt;android&lt;span style=&quot;color:#806030; &quot;&gt;-&lt;/span&gt;&lt;span style=&quot;color:#8c0000; &quot;&gt;21&lt;/span&gt;
+android&lt;span style=&quot;color:#8c0000; &quot;&gt;.&lt;/span&gt;library&lt;span style=&quot;color:#8c0000; &quot;&gt;.&lt;/span&gt;reference&lt;span style=&quot;color:#8c0000; &quot;&gt;.1&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;.&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;.&lt;/span&gt;&lt;span style=&quot;color:#806030; &quot;&gt;/&lt;/span&gt;v7&lt;span style=&quot;color:#806030; &quot;&gt;/&lt;/span&gt;appcompat
+android&lt;span style=&quot;color:#8c0000; &quot;&gt;.&lt;/span&gt;library&lt;span style=&quot;color:#806030; &quot;&gt;=&lt;/span&gt;true
+&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;In your app project, [reference design library project] (https://developer.android.com/tools/projects/projects-eclipse.html#ReferencingLibraryProject).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;source-code--github-httpsgithubcomhmkcodeandroidtreemasterandroid-input-text-layout&quot;&gt;Source Code @ [GitHub] (https://github.com/hmkcode/Android/tree/master/android-input-text-layout)&lt;/h3&gt;
+
+</description>
+        <pubDate>Fri, 29 May 2015 09:43:00 +0000</pubDate>
+        <link>http://hmkcode.com/android/android-textinputlayout/</link>
+        <guid isPermaLink="true">http://hmkcode.com/android/android-textinputlayout/</guid>
+      </item>
+    
+  </channel>
+</rss>

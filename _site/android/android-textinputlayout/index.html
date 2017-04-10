@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Android | TextInputLayout</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/css/main.css" type="text/css">
+
+  <!-- Font -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'>
+
+
+  <link rel="alternate" type="application/rss+xml" title="RSS Feed for HMKCODE" href="/feed.xml" />
+
+
+  <!-- Google Analytics -->
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', '', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+
+</head>
+
+<body>
+  <div class="content-container">
+    <header>
+  <div class="header-small">
+    <a href="http://hmkcode.com">HMKCODE</a>
+  </div>
+</header>
+
+<article class="post">
+  
+  <header>
+    <h1 class="post-title"> Android | TextInputLayout</h1> 
+  </header>
+  
+  <div class="entry-content">		
+					<p style="text-align: justify;">
+	<a href="http://hmkcode.github.io/images/2015/05/android-location-api.png">
+		<img class="size-full wp-image-315 aligncenter" src="http://hmkcode.github.io/images/2015/05/android-location-api.png" alt="get-location" />
+	</a>
+	<br />
+	<a href="https://developer.android.com/reference/android/widget/EditText.html">
+		EditText
+	</a>, has a hint attribute that will show text inside the EditText telling the user what to enter in this text field. That hint text disappears 
+	due to the user inputting text. However, 
+	<a href="https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html">
+		TextInputLayout	
+	</a>, "a layout wrapping an EditText", shows hint as floating label when the hint is hidden due to the user inputting text. 
+	 TextInputLayout is part of <i>Design Support library</i>.
+	
+</p>
+
+<h3 id="environment-amp-tools">Environment &amp; Tools</h3>
+<ul>
+  <li>Windows 7</li>
+  <li>Eclipse ADT</li>
+  <li>Nexus 5</li>
+  <li>Android Support Library, revision 22.2.0 or higher</li>
+</ul>
+
+<h2 id="about-this-sample-app">About this Sample App</h2>
+
+<p>The code below is for a dummy app that will show how TextInputLayout will work on your screen.</p>
+
+<h2 id="create-new-android-project">( 1 ) Create new Android Project</h2>
+
+<ul>
+  <li><strong>Application Name:</strong> InputTextLayout</li>
+  <li><strong>Project Name:</strong> android-input-text-layout</li>
+  <li><strong>Package Name:</strong> com.hmkcode.inputtextlayout</li>
+</ul>
+
+<h2 id="add-textinputlayotu-to-layout-xml">( 2 ) Add TextInputLayotu to Layout XML</h2>
+
+<ul>
+  <li><code class="highlighter-rouge">TextInputLayout</code> will wrap <code class="highlighter-rouge">EditText</code> view.</li>
+  <li><code class="highlighter-rouge">EditText</code> <strong>hint</strong> attribute should not be empty.</li>
+</ul>
+
+<pre style="color:#000000;background:#f1f0f0;">
+<span style="color:#a65700; ">&lt;</span><span style="color:#5f5035; ">RelativeLayout</span> <span style="color:#00dddd; ">xmlns</span><span style="color:#806030; ">:</span><span style="color:#074726; ">android</span><span style="color:#806030; ">=</span><span style="color:#800000; ">"</span><span style="color:#00dddd; ">http</span><span style="color:#806030; ">:</span><span style="color:#400000; font-weight:bold; ">//</span><span style="color:#5555dd; ">schemas.android.com</span><span style="color:#40015a; ">/apk/res/android</span><span style="color:#800000; ">"</span>
+    <span style="color:#00dddd; ">xmlns</span><span style="color:#806030; ">:</span><span style="color:#074726; ">tools</span><span style="color:#806030; ">=</span><span style="color:#800000; ">"</span><span style="color:#00dddd; ">http</span><span style="color:#806030; ">:</span><span style="color:#400000; font-weight:bold; ">//</span><span style="color:#5555dd; ">schemas.android.com</span><span style="color:#40015a; ">/tools</span><span style="color:#800000; ">"</span>
+    <span style="color:#007997; ">android</span><span style="color:#806030; ">:</span><span style="color:#074726; ">layout_width</span><span style="color:#806030; ">=</span><span style="color:#800000; ">"</span><span style="color:#e60000; ">match_parent</span><span style="color:#800000; ">"</span>
+    <span style="color:#007997; ">android</span><span style="color:#806030; ">:</span><span style="color:#074726; ">layout_height</span><span style="color:#806030; ">=</span><span style="color:#800000; ">"</span><span style="color:#e60000; ">match_parent</span><span style="color:#800000; ">"</span>
+    <span style="color:#007997; ">android</span><span style="color:#806030; ">:</span><span style="color:#074726; ">paddingBottom</span><span style="color:#806030; ">=</span><span style="color:#800000; ">"</span><span style="color:#e60000; ">@dimen/activity_vertical_margin</span><span style="color:#800000; ">"</span>
+    <span style="color:#007997; ">android</span><span style="color:#806030; ">:</span><span style="color:#074726; ">paddingLeft</span><span style="color:#806030; ">=</span><span style="color:#800000; ">"</span><span style="color:#e60000; ">@dimen/activity_horizontal_margin</span><span style="color:#800000; ">"</span>
+    <span style="color:#007997; ">android</span><span style="color:#806030; ">:</span><span style="color:#074726; ">paddingRight</span><span style="color:#806030; ">=</span><span style="color:#800000; ">"</span><span style="color:#e60000; ">@dimen/activity_horizontal_margin</span><span style="color:#800000; ">"</span>
+    <span style="color:#007997; ">android</span><span style="color:#806030; ">:</span><span style="color:#074726; ">paddingTop</span><span style="color:#806030; ">=</span><span style="color:#800000; ">"</span><span style="color:#e60000; ">@dimen/activity_vertical_margin</span><span style="color:#800000; ">"</span>
+    <span style="color:#007997; ">tools</span><span style="color:#806030; ">:</span><span style="color:#074726; ">context</span><span style="color:#806030; ">=</span><span style="color:#800000; ">"</span><span style="color:#e60000; ">com.hmkcode.inputtextlayout.MainActivity</span><span style="color:#800000; ">"</span> <span style="color:#a65700; ">&gt;</span>
+
+    
+     <span style="color:#a65700; ">&lt;</span><span style="color:#5f5035; ">android.support.design.widget.TextInputLayout</span>
+        <span style="color:#007997; ">android</span><span style="color:#806030; ">:</span><span style="color:#074726; ">id</span><span style="color:#806030; ">=</span><span style="color:#800000; ">"</span><span style="color:#e60000; ">@+id/til</span><span style="color:#800000; ">"</span>
+      	<span style="color:#007997; ">android</span><span style="color:#806030; ">:</span><span style="color:#074726; ">layout_width</span><span style="color:#806030; ">=</span><span style="color:#800000; ">"</span><span style="color:#e60000; ">fill_parent</span><span style="color:#800000; ">"</span>
+      	<span style="color:#007997; ">android</span><span style="color:#806030; ">:</span><span style="color:#074726; ">layout_height</span><span style="color:#806030; ">=</span><span style="color:#800000; ">"</span><span style="color:#e60000; ">wrap_content</span><span style="color:#800000; ">"</span><span style="color:#a65700; ">&gt;</span>
+       	<span style="color:#a65700; ">&lt;</span><span style="color:#5f5035; ">EditText</span>
+        	<span style="color:#007997; ">android</span><span style="color:#806030; ">:</span><span style="color:#074726; ">id</span><span style="color:#806030; ">=</span><span style="color:#800000; ">"</span><span style="color:#e60000; ">@+id/textDialog</span><span style="color:#800000; ">"</span>
+        	<span style="color:#007997; ">android</span><span style="color:#806030; ">:</span><span style="color:#074726; ">layout_width</span><span style="color:#806030; ">=</span><span style="color:#800000; ">"</span><span style="color:#e60000; ">fill_parent</span><span style="color:#800000; ">"</span>
+        	<span style="color:#007997; ">android</span><span style="color:#806030; ">:</span><span style="color:#074726; ">layout_height</span><span style="color:#806030; ">=</span><span style="color:#800000; ">"</span><span style="color:#e60000; ">wrap_content</span><span style="color:#800000; ">"</span>
+        	<span style="color:#007997; ">android</span><span style="color:#806030; ">:</span><span style="color:#074726; ">hint</span><span style="color:#806030; ">=</span><span style="color:#800000; ">"</span><span style="color:#e60000; ">First Name</span><span style="color:#800000; ">"</span><span style="color:#a65700; ">/&gt;</span>
+  	<span style="color:#a65700; ">&lt;/</span><span style="color:#5f5035; ">android.support.design.widget.TextInputLayout</span><span style="color:#a65700; ">&gt;</span>
+  
+  	<span style="color:#a65700; ">&lt;</span><span style="color:#5f5035; ">android.support.design.widget.TextInputLayout</span>
+    	<span style="color:#007997; ">android</span><span style="color:#806030; ">:</span><span style="color:#074726; ">id</span><span style="color:#806030; ">=</span><span style="color:#800000; ">"</span><span style="color:#e60000; ">@+id/til2</span><span style="color:#800000; ">"</span>
+      	<span style="color:#007997; ">android</span><span style="color:#806030; ">:</span><span style="color:#074726; ">layout_width</span><span style="color:#806030; ">=</span><span style="color:#800000; ">"</span><span style="color:#e60000; ">fill_parent</span><span style="color:#800000; ">"</span>
+      	<span style="color:#007997; ">android</span><span style="color:#806030; ">:</span><span style="color:#074726; ">layout_height</span><span style="color:#806030; ">=</span><span style="color:#800000; ">"</span><span style="color:#e60000; ">wrap_content</span><span style="color:#800000; ">"</span>
+      	<span style="color:#007997; ">android</span><span style="color:#806030; ">:</span><span style="color:#074726; ">layout_below</span><span style="color:#806030; ">=</span><span style="color:#800000; ">"</span><span style="color:#e60000; ">@+id/til</span><span style="color:#800000; ">"</span><span style="color:#a65700; ">&gt;</span>
+       	
+       	<span style="color:#a65700; ">&lt;</span><span style="color:#5f5035; ">EditText</span>
+      	  	<span style="color:#007997; ">android</span><span style="color:#806030; ">:</span><span style="color:#074726; ">id</span><span style="color:#806030; ">=</span><span style="color:#800000; ">"</span><span style="color:#e60000; ">@+id/textDialog2</span><span style="color:#800000; ">"</span>
+        	<span style="color:#007997; ">android</span><span style="color:#806030; ">:</span><span style="color:#074726; ">layout_width</span><span style="color:#806030; ">=</span><span style="color:#800000; ">"</span><span style="color:#e60000; ">fill_parent</span><span style="color:#800000; ">"</span>
+        	<span style="color:#007997; ">android</span><span style="color:#806030; ">:</span><span style="color:#074726; ">layout_height</span><span style="color:#806030; ">=</span><span style="color:#800000; ">"</span><span style="color:#e60000; ">wrap_content</span><span style="color:#800000; ">"</span>
+        	<span style="color:#007997; ">android</span><span style="color:#806030; ">:</span><span style="color:#074726; ">hint</span><span style="color:#806030; ">=</span><span style="color:#800000; ">"</span><span style="color:#e60000; ">Last Name</span><span style="color:#800000; ">"</span><span style="color:#a65700; ">/&gt;</span>
+  	<span style="color:#a65700; ">&lt;/</span><span style="color:#5f5035; ">android.support.design.widget.TextInputLayout</span><span style="color:#a65700; ">&gt;</span>
+
+<span style="color:#a65700; ">&lt;/</span><span style="color:#5f5035; ">RelativeLayout</span><span style="color:#a65700; ">&gt;</span>
+</pre>
+
+<p class="note">
+<b>Note:</b> This sample app was created in Eclipse ADT. You may need to go over the below steps to resolve 
+some issues.
+</p>
+
+<ul>
+  <li>Make sure you have <strong>Android Support Library, revision 22.2.0</strong> or higher.</li>
+  <li><code class="highlighter-rouge">TextInputLayout</code> is part of <strong>Design Support Library</strong>.</li>
+  <li>You need to import <code class="highlighter-rouge">&lt;android-sdk&gt;/extras/android/support/design</code>.</li>
+  <li>You need to import <code class="highlighter-rouge">&lt;android-sdk&gt;/extras/android/support/v7/appcompat</code>.</li>
+  <li>After importing design library, you need to edit <code class="highlighter-rouge">project.proerties</code> file as following:</li>
+</ul>
+
+<pre style="color:#000000;background:#f1f0f0;">
+# Project target<span style="color:#806030; ">.</span>
+target<span style="color:#806030; ">=</span>android<span style="color:#806030; ">-</span><span style="color:#8c0000; ">21</span>
+android<span style="color:#8c0000; ">.</span>library<span style="color:#8c0000; ">.</span>reference<span style="color:#8c0000; ">.1</span><span style="color:#806030; ">=</span><span style="color:#806030; ">.</span><span style="color:#806030; ">.</span><span style="color:#806030; ">/</span>v7<span style="color:#806030; ">/</span>appcompat
+android<span style="color:#8c0000; ">.</span>library<span style="color:#806030; ">=</span>true
+</pre>
+
+<ul>
+  <li>In your app project, [reference design library project] (https://developer.android.com/tools/projects/projects-eclipse.html#ReferencingLibraryProject).</li>
+</ul>
+
+<h3 id="source-code--github-httpsgithubcomhmkcodeandroidtreemasterandroid-input-text-layout">Source Code @ [GitHub] (https://github.com/hmkcode/Android/tree/master/android-input-text-layout)</h3>
+
+
+	</div>
+
+  <footer>
+    <span class="post-date">
+      <time>29 May 2015</time>
+    </span>
+    <div class="post-tag">
+      <ul>
+        
+      </ul>
+    </div>
+  </footer>
+  <!-- Disqus -->
+  
+  <div class="post-disqus">
+      <section id="disqus_thread"></section>
+      <script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables */
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//hmkcode.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  </div>
+  
+
+</article>
+
+
+    <!-- Documents about icons are here: http://fontawesome.io/icons/ -->
+<div class="footer">
+  <hr />
+  <div class="footer-link">
+    
+    <a href="https://www.facebook.com/your-id"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+    
+	
+	
+	
+	
+
+    
+    <a href="https://twitter.com/hmkcode"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+    
+
+    
+    <a href="https://github.com/hmkcode"><i class="fa fa-github" aria-hidden="true"></i></a>
+    
+	
+	
+	
+	
+
+    
+	
+	
+	
+	
+    <a href="https://plus.google.com/your-id"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
+    
+	
+	
+	
+	
+
+    
+
+    
+
+    
+
+  </div>
+  © 2017 hmkcode. All rights reserved.
+</div>
+
+  </div>
+</body>
+</html>

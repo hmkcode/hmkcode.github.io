@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Android | Connecting to the Network Using HttpUrlConnection</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/css/main.css" type="text/css">
+
+  <!-- Font -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'>
+
+
+  <link rel="alternate" type="application/rss+xml" title="RSS Feed for HMKCODE" href="/feed.xml" />
+
+
+  <!-- Google Analytics -->
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', '', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+
+</head>
+
+<body>
+  <div class="content-container">
+    <header>
+  <div class="header-small">
+    <a href="http://hmkcode.com">HMKCODE</a>
+  </div>
+</header>
+
+<article class="post">
+  
+  <header>
+    <h1 class="post-title"> Android | Connecting to the Network Using HttpUrlConnection</h1> 
+  </header>
+  
+  <div class="entry-content">		
+					<p style="text-align: justify;">
+	<a href="http://hmkcode.com/wp-content/uploads/2013/09/android-http-get_2.png">
+		<img class="size-full wp-image-315 aligncenter" src="http://hmkcode.com/wp-content/uploads/2013/09/android-http-get_2.png" alt="get-location" />
+	</a>
+	<br />
+	One common task for most Android apps is connecting to the Internet. 
+	Most network-connected Android apps use HTTP to send and receive data.
+	This article shows you how to write a simple application that connects to the Internet, 
+	send HTTP GET request &amp; display the response.
+	
+</p>
+
+<p>###Objectives</p>
+
+<ul>
+  <li>How to send HTTP GET request to a web server and display the response?</li>
+  <li>How to check network connection?</li>
+  <li>How to use AsyncTask to perform network operations on a separate thread?</li>
+</ul>
+
+<h3 id="environment-amp-tools">Environment &amp; Tools</h3>
+<p><em>Tools used in this post</em></p>
+
+<ul>
+  <li>Windows 8</li>
+  <li>Android Studio 2.1.2</li>
+  <li>Nexus 5</li>
+  <li><a href="http://hmkcode.com/examples/index.php">http://hmkcode.com/examples/index.php</a> this URL will return simple string <strong>“HMKCODE HTTP Example”</strong></li>
+</ul>
+
+<h2 id="about-this-sample-app">About this Sample App</h2>
+
+<p>We will build an app that send HTTP GET request and display the response.</p>
+
+<h2 id="create-new-android-project">( 1 ) Create new Android Project</h2>
+
+<ul>
+  <li><strong>Application Name:</strong> android-http</li>
+  <li><strong>Package Name:</strong> com.hmkcode.android.http</li>
+  <li><strong>Minimum SDK:</strong> API 8: Android 2.2 (Froyo)</li>
+</ul>
+
+<h2 id="add-permissions">( 2 ) Add Permissions</h2>
+
+<ul>
+  <li>Add the following two lines to the <code class="highlighter-rouge">AndroidMainifest.xml</code> file</li>
+</ul>
+
+<pre style="color:#000000;background:#f1f0f0;">
+	<span style="color:#a65700; ">&lt;</span><span style="color:#5f5035; ">uses-permission</span> <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">name</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">android.permission.INTERNET</span><span style="color:#800000; ">"</span> <span style="color:#a65700; ">/&gt;</span>
+	<span style="color:#a65700; ">&lt;</span><span style="color:#5f5035; ">uses-permission</span> <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">name</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">android.permission.ACCESS_NETWORK_STATE</span><span style="color:#800000; ">"</span> <span style="color:#a65700; ">/&gt;</span>
+</pre>
+
+<h2 id="design-app-layout">( 2 ) Design App Layout</h2>
+
+<ul>
+  <li>Add two <strong>TextView</strong> to <code class="highlighter-rouge">activity_main.xml</code> .</li>
+  <li>First <strong>TextView</strong> for displaying network connection info.</li>
+  <li>Second <strong>TextView</strong> to display message from server.</li>
+</ul>
+
+<p><img class="size-full wp-image-315 aligncenter" src="http://hmkcode.github.io/images/2016/06/hmkcode-android-http.png" alt="android-http" /></p>
+
+<pre style="color:#000000;background:#f1f0f0;">
+<span style="color:#004a43; ">&lt;?</span><span style="color:#800000; font-weight:bold; ">xml</span><span style="color:#004a43; "> </span><span style="color:#074726; ">version</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#7d0045; ">1.0</span><span style="color:#800000; ">"</span><span style="color:#004a43; "> </span><span style="color:#074726; ">encoding</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">utf-8</span><span style="color:#800000; ">"</span><span style="color:#004a43; ">?&gt;</span>
+<span style="color:#a65700; ">&lt;</span><span style="color:#5f5035; ">LinearLayout</span> <span style="color:#666616; ">xmlns</span><span style="color:#800080; ">:</span><span style="color:#074726; ">android</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#666616; ">http</span><span style="color:#800080; ">:</span><span style="color:#800000; font-weight:bold; ">//</span><span style="color:#5555dd; ">schemas.android.com</span><span style="color:#40015a; ">/apk/res/android</span><span style="color:#800000; ">"</span>
+    <span style="color:#666616; ">xmlns</span><span style="color:#800080; ">:</span><span style="color:#074726; ">tools</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#666616; ">http</span><span style="color:#800080; ">:</span><span style="color:#800000; font-weight:bold; ">//</span><span style="color:#5555dd; ">schemas.android.com</span><span style="color:#40015a; ">/tools</span><span style="color:#800000; ">"</span>
+    <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">layout_width</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">match_parent</span><span style="color:#800000; ">"</span>
+    <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">layout_height</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">match_parent</span><span style="color:#800000; ">"</span>
+    <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">paddingBottom</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">@dimen/activity_vertical_margin</span><span style="color:#800000; ">"</span>
+    <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">paddingLeft</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">@dimen/activity_horizontal_margin</span><span style="color:#800000; ">"</span>
+    <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">paddingRight</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">@dimen/activity_horizontal_margin</span><span style="color:#800000; ">"</span>
+    <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">paddingTop</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">@dimen/activity_vertical_margin</span><span style="color:#800000; ">"</span>
+    <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">orientation</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">vertical</span><span style="color:#800000; ">"</span>
+    <span style="color:#007997; ">tools</span><span style="color:#800080; ">:</span><span style="color:#274796; ">context</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">com.hmkcode.android.http.MainActivity</span><span style="color:#800000; ">"</span><span style="color:#a65700; ">&gt;</span>
+
+
+
+    <span style="color:#a65700; ">&lt;</span><span style="color:#5f5035; ">TextView</span>
+        <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">id</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">@+id/tvIsConnected</span><span style="color:#800000; ">"</span>
+        <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">layout_width</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">wrap_content</span><span style="color:#800000; ">"</span>
+        <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">layout_height</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">wrap_content</span><span style="color:#800000; ">"</span>
+        <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">layout_gravity</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">center</span><span style="color:#800000; ">"</span>
+        <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">background</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">#FF0000</span><span style="color:#800000; ">"</span>
+        <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">textColor</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">#FFF</span><span style="color:#800000; ">"</span>
+        <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">textSize</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">18dp</span><span style="color:#800000; ">"</span>
+        <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">padding</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">5dp</span><span style="color:#800000; ">"</span>
+        <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">layout_marginBottom</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">5dp</span><span style="color:#800000; ">"</span>
+        <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">text</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">is connected? </span><span style="color:#800000; ">"</span> <span style="color:#a65700; ">/&gt;</span>
+
+    <span style="color:#a65700; ">&lt;</span><span style="color:#5f5035; ">TextView</span>
+        <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">id</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">@+id/tvResult</span><span style="color:#800000; ">"</span>
+        <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">layout_width</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">wrap_content</span><span style="color:#800000; ">"</span>
+        <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">layout_height</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">wrap_content</span><span style="color:#800000; ">"</span>
+        <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">layout_gravity</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">center</span><span style="color:#800000; ">"</span>
+        <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">background</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">#ffffff</span><span style="color:#800000; ">"</span>
+        <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">textColor</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">#000</span><span style="color:#800000; ">"</span>
+        <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">textSize</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">18dp</span><span style="color:#800000; ">"</span>
+        <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">padding</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">5dp</span><span style="color:#800000; ">"</span>
+        <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">layout_marginBottom</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">5dp</span><span style="color:#800000; ">"</span>
+        <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">text</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#800000; ">"</span> <span style="color:#a65700; ">/&gt;</span>
+<span style="color:#a65700; ">&lt;/</span><span style="color:#5f5035; ">LinearLayout</span><span style="color:#a65700; ">&gt;</span>
+</pre>
+
+<h2 id="check-the-network-connection">( 3 ) Check the Network Connection</h2>
+
+<ul>
+  <li>Before making any network operation you need to check if you are connected or not.</li>
+  <li>To check whether a network connection is available use <strong>getActiveNetworkInfo()</strong> and <strong>isConnected()</strong>.</li>
+</ul>
+
+<pre style="color:#000000;background:#f1f0f0;">
+<span style="color:#800000; font-weight:bold; ">public</span> boolean checkNetworkConnection() <span style="color:#800080; ">{</span>
+        ConnectivityManager connMgr <span style="color:#808030; ">=</span> <span style="color:#808030; ">(</span>ConnectivityManager<span style="color:#808030; ">)</span>
+                getSystemService<span style="color:#808030; ">(</span>Context<span style="color:#808030; ">.</span>CONNECTIVITY_SERVICE<span style="color:#808030; ">)</span><span style="color:#800080; ">;</span>
+
+        NetworkInfo networkInfo <span style="color:#808030; ">=</span> connMgr<span style="color:#808030; ">.</span>getActiveNetworkInfo<span style="color:#808030; ">(</span><span style="color:#808030; ">)</span><span style="color:#800080; ">;</span>
+        <span style="color:#bb7977; ">boolean</span> isConnected <span style="color:#808030; ">=</span> <span style="color:#800000; font-weight:bold; ">false</span><span style="color:#800080; ">;</span>
+        <span style="color:#800000; font-weight:bold; ">if</span> <span style="color:#808030; ">(</span>networkInfo <span style="color:#808030; ">!</span><span style="color:#808030; ">=</span> <span style="color:#800000; font-weight:bold; ">null</span> <span style="color:#808030; ">&amp;</span><span style="color:#808030; ">&amp;</span> <span style="color:#808030; ">(</span>isConnected <span style="color:#808030; ">=</span> networkInfo<span style="color:#808030; ">.</span>isConnected<span style="color:#808030; ">(</span><span style="color:#808030; ">)</span><span style="color:#808030; ">)</span><span style="color:#808030; ">)</span> <span style="color:#800080; ">{</span>
+            <span style="color:#696969; ">// show "Connected" &amp; type of network "WIFI or MOBILE"</span>
+            tvIsConnected<span style="color:#808030; ">.</span>setText<span style="color:#808030; ">(</span><span style="color:#0000e6; ">"Connected "</span><span style="color:#808030; ">+</span>networkInfo<span style="color:#808030; ">.</span>getTypeName<span style="color:#808030; ">(</span><span style="color:#808030; ">)</span><span style="color:#808030; ">)</span><span style="color:#800080; ">;</span>
+            <span style="color:#696969; ">// change background color to red</span>
+            tvIsConnected<span style="color:#808030; ">.</span>setBackgroundColor<span style="color:#808030; ">(</span><span style="color:#008000; ">0xFF7CCC26</span><span style="color:#808030; ">)</span><span style="color:#800080; ">;</span>
+
+
+        <span style="color:#800080; ">}</span> <span style="color:#800000; font-weight:bold; ">else</span> <span style="color:#800080; ">{</span>
+            <span style="color:#696969; ">// show "Not Connected"</span>
+            tvIsConnected<span style="color:#808030; ">.</span>setText<span style="color:#808030; ">(</span><span style="color:#0000e6; ">"Not Connected"</span><span style="color:#808030; ">)</span><span style="color:#800080; ">;</span>
+            <span style="color:#696969; ">// change background color to green</span>
+            tvIsConnected<span style="color:#808030; ">.</span>setBackgroundColor<span style="color:#808030; ">(</span><span style="color:#008000; ">0xFFFF0000</span><span style="color:#808030; ">)</span><span style="color:#800080; ">;</span>
+        <span style="color:#800080; ">}</span>
+
+        <span style="color:#800000; font-weight:bold; ">return</span> isConnected<span style="color:#800080; ">;</span>
+    <span style="color:#800080; ">}</span>
+</pre>
+
+<h2 id="perform-http-get-request">( 4 ) Perform HTTP GET Request</h2>
+
+<ul>
+  <li>The simplest example for network operation is HTTP GET request.</li>
+  <li>We create a new <strong>URL</strong> object by passing url string to the constructor.</li>
+  <li>The <strong>URL</strong> object is used to establish an <strong>HttpURLConnection</strong>.</li>
+  <li>Then, we execute the operation and receive the response as <strong>InputStream</strong>.</li>
+  <li>Finally, we use helper method to convert <strong>InputStream</strong> to string.</li>
+</ul>
+
+<pre style="color:#000000;background:#f1f0f0;">
+<span style="color:#800000; font-weight:bold; ">private</span> String HttpGet(String myUrl) <span style="color:#800000; font-weight:bold; ">throws</span> IOException <span style="color:#800080; ">{</span>
+      <span style="color:#bb7977; font-weight:bold; ">InputStream</span> inputStream <span style="color:#808030; ">=</span> <span style="color:#800000; font-weight:bold; ">null</span><span style="color:#800080; ">;</span>
+      <span style="color:#bb7977; font-weight:bold; ">String</span> result <span style="color:#808030; ">=</span> <span style="color:#0000e6; ">""</span><span style="color:#800080; ">;</span>
+
+          <span style="color:#bb7977; font-weight:bold; ">URL</span> url <span style="color:#808030; ">=</span> <span style="color:#800000; font-weight:bold; ">new</span> <span style="color:#bb7977; font-weight:bold; ">URL</span><span style="color:#808030; ">(</span>myUrl<span style="color:#808030; ">)</span><span style="color:#800080; ">;</span>
+
+          <span style="color:#696969; ">// create HttpURLConnection</span>
+          <span style="color:#bb7977; font-weight:bold; ">HttpURLConnection</span> conn <span style="color:#808030; ">=</span> <span style="color:#808030; ">(</span><span style="color:#bb7977; font-weight:bold; ">HttpURLConnection</span><span style="color:#808030; ">)</span> url<span style="color:#808030; ">.</span>openConnection<span style="color:#808030; ">(</span><span style="color:#808030; ">)</span><span style="color:#800080; ">;</span>
+
+          <span style="color:#696969; ">// make GET request to the given URL</span>
+          conn<span style="color:#808030; ">.</span>connect<span style="color:#808030; ">(</span><span style="color:#808030; ">)</span><span style="color:#800080; ">;</span>
+
+          <span style="color:#696969; ">// receive response as inputStream</span>
+          inputStream <span style="color:#808030; ">=</span> conn<span style="color:#808030; ">.</span>getInputStream<span style="color:#808030; ">(</span><span style="color:#808030; ">)</span><span style="color:#800080; ">;</span>
+
+          <span style="color:#696969; ">// convert inputstream to string</span>
+          <span style="color:#800000; font-weight:bold; ">if</span><span style="color:#808030; ">(</span>inputStream <span style="color:#808030; ">!</span><span style="color:#808030; ">=</span> <span style="color:#800000; font-weight:bold; ">null</span><span style="color:#808030; ">)</span>
+              result <span style="color:#808030; ">=</span> convertInputStreamToString<span style="color:#808030; ">(</span>inputStream<span style="color:#808030; ">)</span><span style="color:#800080; ">;</span>
+          <span style="color:#800000; font-weight:bold; ">else</span>
+              result <span style="color:#808030; ">=</span> <span style="color:#0000e6; ">"Did not work!"</span><span style="color:#800080; ">;</span>
+
+      <span style="color:#800000; font-weight:bold; ">return</span> result<span style="color:#800080; ">;</span>
+  <span style="color:#800080; ">}</span>
+</pre>
+
+<h2 id="perform-network-operations-on-a-separate-thread">( 5 ) Perform Network Operations on a Separate Thread</h2>
+
+<ul>
+  <li>Network operation should always run on a seperate thread to avoid UI freeze.</li>
+  <li>The <strong>AsyncTask</strong> class provides one of the simplest ways to create separate thread from the UI thread.</li>
+  <li>Create an inner class extending <strong>AsyncTask</strong>.</li>
+  <li>Override <strong>doInBackground()</strong> &amp; <strong>onPostExecute</strong>.</li>
+</ul>
+
+<pre style="color:#000000;background:#f1f0f0;">
+<span style="color:#800000; font-weight:bold; ">private</span> <span style="color:#800000; font-weight:bold; ">class</span> HTTPAsyncTask <span style="color:#800000; font-weight:bold; ">extends</span> AsyncTask&lt;String, Void, String&gt; <span style="color:#800080; ">{</span>
+      <span style="color:#808030; ">@</span>Override
+      <span style="color:#800000; font-weight:bold; ">protected</span> <span style="color:#bb7977; font-weight:bold; ">String</span> doInBackground<span style="color:#808030; ">(</span><span style="color:#bb7977; font-weight:bold; ">String</span><span style="color:#808030; ">.</span><span style="color:#808030; ">.</span><span style="color:#808030; ">.</span> urls<span style="color:#808030; ">)</span> <span style="color:#800080; ">{</span>
+
+          <span style="color:#696969; ">// params comes from the execute() call: params[0] is the url.</span>
+          <span style="color:#800000; font-weight:bold; ">try</span> <span style="color:#800080; ">{</span>
+              <span style="color:#800000; font-weight:bold; ">return</span> HttpGet<span style="color:#808030; ">(</span>urls<span style="color:#808030; ">[</span><span style="color:#008c00; ">0</span><span style="color:#808030; ">]</span><span style="color:#808030; ">)</span><span style="color:#800080; ">;</span>
+          <span style="color:#800080; ">}</span> <span style="color:#800000; font-weight:bold; ">catch</span> <span style="color:#808030; ">(</span><span style="color:#bb7977; font-weight:bold; ">IOException</span> e<span style="color:#808030; ">)</span> <span style="color:#800080; ">{</span>
+              <span style="color:#800000; font-weight:bold; ">return</span> <span style="color:#0000e6; ">"Unable to retrieve web page. URL may be invalid."</span><span style="color:#800080; ">;</span>
+          <span style="color:#800080; ">}</span>
+      <span style="color:#800080; ">}</span>
+      <span style="color:#696969; ">// onPostExecute displays the results of the AsyncTask.</span>
+      <span style="color:#808030; ">@</span>Override
+      <span style="color:#800000; font-weight:bold; ">protected</span> <span style="color:#bb7977; ">void</span> onPostExecute<span style="color:#808030; ">(</span><span style="color:#bb7977; font-weight:bold; ">String</span> result<span style="color:#808030; ">)</span> <span style="color:#800080; ">{</span>
+          tvResult<span style="color:#808030; ">.</span>setText<span style="color:#808030; ">(</span>result<span style="color:#808030; ">)</span><span style="color:#800080; ">;</span>
+      <span style="color:#800080; ">}</span>
+  <span style="color:#800080; ">}</span>
+</pre>
+
+<h2 id="convert-the-inputstream-to-a-string">( 6 ) Convert the InputStream to a String</h2>
+
+<ul>
+  <li>We will use a helper method to convert InputStream byte into String</li>
+</ul>
+
+<pre style="color:#000000;background:#f1f0f0;">
+<span style="color:#800000; font-weight:bold; ">private</span> <span style="color:#800000; font-weight:bold; ">static</span> String convertInputStreamToString(InputStream inputStream) <span style="color:#800000; font-weight:bold; ">throws</span> IOException<span style="color:#800080; ">{</span>
+          <span style="color:#bb7977; font-weight:bold; ">BufferedReader</span> bufferedReader <span style="color:#808030; ">=</span> <span style="color:#800000; font-weight:bold; ">new</span> <span style="color:#bb7977; font-weight:bold; ">BufferedReader</span><span style="color:#808030; ">(</span> <span style="color:#800000; font-weight:bold; ">new</span> <span style="color:#bb7977; font-weight:bold; ">InputStreamReader</span><span style="color:#808030; ">(</span>inputStream<span style="color:#808030; ">)</span><span style="color:#808030; ">)</span><span style="color:#800080; ">;</span>
+          <span style="color:#bb7977; font-weight:bold; ">String</span> line <span style="color:#808030; ">=</span> <span style="color:#0000e6; ">""</span><span style="color:#800080; ">;</span>
+          <span style="color:#bb7977; font-weight:bold; ">String</span> result <span style="color:#808030; ">=</span> <span style="color:#0000e6; ">""</span><span style="color:#800080; ">;</span>
+          <span style="color:#800000; font-weight:bold; ">while</span><span style="color:#808030; ">(</span><span style="color:#808030; ">(</span>line <span style="color:#808030; ">=</span> bufferedReader<span style="color:#808030; ">.</span>readLine<span style="color:#808030; ">(</span><span style="color:#808030; ">)</span><span style="color:#808030; ">)</span> <span style="color:#808030; ">!</span><span style="color:#808030; ">=</span> <span style="color:#800000; font-weight:bold; ">null</span><span style="color:#808030; ">)</span>
+              result <span style="color:#808030; ">+</span><span style="color:#808030; ">=</span> line<span style="color:#800080; ">;</span>
+
+          inputStream<span style="color:#808030; ">.</span>close<span style="color:#808030; ">(</span><span style="color:#808030; ">)</span><span style="color:#800080; ">;</span>
+          <span style="color:#800000; font-weight:bold; ">return</span> result<span style="color:#800080; ">;</span>
+
+      <span style="color:#800080; ">}</span>
+</pre>
+
+<h3 id="source-code--githubhttpsgithubcomhmkcodeandroidtreemasterandroid-http">Source Code @ <a href="https://github.com/hmkcode/Android/tree/master/android-http">GitHub</a></h3>
+
+
+	</div>
+
+  <footer>
+    <span class="post-date">
+      <time>15 Jun 2016</time>
+    </span>
+    <div class="post-tag">
+      <ul>
+        
+      </ul>
+    </div>
+  </footer>
+  <!-- Disqus -->
+  
+  <div class="post-disqus">
+      <section id="disqus_thread"></section>
+      <script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables */
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//hmkcode.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  </div>
+  
+
+</article>
+
+
+    <!-- Documents about icons are here: http://fontawesome.io/icons/ -->
+<div class="footer">
+  <hr />
+  <div class="footer-link">
+    
+    <a href="https://www.facebook.com/your-id"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+    
+	
+	
+	
+	
+
+    
+    <a href="https://twitter.com/hmkcode"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+    
+
+    
+    <a href="https://github.com/hmkcode"><i class="fa fa-github" aria-hidden="true"></i></a>
+    
+	
+	
+	
+	
+
+    
+	
+	
+	
+	
+    <a href="https://plus.google.com/your-id"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
+    
+	
+	
+	
+	
+
+    
+
+    
+
+    
+
+  </div>
+  © 2017 hmkcode. All rights reserved.
+</div>
+
+  </div>
+</body>
+</html>
