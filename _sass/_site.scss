@@ -14,7 +14,7 @@ body {
 
 .content-container {
   max-width: 48rem;
-  padding: 5rem 1rem;
+  padding: 3rem 1rem;
   margin-left:  auto;
   margin-right: auto;
 
@@ -33,7 +33,7 @@ body {
   text-align: center;
 
   &-title {
-    margin: 0.3em 0;
+    margin: 0.3em 0 1em 0;
     font-size: 2.25em;
     line-height: 1.2em;
     font-weight: 600;
@@ -112,7 +112,7 @@ body {
     margin-bottom: 0.3rem;
     font-size: 2.2em;
     line-height: 1.2em;
-    font-weight: 200;
+    font-weight: 300;
   }
 
   &-date {
@@ -175,7 +175,7 @@ body {
     padding: 1% 2%;
     
     &:hover {
-      background-color: $background-over-color;
+      background-color: #ececec;
       border-color: transparent;
       border-radius: 10px;
     }
@@ -205,10 +205,11 @@ body {
     }
 
     &-desc {
-      color: #989898;
+      color: #3b3b3b;
       margin-bottom: .25rem;
-      font-size: 0.8rem;
+      font-size: 1.0rem;
       text-align: justify;
+      font-weight: 300;
     }
 
     
@@ -382,7 +383,7 @@ body {
   -------------- */
 .footer {
   text-align: center;
-  font-size: .75rem;
+  font-size: 1.2rem;
 
   &-link {
     margin: .2rem;
@@ -391,5 +392,9 @@ body {
       color: $base-color;
       margin: 4px;
     }
+  }
+
+  &-copyright{
+    font-size: 0.8rem;
   }
 }
