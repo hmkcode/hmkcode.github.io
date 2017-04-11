@@ -19,7 +19,7 @@
 	
 &lt;/p&gt;
 
-&lt;p&gt;###Objectives&lt;/p&gt;
+&lt;h4 id=&quot;objectives&quot;&gt;Objectives&lt;/h4&gt;
 
 &lt;ul&gt;
   &lt;li&gt;How to send HTTP GET request to a web server and display the response?&lt;/li&gt;
@@ -27,7 +27,7 @@
   &lt;li&gt;How to use AsyncTask to perform network operations on a separate thread?&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;environment-amp-tools&quot;&gt;Environment &amp;amp; Tools&lt;/h3&gt;
+&lt;h4 id=&quot;environment-amp-tools&quot;&gt;Environment &amp;amp; Tools&lt;/h4&gt;
 &lt;p&gt;&lt;em&gt;Tools used in this post&lt;/em&gt;&lt;/p&gt;
 
 &lt;ul&gt;
@@ -41,7 +41,7 @@
 
 &lt;p&gt;We will build an app that send HTTP GET request and display the response.&lt;/p&gt;
 
-&lt;h2 id=&quot;create-new-android-project&quot;&gt;( 1 ) Create new Android Project&lt;/h2&gt;
+&lt;h4 id=&quot;create-new-android-project&quot;&gt;( 1 ) Create new Android Project&lt;/h4&gt;
 
 &lt;ul&gt;
   &lt;li&gt;&lt;strong&gt;Application Name:&lt;/strong&gt; android-http&lt;/li&gt;
@@ -49,7 +49,7 @@
   &lt;li&gt;&lt;strong&gt;Minimum SDK:&lt;/strong&gt; API 8: Android 2.2 (Froyo)&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;add-permissions&quot;&gt;( 2 ) Add Permissions&lt;/h2&gt;
+&lt;h4 id=&quot;add-permissions&quot;&gt;( 2 ) Add Permissions&lt;/h4&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Add the following two lines to the &lt;code class=&quot;highlighter-rouge&quot;&gt;AndroidMainifest.xml&lt;/code&gt; file&lt;/li&gt;
@@ -60,7 +60,7 @@
 	&lt;span style=&quot;color:#a65700; &quot;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&quot;color:#5f5035; &quot;&gt;uses-permission&lt;/span&gt; &lt;span style=&quot;color:#007997; &quot;&gt;android&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color:#274796; &quot;&gt;name&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;android.permission.ACCESS_NETWORK_STATE&lt;/span&gt;&lt;span style=&quot;color:#800000; &quot;&gt;&quot;&lt;/span&gt; &lt;span style=&quot;color:#a65700; &quot;&gt;/&amp;gt;&lt;/span&gt;
 &lt;/pre&gt;
 
-&lt;h2 id=&quot;design-app-layout&quot;&gt;( 2 ) Design App Layout&lt;/h2&gt;
+&lt;h4 id=&quot;design-app-layout&quot;&gt;( 3 ) Design App Layout&lt;/h4&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Add two &lt;strong&gt;TextView&lt;/strong&gt; to &lt;code class=&quot;highlighter-rouge&quot;&gt;activity_main.xml&lt;/code&gt; .&lt;/li&gt;
@@ -111,39 +111,37 @@
 &lt;span style=&quot;color:#a65700; &quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span style=&quot;color:#5f5035; &quot;&gt;LinearLayout&lt;/span&gt;&lt;span style=&quot;color:#a65700; &quot;&gt;&amp;gt;&lt;/span&gt;
 &lt;/pre&gt;
 
-&lt;h2 id=&quot;check-the-network-connection&quot;&gt;( 3 ) Check the Network Connection&lt;/h2&gt;
+&lt;h4 id=&quot;check-the-network-connection&quot;&gt;( 4 ) Check the Network Connection&lt;/h4&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Before making any network operation you need to check if you are connected or not.&lt;/li&gt;
   &lt;li&gt;To check whether a network connection is available use &lt;strong&gt;getActiveNetworkInfo()&lt;/strong&gt; and &lt;strong&gt;isConnected()&lt;/strong&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;pre style=&quot;color:#000000;background:#f1f0f0;&quot;&gt;
-&lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;public&lt;/span&gt; boolean checkNetworkConnection() &lt;span style=&quot;color:#800080; &quot;&gt;{&lt;/span&gt;
-        ConnectivityManager connMgr &lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;ConnectivityManager&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;
-                getSystemService&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;Context&lt;span style=&quot;color:#808030; &quot;&gt;.&lt;/span&gt;CONNECTIVITY_SERVICE&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;checkNetworkConnection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;ConnectivityManager&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;connMgr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ConnectivityManager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;getSystemService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;CONNECTIVITY_SERVICE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
 
-        NetworkInfo networkInfo &lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt; connMgr&lt;span style=&quot;color:#808030; &quot;&gt;.&lt;/span&gt;getActiveNetworkInfo&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
-        &lt;span style=&quot;color:#bb7977; &quot;&gt;boolean&lt;/span&gt; isConnected &lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;false&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
-        &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;if&lt;/span&gt; &lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;networkInfo &lt;span style=&quot;color:#808030; &quot;&gt;!&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;null&lt;/span&gt; &lt;span style=&quot;color:#808030; &quot;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;&amp;amp;&lt;/span&gt; &lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;isConnected &lt;span style=&quot;color:#808030; &quot;&gt;=&lt;/span&gt; networkInfo&lt;span style=&quot;color:#808030; &quot;&gt;.&lt;/span&gt;isConnected&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt; &lt;span style=&quot;color:#800080; &quot;&gt;{&lt;/span&gt;
-            &lt;span style=&quot;color:#696969; &quot;&gt;// show &quot;Connected&quot; &amp;amp; type of network &quot;WIFI or MOBILE&quot;&lt;/span&gt;
-            tvIsConnected&lt;span style=&quot;color:#808030; &quot;&gt;.&lt;/span&gt;setText&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;&quot;Connected &quot;&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;+&lt;/span&gt;networkInfo&lt;span style=&quot;color:#808030; &quot;&gt;.&lt;/span&gt;getTypeName&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
-            &lt;span style=&quot;color:#696969; &quot;&gt;// change background color to red&lt;/span&gt;
-            tvIsConnected&lt;span style=&quot;color:#808030; &quot;&gt;.&lt;/span&gt;setBackgroundColor&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color:#008000; &quot;&gt;0xFF7CCC26&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;NetworkInfo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;networkInfo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;connMgr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getActiveNetworkInfo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;isConnected&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;networkInfo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isConnected&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;networkInfo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;isConnected&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// show &quot;Connected&quot; &amp;amp; type of network &quot;WIFI or MOBILE&quot;&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;tvIsConnected&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setText&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Connected &quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;networkInfo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getTypeName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// change background color to red&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;tvIsConnected&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setBackgroundColor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;xFF7CCC26&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
 
 
-        &lt;span style=&quot;color:#800080; &quot;&gt;}&lt;/span&gt; &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;else&lt;/span&gt; &lt;span style=&quot;color:#800080; &quot;&gt;{&lt;/span&gt;
-            &lt;span style=&quot;color:#696969; &quot;&gt;// show &quot;Not Connected&quot;&lt;/span&gt;
-            tvIsConnected&lt;span style=&quot;color:#808030; &quot;&gt;.&lt;/span&gt;setText&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color:#0000e6; &quot;&gt;&quot;Not Connected&quot;&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
-            &lt;span style=&quot;color:#696969; &quot;&gt;// change background color to green&lt;/span&gt;
-            tvIsConnected&lt;span style=&quot;color:#808030; &quot;&gt;.&lt;/span&gt;setBackgroundColor&lt;span style=&quot;color:#808030; &quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color:#008000; &quot;&gt;0xFFFF0000&lt;/span&gt;&lt;span style=&quot;color:#808030; &quot;&gt;)&lt;/span&gt;&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
-        &lt;span style=&quot;color:#800080; &quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// show &quot;Not Connected&quot;&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;tvIsConnected&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setText&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Not Connected&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// change background color to green&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;tvIsConnected&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setBackgroundColor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;xFFFF0000&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 
-        &lt;span style=&quot;color:#800000; font-weight:bold; &quot;&gt;return&lt;/span&gt; isConnected&lt;span style=&quot;color:#800080; &quot;&gt;;&lt;/span&gt;
-    &lt;span style=&quot;color:#800080; &quot;&gt;}&lt;/span&gt;
-&lt;/pre&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;isConnected&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;h2 id=&quot;perform-http-get-request&quot;&gt;( 4 ) Perform HTTP GET Request&lt;/h2&gt;
+&lt;h4 id=&quot;perform-http-get-request&quot;&gt;( 5 ) Perform HTTP GET Request&lt;/h4&gt;
 
 &lt;ul&gt;
   &lt;li&gt;The simplest example for network operation is HTTP GET request.&lt;/li&gt;

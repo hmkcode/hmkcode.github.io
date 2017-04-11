@@ -280,8 +280,10 @@ pre {
   padding: .5rem;
   font-size: .8rem;
   line-height: 1.4;
-  white-space: pre;
-  white-space: pre-wrap;
+  white-space: pre; 
+  overflow: auto;
+ font-family: "Courier New", Courier, monospace;
+ // white-space: pre-wrap;
   word-break: break-all;
   // word-wrap: break-word;
   background-color: $code-background-color;
@@ -297,6 +299,10 @@ pre code {
 .highlight {
   margin-bottom: 1rem;
   border-radius: 4px;
+  width: 100%;
+  overflow: auto;
+  margin-left: 5px;
+  min-width: 300px;
 }
 
 .highlight pre {

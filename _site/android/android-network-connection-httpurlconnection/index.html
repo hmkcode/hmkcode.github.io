@@ -7,7 +7,6 @@
 
   <!-- CSS -->
   <link rel="stylesheet" href="/assets/css/main.css" type="text/css">
-
   <!-- Font -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'>
@@ -58,7 +57,7 @@
 	
 </p>
 
-<p>###Objectives</p>
+<h4 id="objectives">Objectives</h4>
 
 <ul>
   <li>How to send HTTP GET request to a web server and display the response?</li>
@@ -66,7 +65,7 @@
   <li>How to use AsyncTask to perform network operations on a separate thread?</li>
 </ul>
 
-<h3 id="environment-amp-tools">Environment &amp; Tools</h3>
+<h4 id="environment-amp-tools">Environment &amp; Tools</h4>
 <p><em>Tools used in this post</em></p>
 
 <ul>
@@ -80,7 +79,7 @@
 
 <p>We will build an app that send HTTP GET request and display the response.</p>
 
-<h2 id="create-new-android-project">( 1 ) Create new Android Project</h2>
+<h4 id="create-new-android-project">( 1 ) Create new Android Project</h4>
 
 <ul>
   <li><strong>Application Name:</strong> android-http</li>
@@ -88,7 +87,7 @@
   <li><strong>Minimum SDK:</strong> API 8: Android 2.2 (Froyo)</li>
 </ul>
 
-<h2 id="add-permissions">( 2 ) Add Permissions</h2>
+<h4 id="add-permissions">( 2 ) Add Permissions</h4>
 
 <ul>
   <li>Add the following two lines to the <code class="highlighter-rouge">AndroidMainifest.xml</code> file</li>
@@ -99,7 +98,7 @@
 	<span style="color:#a65700; ">&lt;</span><span style="color:#5f5035; ">uses-permission</span> <span style="color:#007997; ">android</span><span style="color:#800080; ">:</span><span style="color:#274796; ">name</span><span style="color:#808030; ">=</span><span style="color:#800000; ">"</span><span style="color:#0000e6; ">android.permission.ACCESS_NETWORK_STATE</span><span style="color:#800000; ">"</span> <span style="color:#a65700; ">/&gt;</span>
 </pre>
 
-<h2 id="design-app-layout">( 2 ) Design App Layout</h2>
+<h4 id="design-app-layout">( 3 ) Design App Layout</h4>
 
 <ul>
   <li>Add two <strong>TextView</strong> to <code class="highlighter-rouge">activity_main.xml</code> .</li>
@@ -150,39 +149,37 @@
 <span style="color:#a65700; ">&lt;/</span><span style="color:#5f5035; ">LinearLayout</span><span style="color:#a65700; ">&gt;</span>
 </pre>
 
-<h2 id="check-the-network-connection">( 3 ) Check the Network Connection</h2>
+<h4 id="check-the-network-connection">( 4 ) Check the Network Connection</h4>
 
 <ul>
   <li>Before making any network operation you need to check if you are connected or not.</li>
   <li>To check whether a network connection is available use <strong>getActiveNetworkInfo()</strong> and <strong>isConnected()</strong>.</li>
 </ul>
 
-<pre style="color:#000000;background:#f1f0f0;">
-<span style="color:#800000; font-weight:bold; ">public</span> boolean checkNetworkConnection() <span style="color:#800080; ">{</span>
-        ConnectivityManager connMgr <span style="color:#808030; ">=</span> <span style="color:#808030; ">(</span>ConnectivityManager<span style="color:#808030; ">)</span>
-                getSystemService<span style="color:#808030; ">(</span>Context<span style="color:#808030; ">.</span>CONNECTIVITY_SERVICE<span style="color:#808030; ">)</span><span style="color:#800080; ">;</span>
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">checkNetworkConnection</span><span class="p">(</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">ConnectivityManager</span> <span class="n">connMgr</span> <span class="o">=</span> <span class="o">(</span><span class="n">ConnectivityManager</span><span class="o">)</span>
+                <span class="n">getSystemService</span><span class="o">(</span><span class="n">Context</span><span class="o">.</span><span class="na">CONNECTIVITY_SERVICE</span><span class="o">);</span>
 
-        NetworkInfo networkInfo <span style="color:#808030; ">=</span> connMgr<span style="color:#808030; ">.</span>getActiveNetworkInfo<span style="color:#808030; ">(</span><span style="color:#808030; ">)</span><span style="color:#800080; ">;</span>
-        <span style="color:#bb7977; ">boolean</span> isConnected <span style="color:#808030; ">=</span> <span style="color:#800000; font-weight:bold; ">false</span><span style="color:#800080; ">;</span>
-        <span style="color:#800000; font-weight:bold; ">if</span> <span style="color:#808030; ">(</span>networkInfo <span style="color:#808030; ">!</span><span style="color:#808030; ">=</span> <span style="color:#800000; font-weight:bold; ">null</span> <span style="color:#808030; ">&amp;</span><span style="color:#808030; ">&amp;</span> <span style="color:#808030; ">(</span>isConnected <span style="color:#808030; ">=</span> networkInfo<span style="color:#808030; ">.</span>isConnected<span style="color:#808030; ">(</span><span style="color:#808030; ">)</span><span style="color:#808030; ">)</span><span style="color:#808030; ">)</span> <span style="color:#800080; ">{</span>
-            <span style="color:#696969; ">// show "Connected" &amp; type of network "WIFI or MOBILE"</span>
-            tvIsConnected<span style="color:#808030; ">.</span>setText<span style="color:#808030; ">(</span><span style="color:#0000e6; ">"Connected "</span><span style="color:#808030; ">+</span>networkInfo<span style="color:#808030; ">.</span>getTypeName<span style="color:#808030; ">(</span><span style="color:#808030; ">)</span><span style="color:#808030; ">)</span><span style="color:#800080; ">;</span>
-            <span style="color:#696969; ">// change background color to red</span>
-            tvIsConnected<span style="color:#808030; ">.</span>setBackgroundColor<span style="color:#808030; ">(</span><span style="color:#008000; ">0xFF7CCC26</span><span style="color:#808030; ">)</span><span style="color:#800080; ">;</span>
+        <span class="n">NetworkInfo</span> <span class="n">networkInfo</span> <span class="o">=</span> <span class="n">connMgr</span><span class="o">.</span><span class="na">getActiveNetworkInfo</span><span class="o">();</span>
+        <span class="kt">boolean</span> <span class="n">isConnected</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">networkInfo</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="n">isConnected</span> <span class="o">=</span> <span class="n">networkInfo</span><span class="o">.</span><span class="na">isConnected</span><span class="o">()))</span> <span class="o">{</span>
+            <span class="c1">// show "Connected" &amp; type of network "WIFI or MOBILE"</span>
+            <span class="n">tvIsConnected</span><span class="o">.</span><span class="na">setText</span><span class="o">(</span><span class="s">"Connected "</span><span class="o">+</span><span class="n">networkInfo</span><span class="o">.</span><span class="na">getTypeName</span><span class="o">());</span>
+            <span class="c1">// change background color to red</span>
+            <span class="n">tvIsConnected</span><span class="o">.</span><span class="na">setBackgroundColor</span><span class="o">(</span><span class="mi">0</span><span class="n">xFF7CCC26</span><span class="o">);</span>
 
 
-        <span style="color:#800080; ">}</span> <span style="color:#800000; font-weight:bold; ">else</span> <span style="color:#800080; ">{</span>
-            <span style="color:#696969; ">// show "Not Connected"</span>
-            tvIsConnected<span style="color:#808030; ">.</span>setText<span style="color:#808030; ">(</span><span style="color:#0000e6; ">"Not Connected"</span><span style="color:#808030; ">)</span><span style="color:#800080; ">;</span>
-            <span style="color:#696969; ">// change background color to green</span>
-            tvIsConnected<span style="color:#808030; ">.</span>setBackgroundColor<span style="color:#808030; ">(</span><span style="color:#008000; ">0xFFFF0000</span><span style="color:#808030; ">)</span><span style="color:#800080; ">;</span>
-        <span style="color:#800080; ">}</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="c1">// show "Not Connected"</span>
+            <span class="n">tvIsConnected</span><span class="o">.</span><span class="na">setText</span><span class="o">(</span><span class="s">"Not Connected"</span><span class="o">);</span>
+            <span class="c1">// change background color to green</span>
+            <span class="n">tvIsConnected</span><span class="o">.</span><span class="na">setBackgroundColor</span><span class="o">(</span><span class="mi">0</span><span class="n">xFFFF0000</span><span class="o">);</span>
+        <span class="o">}</span>
 
-        <span style="color:#800000; font-weight:bold; ">return</span> isConnected<span style="color:#800080; ">;</span>
-    <span style="color:#800080; ">}</span>
-</pre>
+        <span class="k">return</span> <span class="n">isConnected</span><span class="o">;</span>
+    <span class="o">}</span></code></pre></figure>
 
-<h2 id="perform-http-get-request">( 4 ) Perform HTTP GET Request</h2>
+<h4 id="perform-http-get-request">( 5 ) Perform HTTP GET Request</h4>
 
 <ul>
   <li>The simplest example for network operation is HTTP GET request.</li>

@@ -20,14 +20,14 @@ description: One common task for most Android apps is connecting to the Internet
 	
 </p>
 
-###Objectives
+#### Objectives
 
 - How to send HTTP GET request to a web server and display the response?
 - How to check network connection?
 - How to use AsyncTask to perform network operations on a separate thread?
 
 	
-### Environment &amp; Tools
+#### Environment &amp; Tools
 _Tools used in this post_
 
 - Windows 8
@@ -41,13 +41,13 @@ _Tools used in this post_
 We will build an app that send HTTP GET request and display the response.
 
 
-## ( 1 ) Create new Android Project
+#### ( 1 ) Create new Android Project
 
 - **Application Name:** android-http
 - **Package Name:** com.hmkcode.android.http
 - **Minimum SDK:** API 8: Android 2.2 (Froyo) 
 
-## ( 2 ) Add Permissions 
+#### ( 2 ) Add Permissions 
 
 - Add the following two lines to the `AndroidMainifest.xml` file
 
@@ -56,7 +56,7 @@ We will build an app that send HTTP GET request and display the response.
 	<span style='color:#a65700; '>&lt;</span><span style='color:#5f5035; '>uses-permission</span> <span style='color:#007997; '>android</span><span style='color:#800080; '>:</span><span style='color:#274796; '>name</span><span style='color:#808030; '>=</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>android.permission.ACCESS_NETWORK_STATE</span><span style='color:#800000; '>"</span> <span style='color:#a65700; '>/></span>
 </pre>
 
-## ( 2 ) Design App Layout
+#### ( 3 ) Design App Layout
 
 - Add two **TextView** to `activity_main.xml` .
 - First **TextView** for displaying network connection info.
@@ -105,37 +105,37 @@ We will build an app that send HTTP GET request and display the response.
 <span style='color:#a65700; '>&lt;/</span><span style='color:#5f5035; '>LinearLayout</span><span style='color:#a65700; '>></span>
 </pre>
 
-## ( 3 ) Check the Network Connection
+#### ( 4 ) Check the Network Connection
 
 - Before making any network operation you need to check if you are connected or not.
 - To check whether a network connection is available use **getActiveNetworkInfo()** and **isConnected()**.
 
-<pre style='color:#000000;background:#f1f0f0;'>
-<span style='color:#800000; font-weight:bold; '>public</span> boolean checkNetworkConnection() <span style='color:#800080; '>{</span>
-        ConnectivityManager connMgr <span style='color:#808030; '>=</span> <span style='color:#808030; '>(</span>ConnectivityManager<span style='color:#808030; '>)</span>
-                getSystemService<span style='color:#808030; '>(</span>Context<span style='color:#808030; '>.</span>CONNECTIVITY_SERVICE<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+{% highlight java %}
+public boolean checkNetworkConnection() {
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        NetworkInfo networkInfo <span style='color:#808030; '>=</span> connMgr<span style='color:#808030; '>.</span>getActiveNetworkInfo<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
-        <span style='color:#bb7977; '>boolean</span> isConnected <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>false</span><span style='color:#800080; '>;</span>
-        <span style='color:#800000; font-weight:bold; '>if</span> <span style='color:#808030; '>(</span>networkInfo <span style='color:#808030; '>!</span><span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>null</span> <span style='color:#808030; '>&amp;</span><span style='color:#808030; '>&amp;</span> <span style='color:#808030; '>(</span>isConnected <span style='color:#808030; '>=</span> networkInfo<span style='color:#808030; '>.</span>isConnected<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span> <span style='color:#800080; '>{</span>
-            <span style='color:#696969; '>// show "Connected" &amp; type of network "WIFI or MOBILE"</span>
-            tvIsConnected<span style='color:#808030; '>.</span>setText<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"Connected "</span><span style='color:#808030; '>+</span>networkInfo<span style='color:#808030; '>.</span>getTypeName<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
-            <span style='color:#696969; '>// change background color to red</span>
-            tvIsConnected<span style='color:#808030; '>.</span>setBackgroundColor<span style='color:#808030; '>(</span><span style='color:#008000; '>0xFF7CCC26</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        boolean isConnected = false;
+        if (networkInfo != null && (isConnected = networkInfo.isConnected())) {
+            // show "Connected" & type of network "WIFI or MOBILE"
+            tvIsConnected.setText("Connected "+networkInfo.getTypeName());
+            // change background color to red
+            tvIsConnected.setBackgroundColor(0xFF7CCC26);
 
 
-        <span style='color:#800080; '>}</span> <span style='color:#800000; font-weight:bold; '>else</span> <span style='color:#800080; '>{</span>
-            <span style='color:#696969; '>// show "Not Connected"</span>
-            tvIsConnected<span style='color:#808030; '>.</span>setText<span style='color:#808030; '>(</span><span style='color:#0000e6; '>"Not Connected"</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
-            <span style='color:#696969; '>// change background color to green</span>
-            tvIsConnected<span style='color:#808030; '>.</span>setBackgroundColor<span style='color:#808030; '>(</span><span style='color:#008000; '>0xFFFF0000</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
-        <span style='color:#800080; '>}</span>
+        } else {
+            // show "Not Connected"
+            tvIsConnected.setText("Not Connected");
+            // change background color to green
+            tvIsConnected.setBackgroundColor(0xFFFF0000);
+        }
 
-        <span style='color:#800000; font-weight:bold; '>return</span> isConnected<span style='color:#800080; '>;</span>
-    <span style='color:#800080; '>}</span>
-</pre>
+        return isConnected;
+    }
+{% endhighlight %}
 
-## ( 4 ) Perform HTTP GET Request
+#### ( 5 ) Perform HTTP GET Request
 
 - The simplest example for network operation is HTTP GET request.
 - We create a new **URL** object by passing url string to the constructor.
