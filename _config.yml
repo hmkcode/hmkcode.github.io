@@ -6,10 +6,10 @@
 name:               "HMKCODE"
 
 author:
-  facebook:         your-id
+  facebook:         hmkcode
   twitter:          hmkcode
   github:           hmkcode
-  googlePlus:       your-id
+  googlePlus:       +hmkcode
 
 copyright:
   year:             2017
@@ -50,8 +50,6 @@ nav:
     url:            "/archive"
   - name:           "Tags"
     url:            "/tags"
-  - name:           "Github"
-    url:            "https://github.com/AWEEKJ/Kiko-plus"
 
 # Sass
 sass:
