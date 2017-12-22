@@ -6,6 +6,7 @@ layout: default
   <div class="header-small">
     <a href="{{site.url}}{{site.baseurl}}">{{ site.name }}</a>
   </div>
+   
 </header>
 
 <article class="post">
@@ -13,15 +14,15 @@ layout: default
   <header>
     <h1 class="post-title"> {{ page.title }}</h1> 
   </header>
-  
+  <span class="post-date">
+      <time>{{ page.date | date_to_string }}</time>
+    </span>
   <div class="entry-content">		
 					{{ content }}
 	</div>
 
   <footer>
-    <span class="post-date">
-      <time>{{ page.date | date_to_string }}</time>
-    </span>
+   
     <div class="post-tag">
       <ul>
         {% for tag in page.tags %}
