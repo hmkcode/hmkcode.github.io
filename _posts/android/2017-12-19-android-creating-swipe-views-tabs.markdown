@@ -35,7 +35,7 @@ _used in this post_
 Create new android application keep default options. 
 This app is targeting API 19 or later
 
-![target_api]({{ "../../images/android/target_android_devices_19_later.jpg" | absolute_url }})
+![target_api]({{ "http://hmkcode.github.io/images/android/target_android_devices_19_later.jpg" | absolute_url }})
 
 ## ( 2 ) Build Swipe Views
 
@@ -200,7 +200,7 @@ Create two fragment `FirstFragment.java` & `SecondFragment.java`
 }
 </pre>
 
-![android-tabs]({{ "../../images/android/anroid-tabs_1.gif" | absolute_url }})
+![android-tabs]({{ "http://hmkcode.github.io/images/android/anroid-tabs_1.gif" | absolute_url }})
 
 
 ### Source Code @ [GitHub](https://github.com/hmkcode/Android/tree/master/android-http)
