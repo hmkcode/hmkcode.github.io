@@ -6,15 +6,17 @@ categories: android
 post_url: http://hmkcode.com/android-creating-swipe-views-tabs/
 pre_url: http://hmkcode.com/material-design-app-android-design-support-library-appcompat/
 pre_title: "Building Material Design App Using Android Design Support Library and AppCompat Theme"
-description: Tab layout allows you navigate between sibling screens using horizontal finger gesture a pattern sometimes known as horizontal paging. This post shows you how to create tab layout with swipe views navigating between tabs. 
+description: You can navigate between sibling screens using horizontal finger gesture. This post shows you how to build swipe views and how to add tabs to action bar offering users a familiar interfaces
 ---
+
 <p style="text-align: justify;">
-	<a href="http://hmkcode.com/wp-content/uploads/2013/09/android-http-get_2.png">
-		<img class="size-full wp-image-315 aligncenter" src="http://hmkcode.com/wp-content/uploads/2013/09/android-http-get_2.png" alt="get-location" />
+	
+	<a href="http://hmkcode.github.io/images/android/android-swipe-tabs.jpg">
+		<img class="size-full wp-image-315 aligncenter" src="http://hmkcode.github.io/images/android/android-swipe-tabs.jpg" alt="get-location" />
 	</a>
-	<br/>
-	Tab layout allows you navigate between sibling screens using horizontal finger gesture a pattern sometimes known as horizontal paging. 
-	This post shows you how to create tab layout with swipe views navigating between tabs.
+	
+	You can navigate between sibling screens using horizontal finger gesture. 
+	This post shows you how to build swipe views and how to add tabs to action bar offering users a familiar interfaces.
 	
 </p>
 
@@ -200,8 +202,82 @@ Create two fragment `FirstFragment.java` & `SecondFragment.java`
 }
 </pre>
 
-![android-tabs]({{ "http://hmkcode.github.io/images/android/anroid-tabs_1.gif" | absolute_url }})
+![android-tabs]({{"http://hmkcode.github.io/images/android/android-swipe.gif" | absolute_url }})
+
+## ( 3 ) Adding Tabs 
+
+While you can swipe between screens using horizontal finger gesture, android also offers tabs to switch between screens.
+
+- To create swipe views use `TabLayout` widget.
+- Attached pager adapter to tablayout using `setupWithViewPager()` method.
 
 
-### Source Code @ [GitHub](https://github.com/hmkcode/Android/tree/master/android-http)
+**activity_main.xml**
+
+<pre><span style='color:#000084; '>&lt;?</span><span style='color:#000084; font-weight:bold; '>xml</span><span style='color:#000084; '> </span><span style='color:#000084; '>version</span><span style='color:#000084; '>=</span><span style='color:#0000ff; '>"</span><span style='color:#000084; font-weight:bold; '>1.0</span><span style='color:#0000ff; '>"</span><span style='color:#000084; '> </span><span style='color:#000084; '>encoding</span><span style='color:#000084; '>=</span><span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>utf-8</span><span style='color:#0000ff; '>"</span><span style='color:#000084; '>?></span>
+<span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>RelativeLayout</span> xmlns:android=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>http</span><span style='color:#0000ff; '>:</span><span style='color:#000084; font-weight:bold; '>//</span><span style='color:#3f3fbf; '>schemas.android.com</span><span style='color:#3f3fbf; '>/apk/res/android</span><span style='color:#0000ff; '>"</span>
+    xmlns:app=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>http</span><span style='color:#0000ff; '>:</span><span style='color:#000084; font-weight:bold; '>//</span><span style='color:#3f3fbf; '>schemas.android.com</span><span style='color:#3f3fbf; '>/apk/res-auto</span><span style='color:#0000ff; '>"</span>
+    xmlns:tools=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>http</span><span style='color:#0000ff; '>:</span><span style='color:#000084; font-weight:bold; '>//</span><span style='color:#3f3fbf; '>schemas.android.com</span><span style='color:#3f3fbf; '>/tools</span><span style='color:#0000ff; '>"</span>
+    android:layout_width=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>match_parent</span><span style='color:#0000ff; '>"</span>
+    android:layout_height=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>match_parent</span><span style='color:#0000ff; '>"</span>
+    android:orientation=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>vertical</span><span style='color:#0000ff; '>"</span>
+    tools:context=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>com.hmkcode.android.MainActivity</span><span style='color:#0000ff; '>"</span><span style='color:#7f0055; '>></span>
+
+     <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>android.support.v4.view.ViewPager</span>
+        xmlns:android=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>http</span><span style='color:#0000ff; '>:</span><span style='color:#000084; font-weight:bold; '>//</span><span style='color:#3f3fbf; '>schemas.android.com</span><span style='color:#3f3fbf; '>/apk/res/android</span><span style='color:#0000ff; '>"</span>
+        android:id=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>@+id/pager</span><span style='color:#0000ff; '>"</span>
+        android:layout_width=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>match_parent</span><span style='color:#0000ff; '>"</span>
+        android:layout_height=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>match_parent</span><span style='color:#0000ff; '>"</span> <span style='color:#7f0055; '>/></span>
+
+     <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>android.support.design.widget.TabLayout</span>
+         android:id=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>@+id/tabLayout</span><span style='color:#0000ff; '>"</span>
+         android:layout_width=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>match_parent</span><span style='color:#0000ff; '>"</span>
+         android:layout_height=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>wrap_content</span><span style='color:#0000ff; '>"</span>
+         app:tabMode=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>fixed</span><span style='color:#0000ff; '>"</span>
+         app:tabGravity=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>fill</span><span style='color:#0000ff; '>"</span> <span style='color:#7f0055; '>/></span>
+
+<span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>RelativeLayout</span><span style='color:#7f0055; '>></span>
+</pre>
+
+**MainActivity.java**
+<pre><span style='color:#000084; font-weight:bold; '>public</span> <span style='color:#000084; font-weight:bold; '>class</span> MainActivity <span style='color:#000084; font-weight:bold; '>extends</span> AppCompatActivity {
+
+    MyFragmentPagerAdapter myFragmentPagerAdapter;
+    ViewPager mViewPager;
+    TabLayout tabLayout;
+    
+    @Override
+    <span style='color:#000084; font-weight:bold; '>protected</span> <span style='color:#000084; font-weight:bold; '>void</span> onCreate(Bundle savedInstanceState) {
+        <span style='color:#000084; font-weight:bold; '>super</span>.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+
+        setPagerAdapter();
+        setTabLayout();
+    }
+
+    <span style='color:#000084; font-weight:bold; '>private</span> <span style='color:#000084; font-weight:bold; '>void</span> setPagerAdapter(){
+
+        myFragmentPagerAdapter = <span style='color:#000084; font-weight:bold; '>new</span> MyFragmentPagerAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(myFragmentPagerAdapter);
+
+    }
+
+    <span style='color:#000084; font-weight:bold; '>private</span> <span style='color:#000084; font-weight:bold; '>void</span> setTabLayout() {
+
+        tabLayout.setupWithViewPager(mViewPager);
+
+        tabLayout.getTabAt(0).setText(<span style='color:#0000ff; '>"First"</span>);
+        tabLayout.getTabAt(1).setText(<span style='color:#0000ff; '>"Second"</span>);
+    }
+}
+</pre>
+
+![android-tabs]({{ "http://hmkcode.github.io/images/android/android-swipe-tabs.gif" | absolute_url }})
+
+
+
+### Source Code @ [GitHub](https://github.com/hmkcode/Android/tree/master/user-interface/android-swipe-views-tabs)
 
