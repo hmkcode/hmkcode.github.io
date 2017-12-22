@@ -30,6 +30,7 @@ _used in this post_
 - Windows 8
 - Android Studio 3.0.1
 - Nexus 5
+- Design Support Library _com.android.support:design:26.1.0_
 
 
 ## ( 1 ) Create new Android Project
@@ -211,6 +212,12 @@ While you can swipe between screens using horizontal finger gesture, android als
 - To create swipe views use `TabLayout` widget.
 - Attached pager adapter to tablayout using `setupWithViewPager()` method.
 
+
+**gradel.build (app)**
+
+<pre>
+compile 'com.android.support:design:26.1.0'
+</pre>
 
 **activity_main.xml**
 
