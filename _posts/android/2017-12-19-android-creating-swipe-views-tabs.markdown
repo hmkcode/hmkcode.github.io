@@ -16,13 +16,13 @@ description: You can navigate between sibling screens using horizontal finger ge
 	</a>
 	
 	You can navigate between sibling screens using horizontal finger gesture. 
-	This post shows you how to build swipe views and how to add tabs to action bar offering users a familiar interfaces.
+	This post shows you how to build swipe views and how to add tabs to action bar which will offer your users a familiar interface for horizontal navigation.
 	
 </p>
 
 #### Objectives
 1. Building an app with horizontal navigation between sibling screens "fragments".
-2. Adding tabs to action bar for navigating between and identifying sibling screens in your app.
+2. Adding tabs to action bar for navigating between an identified sibling screens in your app.
 
 ### Environment, Tools &amp; Library
 _used in this post_
