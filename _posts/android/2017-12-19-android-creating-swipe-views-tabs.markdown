@@ -42,7 +42,7 @@ This app is targeting API 19 or later
 
 ## ( 2 ) Build Swipe Views
 
-- To create swipe views use `ViewPager` widget.
+- To create swipe views, use `ViewPager` widget.
 - Extends `FragmentPagerAdapter` to hold child views .
 - Create two fragments to be used as child views.
 
