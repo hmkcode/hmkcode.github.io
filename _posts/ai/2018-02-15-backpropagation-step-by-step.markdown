@@ -40,6 +40,13 @@ Our initial weights will be as following:
 
 We will use a training set that has two inputs and one output. Our data set has a single sample with `inputs=[2, 3]` and `output=[1]`.
 
+![training_sample]({{ "http://hmkcode.github.io/images/ai/bp_sample.png" | absolute_url }})
+
+## Forward Step
+
+We will use given weights and inputs to predict the output. Inputs are multiplied by weights and pass the results forward to next layer. 
+
+![bp_forward]({{ "http://hmkcode.github.io/images/ai/bp_forward.png" | absolute_url }})
 
 
 ### Source Code @ [GitHub](https://github.com/hmkcode/Android/tree/master/user-interface/android-swipe-views-tabs)
