@@ -20,7 +20,7 @@ description: Backpropagation is a technique used for training neural network. Th
 
 ## Overview
 
-In this post, we will use a neural network with two inputs, two hidden neurons and one output neuron. 
+In this post, we will use a neural network with two inputs layer, one hidden layer with two neurons and one output layer with a single neuron that predicts the output. 
 
 ![android-tabs]({{ "http://hmkcode.github.io/images/ai/nn1.png" | absolute_url }})
 
@@ -44,9 +44,27 @@ We will use a training set that has two inputs and one output. Our data set has 
 
 ## Forward Step
 
-We will use given weights and inputs to predict the output. Inputs are multiplied by weights and pass the results forward to next layer. 
+We will use given weights and inputs to predict the output. Inputs are multiplied by weights; the results are passed forward to next layer. 
 
 ![bp_forward]({{ "http://hmkcode.github.io/images/ai/bp_forward.png" | absolute_url }})
+
+## Calculating Error
+
+Now, it's time to find how our network performed by calculating the difference between the actual output and predicted one. It's clear that our network output is not even close to **actual output**. We can calculate the difference or the error as following.
+
+![bp_error]({{ "http://hmkcode.github.io/images/ai/bp_error.png" | absolute_url }})
+
+## Reducing Error
+
+Our main goal of the training is to reduce the difference between **prediction** and **actual output**. Since **actual output** is constant, "not changing", the only way to reduce the error is to change **prediction** value. The question now is, how to change **prediction** value?
+
+By decomposing **prediction** into its basic elements we can find that **weights** are the variable elements affecting **prediction** value. In other words, in order to change **prediction** value, we need to change **weights** values. 
+
+ 
+
+
+
+
 
 
 ### Source Code @ [GitHub](https://github.com/hmkcode/Android/tree/master/user-interface/android-swipe-views-tabs)
