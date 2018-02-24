@@ -62,11 +62,19 @@ By decomposing **prediction** into its basic elements we can find that **weights
 
 ![bp_prediction_elements]({{ "http://hmkcode.github.io/images/ai/bp_prediction_elements.png" | absolute_url }})
 
-> The question now is **how to change/update the weights value so that the error is reduced?**  
+> The question now is **how to change\update the weights value so that the error is reduced?**  
 > The answer is **Backpropagation!**
 
 
 ## Backward Pass or **Backpropagation**
+
+**Backpropagation** is the mechanism by which we can update **weights** so that neural network **prediction** is closer to **actual output**. **Weights** are updated based on a mathematically derived formula. The derivation of this formula is discussed in next section. For now we will deal with the update formula as a given fact.
+To update the **weights** use the following formula.
+
+
+![bp_update_weights]({{ "http://hmkcode.github.io/images/ai/bp_update_weights.png" | absolute_url }})
+
+
 
 
 ### Source Code @ [GitHub](https://github.com/hmkcode/Android/tree/master/user-interface/android-swipe-views-tabs)
