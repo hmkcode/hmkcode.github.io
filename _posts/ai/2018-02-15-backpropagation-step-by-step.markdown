@@ -68,11 +68,18 @@ By decomposing **prediction** into its basic elements we can find that **weights
 
 ## Backward Pass or **Backpropagation**
 
-**Backpropagation** is the mechanism by which we can update **weights** so that neural network **prediction** is closer to **actual output**. **Weights** are updated based on a mathematically derived formula. The derivation of this formula is discussed in next section. For now we will deal with the update formula as a given fact.
-To update the **weights** use the following formula.
+**Backpropagation** is the mechanism by which we can update **weights** so that neural network **prediction** is closer to **actual output**. 
+
+A given **weight** is updated by subtracting a scaled rate of change in error with respect to that **weight**. In other words, to update a given **weight** e.g. `w6`, we take the current `w6` and subtract the derivative of **error** with respect to `w6`. Optionally, we multiply the derivative of **error** by a selected number to scale  its value; this number is called *learning rate*. 
+
+![bp_update_formula]({{ "http://hmkcode.github.io/images/ai/bp_update_formula.png" | absolute_url }})
 
 
-![bp_update_weights]({{ "http://hmkcode.github.io/images/ai/bp_update_weights.png" | absolute_url }})
+based on a mathematically derived formula. The derivation of this formula is discussed in next section. For now we will deal with the update formula as a given fact.
+To update the **weights** we need first to find the **delta** which is the difference between **prediction** and **actual output**. 
+
+
+![bp_update_weights]({{ "http://hmkcode.github.io/images/ai/bp_delta.png" | absolute_url }})
 
 
 
