@@ -13,14 +13,18 @@ description: Backpropagation is a technique used for training neural network. Th
 		<img class="size-full wp-image-315 aligncenter" src="http://hmkcode.github.io/images/ai/backpropagation.png" alt="get-location" />
 	</a>
 	
-	If you are trying to build your own neural network, then you will definitely need to understand how to train your network.
+	If you are trying to build your own neural network, you will definitely need to understand how to train it.
 	Backpropagation is a commonly used technique for training neural network. There are many resources explaining the technique, 
 	but this post will explain backpropagation with concrete example in a very detailed colorful steps.
 </p>
 
 ## Overview
 
-In this post, we will use a neural network with two inputs layer, one hidden layer with two neurons and one output layer with a single neuron that predicts the output. 
+In this post, we will build a neural network with three layers:
+
+- **Input** layer with two inputs neurons
+- One **hidden** layer with two neurons 
+- **Output** layer with a single neuron 
 
 ![android-tabs]({{ "http://hmkcode.github.io/images/ai/nn1.png" | absolute_url }})
 
@@ -36,9 +40,13 @@ Our initial weights will be as following:
 
 ![bp_weights]({{ "http://hmkcode.github.io/images/ai/bp_weights.png" | absolute_url }})
 
-## Training Set
+## Dataset
 
-We will use a training set that has two inputs and one output. Our data set has a single sample with `inputs=[2, 3]` and `output=[1]`.
+Our dataset has one sample with two inputs and one output. 
+
+![dataset]({{ "http://hmkcode.github.io/images/ai/bp_dataset.png" | absolute_url }})
+
+Our single sample is as following `inputs=[2, 3]` and `output=[1]`.
 
 ![training_sample]({{ "http://hmkcode.github.io/images/ai/bp_sample.png" | absolute_url }})
 
