@@ -101,8 +101,13 @@ Similarly, we can derive the update formula for `w5` and any other weights exist
 ![bp_w5_update_closed_form.png]({{ "http://hmkcode.github.io/images/ai/bp_w5_update_closed_form.png" | absolute_url }})
 
 
-However, when moving backward to update `w1`, `w2`, `w3` and `w4` existing between input and hidden layer, the structure of the formula specifically the partical derivative part will be slightly different. 
+However, when moving backward to update `w1`, `w2`, `w3` and `w4` existing between input and hidden layer, the partial derivative for the error function with respect to `w1`, for example, will be as following.
 
+![finding partial derivative with respect to w1]({{ "http://hmkcode.github.io/images/ai/bp_error_function_partial_derivative_w1.png" | absolute_url }})
+
+Similarly, we can find the update formula for the remaining weights `w2`, `w3` and `w4`. In summary, the updates formulas for all weights will be as following:
+
+![bp_update_all_weights]({{ "http://hmkcode.github.io/images/ai/bp_update_all_weights.png" | absolute_url }})
 
 
 ### Source Code @ [GitHub](https://github.com/hmkcode/Android/tree/master/user-interface/android-swipe-views-tabs)
