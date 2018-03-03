@@ -7,7 +7,7 @@
 body {
   font: $base-font;
   font-size: $base-font-size;
-  font-weight: 200;
+  font-weight: 300;
   color: $text-color;
   background-color: $background-color;
   -webkit-font-smoothing: antialiased;
@@ -219,7 +219,7 @@ blockquote {
   margin: 0 2rem 1rem 0;
   color: $oc-gray-6;
   border-left: .3rem solid $oc-gray-3;
-
+	background-color: #f9f9f9;
   p:last-child {
     margin-bottom: 0;
   }

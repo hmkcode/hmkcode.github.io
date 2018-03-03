@@ -88,7 +88,7 @@ For example, to update `w6`, we take the current `w6` and subtract the partial d
 
 ![update w6]({{ "http://hmkcode.github.io/images/ai/bp_w6_update.png" | absolute_url }})
 
-The derivation of the error error function is evaluated by applying the chain rule as following
+The derivation of the error function is evaluated by applying the chain rule as following
 
 ![finding partial derivative with respect to w6]({{ "http://hmkcode.github.io/images/ai/bp_error_function_partial_derivative_w6.png" | absolute_url }})
 
@@ -96,9 +96,12 @@ So to update `w6` we can apply the following formula
 
 ![bp_w6_update_closed_form.png]({{ "http://hmkcode.github.io/images/ai/bp_w6_update_closed_form.png" | absolute_url }})
 
+Similarly, we can derive the update formula for `w5` and any other weights existing between the output and the hidden layer.
+
+![bp_w5_update_closed_form.png]({{ "http://hmkcode.github.io/images/ai/bp_w5_update_closed_form.png" | absolute_url }})
 
 
-
+However, when moving backward to update `w1`, `w2`, `w3` and `w4` existing between input and hidden layer, the structure of the formula specifically the partical derivative part will be slightly different. 
 
 
 
