@@ -13,7 +13,7 @@ description: Backpropagation is a technique used for training neural network. Th
 		<img class="size-full wp-image-315 aligncenter" src="http://hmkcode.github.io/images/ai/backpropagation.png" alt="get-location" />
 	</a>
 	
-	If you are trying to build your own neural network, you will definitely need to understand how to train it.
+	If you are building your own neural network, you will definitely need to understand how to train it.
 	Backpropagation is a commonly used technique for training neural network. There are many resources explaining the technique, 
 	but this post will explain backpropagation with concrete example in a very detailed colorful steps.
 </p>
@@ -76,18 +76,28 @@ By decomposing **prediction** into its basic elements we can find that **weights
 
 ## Backward Pass or **Backpropagation**
 
-**Backpropagation** is the mechanism by which we can update **weights** so that neural network **prediction** is closer to **actual output**. 
+**Backpropagation**,  short for "backward propagation of errors", is a mechanism used to update the **weights** using [gradient descent](https://en.wikipedia.org/wiki/Gradient_descent). It calculates the gradient of the error function with respect to the neural network's weights. The calculation proceeds backwards through the network.
 
-A given **weight** is updated by subtracting a scaled rate of change in error with respect to that **weight**. In other words, to update a given **weight** e.g. `w6`, we take the current `w6` and subtract the derivative of **error** with respect to `w6`. Optionally, we multiply the derivative of **error** by a selected number to scale  its value; this number is called *learning rate*. 
+> **Gradient descent** is an iterative optimization algorithm for finding the minimum of a function; in our case we want to minimize th error function. To find a local minimum of a function using gradient descent, one takes steps proportional to the negative of the gradient of the function at the current point. 
 
 ![bp_update_formula]({{ "http://hmkcode.github.io/images/ai/bp_update_formula.png" | absolute_url }})
 
 
-based on a mathematically derived formula. The derivation of this formula is discussed in next section. For now we will deal with the update formula as a given fact.
-To update the **weights** we need first to find the **delta** which is the difference between **prediction** and **actual output**. 
+For example, to update `w6`, we take the current `w6` and subtract the partial derivative of **error** function with respect to `w6`. Optionally, we multiply the derivative of the **error** function by a selected number to make sure that the new updated **weight** is minimizing the error function; this number is called ***learning rate***. 
 
 
-![bp_update_weights]({{ "http://hmkcode.github.io/images/ai/bp_delta.png" | absolute_url }})
+![update w6]({{ "http://hmkcode.github.io/images/ai/bp_w6_update.png" | absolute_url }})
+
+The derivation of the error error function is evaluated by applying the chain rule as following
+
+![finding partial derivative with respect to w6]({{ "http://hmkcode.github.io/images/ai/bp_error_function_partial_derivative_w6.png" | absolute_url }})
+
+So to update `w6` we can apply the following formula
+
+![bp_w6_update_closed_form.png]({{ "http://hmkcode.github.io/images/ai/bp_w6_update_closed_form.png" | absolute_url }})
+
+
+
 
 
 
