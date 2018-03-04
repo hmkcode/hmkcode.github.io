@@ -74,7 +74,7 @@ By decomposing **prediction** into its basic elements we can find that **weights
 > The answer is **Backpropagation!**
 
 
-## Backward Pass or **Backpropagation**
+## **Backpropagation**
 
 **Backpropagation**,  short for "backward propagation of errors", is a mechanism used to update the **weights** using [gradient descent](https://en.wikipedia.org/wiki/Gradient_descent). It calculates the gradient of the error function with respect to the neural network's weights. The calculation proceeds backwards through the network.
 
@@ -105,9 +105,27 @@ However, when moving backward to update `w1`, `w2`, `w3` and `w4` existing betwe
 
 ![finding partial derivative with respect to w1]({{ "http://hmkcode.github.io/images/ai/bp_error_function_partial_derivative_w1.png" | absolute_url }})
 
-Similarly, we can find the update formula for the remaining weights `w2`, `w3` and `w4`. In summary, the updates formulas for all weights will be as following:
+We can find the update formula for the remaining weights `w2`, `w3` and `w4` in the same way. 
+
+In summary, the update formulas for all weights will be as following:
 
 ![bp_update_all_weights]({{ "http://hmkcode.github.io/images/ai/bp_update_all_weights.png" | absolute_url }})
 
+We can rewrite the update formulas in matrices as following
 
-### Source Code @ [GitHub](https://github.com/hmkcode/Android/tree/master/user-interface/android-swipe-views-tabs)
+![bp_update_all_weights_matrix]({{ "http://hmkcode.github.io/images/ai/bp_update_all_weights_matrix.png" | absolute_url }})
+
+## Backward Pass
+
+Using derived formulas we can find the new **weights**. 
+
+> **Learning rate:** is a hyperparameter which means that we need to manually guess its value.
+
+![bp_new_weights]({{ "http://hmkcode.github.io/images/ai/bp_new_weights.png" | absolute_url }})
+
+Now, using the new **weights** we will repeat the forward passed
+
+![bp_forward_2]({{ "http://hmkcode.github.io/images/ai/bp_forward_2.png" | absolute_url }})
+
+We can notice that the **prediction** `0.26` is a little bit closer to **actual output** than the previously predicted one `0.191`. We can repeat the same process of backward and forward pass until **error** is close or equal to zero.
+
