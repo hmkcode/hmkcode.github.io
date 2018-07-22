@@ -18,26 +18,12 @@ description: Gradle for Java developers
 
 
 ### Table of Content
-- Windows 7
-- Eclipse ADT
-- Nexus 5
-- Android Support Library, revision 22.2.0 or higher
+- Gradle Fundamentals
+- Creating first Gradle Java Project
+- Java Plugin
+- Build Java Application
+- Run Java Application
+- Add Dependencies
+- Test Java Application
 
-
-
-
-## ( 1 ) Create new Android Project
-
-- **Application Name:** InputTextLayout
-- **Project Name:** android-input-text-layout
-- **Package Name:** com.hmkcode.inputtextlayout
-
-
-
-- In your app project, [reference design library project] (https://developer.android.com/tools/projects/projects-eclipse.html#ReferencingLibraryProject).
-
-
-
-
-### Source Code @ [GitHub] (https://github.com/hmkcode/Android/tree/master/android-input-text-layout)
 
