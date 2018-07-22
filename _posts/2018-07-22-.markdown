@@ -1,0 +1,43 @@
+---
+layout: post
+title:  "Gradle for Java"
+date:   2018-07-22 09:43:00
+categories: gradle
+
+post_img: http://hmkcode.github.io/images/gradle/gradle.png
+description: Gradle for Java developers 
+---
+<p style="text-align: justify;">
+	<a href="http://hmkcode.github.io/images/gradle/gradle.png">
+		<img class="size-full wp-image-315 aligncenter" src="http://hmkcode.github.io/images/gradle/gradle.png" alt="get-location" />
+	</a>
+	<br/>
+	Using Gradle (v4.9) to build your Java library or application.
+	
+</p>
+
+
+### Table of Content
+- Windows 7
+- Eclipse ADT
+- Nexus 5
+- Android Support Library, revision 22.2.0 or higher
+
+
+
+
+## ( 1 ) Create new Android Project
+
+- **Application Name:** InputTextLayout
+- **Project Name:** android-input-text-layout
+- **Package Name:** com.hmkcode.inputtextlayout
+
+
+
+- In your app project, [reference design library project] (https://developer.android.com/tools/projects/projects-eclipse.html#ReferencingLibraryProject).
+
+
+
+
+### Source Code @ [GitHub] (https://github.com/hmkcode/Android/tree/master/android-input-text-layout)
+
