@@ -9,10 +9,11 @@ author:
   facebook:         hmkcode
   twitter:          hmkcode
   github:           hmkcode
-  googlePlus:       +hmkcode
+  googlePlus:       +Hmkcode
+  reddit:           hmkcode
 
 copyright:
-  year:             2017
+  year:             2018
   name:             hmkcode
 
 # Google-analytics
@@ -34,7 +35,7 @@ timezone:           Asia/Seoul
 permalink:          /:categories/:title/
 
 # Pagination
-paginate:           5
+paginate:           7
 paginate_path:      /page:num/
 
 # Markdown
@@ -50,6 +51,8 @@ nav:
     url:            "/archive"
   - name:           "Tags"
     url:            "/tags"
+  - name:           "Github"
+    url:            "https://github.com/hmkcode"
 
 # Sass
 sass:
