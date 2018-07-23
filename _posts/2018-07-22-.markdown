@@ -5,25 +5,47 @@ date:   2018-07-22 09:43:00
 categories: gradle
 
 post_img: http://hmkcode.github.io/images/gradle/gradle.png
-description: Gradle for Java developers 
+description: Gradle tutorial for Java developers showing how to use Gradle to automate Java building tasks
 ---
 <p style="text-align: justify;">
 	<a href="http://hmkcode.github.io/images/gradle/gradle.png">
 		<img class="size-full wp-image-315 aligncenter" src="http://hmkcode.github.io/images/gradle/gradle.png" alt="get-location" />
 	</a>
 	<br/>
-	Using Gradle (v4.9) to build your Java library or application.
+	This post is a quick Gradle tutorial for Java developers. It shows how to use Gradle to build, test and run Java desktop and web application.
 	
 </p>
 
 
 ### Table of Content
+- What is Gradle?
+- Gradle Installation
 - Gradle Fundamentals
-- Creating first Gradle Java Project
+- Appreciating Gradle
+- Creating Java Project
 - Java Plugin
 - Build Java Application
 - Run Java Application
 - Add Dependencies
 - Test Java Application
+- Creating Java Web Project
 
+<!-- 	- Core & Custom Plugin - Repository & Dependencies -->
 
+## What is Gradle?
+
+- **Gradle** is an open-source build tool that helps developers automating building tasks.
+- Gradle allows you to write scripts in *Groovy* or *Kotlin* to define **tasks** to be executed on your code.
+- Tasks such as compiling, testing or creating jar file can be automated using Gradle.
+- Gradle can be used to define **dependencies** or jar files in case of Java to run your code.
+- Gradle has a core Java **plugin** that includes many tasks needed for Java development.
+- In the case of web application, Gradle can run your web application using **plugin** server.
+- Gradle is your best friend!
+
+ 
+## Installing Gradle 
+
+- Gradle can be installed on Linux, macOS, or Windows.
+- Gradle requires only a [Java JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html) version 7 or higher.
+- [Download](https://gradle.org/releases) the latest release. _4.9 is the latest as of now!_
+- Follow [installation](https://docs.gradle.org/current/userguide/installation.html#_installing_manually) steps. 
