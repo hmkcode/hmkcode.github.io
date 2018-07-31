@@ -23,6 +23,7 @@ description: Gradle tutorial for Java developers showing how to use Gradle to au
 	<ul>
 	  <li>What is Gradle?</li>
 	  <li>Gradle Installation</li>
+	  <li>Creating Gradle Project</li>
 	  <li>Gradle Fundamentals</li>
 	  <li>Appreciating Gradle</li>
 	  <li>Creating Java Project</li>
@@ -54,7 +55,7 @@ description: Gradle tutorial for Java developers showing how to use Gradle to au
 - Gradle requires only a [Java JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html) version 7 or higher.
 - [Download](https://gradle.org/releases) the latest release. _4.9 is the latest as of now!_
 - Follow [installation](https://docs.gradle.org/current/userguide/installation.html#_installing_manually) steps. 
-- Verifying installation by typing `gradle -v`
+- Verifying installation by running `gradle -v` in command line window.
 
 <pre style='color:#000000;background:#f2f2f2;'>C:\>gradle -v
 
@@ -73,6 +74,37 @@ JVM:          1.8<span style='color:#2a00ff; '>.0_71</span> (Oracle <span style=
 OS:           <span style='color:#2a00ff; '>Windows</span> 8.1 6.3 <span style='color:#2a00ff; '>amd64</span>
 </pre>
 
+## First Gradle Project
+
+- Create a new directory e.g. `C:\Gradle>first-gradle-project`
+- Open command line window and go to the dirctory created in the previous step.
+- Type `gradle init`
+
+<pre style='color:#000000;background:#f2f2f2;'>C:\Gradle\first-gradle-project>gradle <span style='color:#2a00ff; '>init</span>
+Starting <span style='color:#2a00ff; '>a</span> <span style='color:#2a00ff; '>Gradle</span> <span style='color:#2a00ff; '>Daemon</span>, 1 <span style='color:#2a00ff; '>incompatible</span> <span style='color:#2a00ff; '>and</span> 1 <span style='color:#2a00ff; '>stopped</span> <span style='color:#2a00ff; '>Daemons</span> <span style='color:#2a00ff; '>could</span> <span style='color:#2a00ff; '>not</span> <span style='color:#2a00ff; '>be</span> <span style='color:#2a00ff; '>reused</span>, 
+use <span style='color:#2a00ff; '>--status</span> <span style='color:#2a00ff; '>for</span> <span style='color:#2a00ff; '>details</span>
+
+BUILD <span style='color:#2a00ff; '>SUCCESSFUL</span> <span style='color:#2a00ff; '>in</span> <span style='color:#2a00ff; '>11s</span>
+2 actionable tasks: 2 executed
+</pre>
+
+- Gradle will create new files and sub directories within the parent directory. 
+![gradle_init]({{ "http://hmkcode.github.io/images/gradle/gradle_init.png" | absolute_url }})
+
+- `build.gradle` this is the main file where we write scripts in Groovy or Kotlin for Gradle to execute.  
+
 ## Gradle Fundamentals
 
-- 
+#### Build file
+- defines a project, sub-projects, tasks, plugins and dependencies.
+
+#### Tasks
+
+#### Plugin
+- Gradle build system uses plug-ins to extend its core functionality
+
+#### Dependencies
+
+#### Sub-Project:
+
+
