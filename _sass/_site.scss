@@ -102,6 +102,8 @@ body {
 }
 
 
+  
+
 /*--------------
   Post
   -------------- */
@@ -120,6 +122,20 @@ body {
     color: $oc-gray-8;
     font-size: .75rem;
     text-transform: uppercase;
+  }
+  
+  &-table-of-content{
+	color:#000000;
+	background:#fbfbfb;;
+	display:inline-block;
+	padding:4px;
+	border-radius:3px;
+	ul{
+		li {
+			margin: 0.8em 0.5em 0.5em 1.8em;
+			line-height: 1.1em;
+		}
+	}	
   }
 
    &-tag {

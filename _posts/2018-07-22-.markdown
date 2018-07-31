@@ -18,17 +18,22 @@ description: Gradle tutorial for Java developers showing how to use Gradle to au
 
 
 ### Table of Content
-- What is Gradle?
-- Gradle Installation
-- Gradle Fundamentals
-- Appreciating Gradle
-- Creating Java Project
-- Java Plugin
-- Build Java Application
-- Run Java Application
-- Add Dependencies
-- Test Java Application
-- Creating Java Web Project
+
+<div class="post-table-of-content">
+	<ul>
+	  <li>What is Gradle?</li>
+	  <li>Gradle Installation</li>
+	  <li>Gradle Fundamentals</li>
+	  <li>Appreciating Gradle</li>
+	  <li>Creating Java Project</li>
+	  <li>Java Plugin</li>
+	  <li>Build Java Application</li>
+	  <li>Run Java Application</li>
+	  <li>Add Dependencies</li>
+	  <li>Test Java Application</li>
+	  <li>Creating Java Web Project</li>
+	</ul>
+</div>
 
 <!-- 	- Core & Custom Plugin - Repository & Dependencies -->
 
@@ -43,9 +48,31 @@ description: Gradle tutorial for Java developers showing how to use Gradle to au
 - Gradle is your best friend!
 
  
-## Installing Gradle 
+## Gradle Installation
 
 - Gradle can be installed on Linux, macOS, or Windows.
 - Gradle requires only a [Java JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html) version 7 or higher.
 - [Download](https://gradle.org/releases) the latest release. _4.9 is the latest as of now!_
 - Follow [installation](https://docs.gradle.org/current/userguide/installation.html#_installing_manually) steps. 
+- Verifying installation by typing `gradle -v`
+
+<pre style='color:#000000;background:#f2f2f2;'>C:\>gradle -v
+
+------------------------------------------------------------
+Gradle 4.9
+------------------------------------------------------------
+
+Build <span style='color:#2a00ff; '>time:</span>   2018<span style='color:#2a00ff; '>-07-16</span> 08<span style='color:#2a00ff; '>:14:03</span> <span style='color:#2a00ff; '>UTC</span>
+Revision:     <span style='color:#2a00ff; '>efcf8c1cf533b03c70f394f270f46a174c738efc</span>
+
+Kotlin <span style='color:#2a00ff; '>DSL:</span>   0.18<span style='color:#2a00ff; '>.4</span>
+Kotlin:       1.2<span style='color:#2a00ff; '>.41</span>
+Groovy:       2.4<span style='color:#2a00ff; '>.12</span>
+Ant:          <span style='color:#2a00ff; '>Apache</span> <span style='color:#2a00ff; '>Ant</span>(TM) <span style='color:#2a00ff; '>version</span> 1.9<span style='color:#2a00ff; '>.11</span> <span style='color:#2a00ff; '>compiled</span> <span style='color:#2a00ff; '>on</span> <span style='color:#2a00ff; '>March</span> 23 2018
+JVM:          1.8<span style='color:#2a00ff; '>.0_71</span> (Oracle <span style='color:#2a00ff; '>Corporation</span> 25.71<span style='color:#2a00ff; '>-b15</span>)
+OS:           <span style='color:#2a00ff; '>Windows</span> 8.1 6.3 <span style='color:#2a00ff; '>amd64</span>
+</pre>
+
+## Gradle Fundamentals
+
+- 
