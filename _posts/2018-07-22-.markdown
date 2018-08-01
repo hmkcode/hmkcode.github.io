@@ -23,7 +23,7 @@ description: Gradle tutorial for Java developers showing how to use Gradle to au
 	<ul>
 	  <li>What is Gradle?</li>
 	  <li>Gradle Installation</li>
-	  <li>Creating Gradle Project</li>
+	  <li>First Gradle Project</li>
 	  <li>Gradle Fundamentals</li>
 	  <li>Appreciating Gradle</li>
 	  <li>Creating Java Project</li>
@@ -92,19 +92,34 @@ BUILD <span style='color:#2a00ff; '>SUCCESSFUL</span> <span style='color:#2a00ff
 ![gradle_init]({{ "http://hmkcode.github.io/images/gradle/gradle_init.png" | absolute_url }})
 
 - `build.gradle` this is the main file where we write scripts in Groovy or Kotlin for Gradle to execute.  
+- Open `build.gralde` file in a text editor and type the following script.
+
+```
+task hello{
+	println "Hello, World!"
+}
+```
+
+- Open command prompt, go to the project location and type `gradle hello` 
+
+```
+C:\Gradle\first-gradle-project>gradle hello
+Hello, World!
+```
 
 ## Gradle Fundamentals
 
-#### Build file
-- defines a project, sub-projects, tasks, plugins and dependencies.
+- Everything in Gradle sits on top of two basic concepts: **projects** and **tasks**.
+- Every Gradle build is made up of one or more **projects**.
+- A **project** represents a thing to be built e.g. JAR file or to be done e.g. deploying to production.
+- A **Task** represents a single atomic piece of work for a build, such as compiling classes or generating javadoc.
+- Gradle  describes its build using build file `build.gradle`.
+- Gradle **build file** is located in the root folder of the project. 
+- **Build file** defines projects, tasks, plugins, dependencies...ect.
+- Gradle uses **plugins** to extend its core functionality.
+- For example, the ability to compile Java code is added by a **plugin**.
+- Gradle has built-in support for **dependency management** for declaring, resolving and using dependencies required by the project.
 
-#### Tasks
 
-#### Plugin
-- Gradle build system uses plug-ins to extend its core functionality
-
-#### Dependencies
-
-#### Sub-Project:
 
 
