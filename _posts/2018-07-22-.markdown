@@ -25,14 +25,9 @@ description: Gradle tutorial for Java developers showing how to use Gradle to au
 	  <li>Gradle Installation</li>
 	  <li>First Gradle Project</li>
 	  <li>Gradle Fundamentals</li>
-	  <li>Appreciating Gradle</li>
-	  <li>Creating Java Project</li>
-	  <li>Java Plugin</li>
-	  <li>Build Java Application</li>
-	  <li>Run Java Application</li>
-	  <li>Add Dependencies</li>
-	  <li>Test Java Application</li>
-	  <li>Creating Java Web Project</li>
+	  <li>Gradle & Java Projects</li>
+	  <li>Building Java Application</li>
+	  <li>Building Java Web Application</li>
 	</ul>
 </div>
 
@@ -113,7 +108,7 @@ Hello, World!
 - Every Gradle build is made up of one or more **projects**.
 - A **project** represents a thing to be built e.g. JAR file or to be done e.g. deploying to production.
 - A **Task** represents a single atomic piece of work for a build, such as compiling classes or generating javadoc.
-- Gradle  describes its build using build file `build.gradle`.
+- Gradle  describes its build using **build file** `build.gradle`.
 - Gradle **build file** is located in the root folder of the project. 
 - **Build file** defines projects, tasks, plugins, dependencies...ect.
 - Gradle uses **plugins** to extend its core functionality.
@@ -121,5 +116,10 @@ Hello, World!
 - Gradle has built-in support for **dependency management** for declaring, resolving and using dependencies required by the project.
 
 
+## Gradle & Java Projects
 
+- While Gradle can be used with other languages we will focus on using Gradle with Java projects.
+- Gradle is a build tool automating the creation of Jar/War build.
+- Gradle helps automating a wide variety of tasks such as compiling Java classes, packaging binary code & running Junit tests.
+- Gradle allows you to declare dependencies and repositories of Jar files needed for your Java project to compile or run.
 
