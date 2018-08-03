@@ -123,3 +123,29 @@ Hello, World!
 - Gradle helps automating a wide variety of tasks such as compiling Java classes, packaging binary code & running Junit tests.
 - Gradle allows you to declare dependencies and repositories of Jar files needed for your Java project to compile or run.
 
+
+## Building Java Application
+
+#### 1. Create new directory
+
+- Create a new directory e.g. `gradle-java-app`
+- Go to the directory
+
+```
+C:\gradle-projects>mkdir gradle-java-app
+
+C:\gradle-projects>cd gradle-java-app
+
+C:\gradle-projects\gradle-java-app>
+```
+
+#### 2. `init` java-application
+
+```
+C:\workspace\gradle-projects\gradle-java-app>gradle init --type java-application
+
+Starting a Gradle Daemon
+
+BUILD SUCCESSFUL in 8s
+2 actionable tasks: 2 executed
+```
