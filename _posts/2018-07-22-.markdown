@@ -142,10 +142,77 @@ C:\gradle-projects\gradle-java-app>
 #### 2. `init` java-application
 
 ```
-C:\workspace\gradle-projects\gradle-java-app>gradle init --type java-application
+C:\gradle-projects\gradle-java-app>gradle init --type java-application
 
 Starting a Gradle Daemon
 
 BUILD SUCCESSFUL in 8s
 2 actionable tasks: 2 executed
+```
+
+![gradle_init_type_java_application]({{ "http://hmkcode.github.io/images/gradle/gradle_init_type_java_application.png" | absolute_url }})
+
+
+- Gradle will create `src` folder with two sub-folders `main` and `test`
+- `build.gradle` will apply `java` and `application` plugin, point to `guava` lib in **dependencies** and to `jcenter()` repository.
+
+```
+plugins {
+    id 'java'
+    id 'application'
+}
+
+mainClassName = 'App'
+
+dependencies {
+    compile 'com.google.guava:guava:23.0'
+    testCompile 'junit:junit:4.12'
+}
+
+repositories {
+    jcenter()
+}
+```
+
+- `App.java` has main method that print **Hello, World!** when executed.
+
+```
+public class App {
+    public String getGreeting() {
+        return "Hello world.";
+    }
+
+    public static void main(String[] args) {
+        System.out.println(new App().getGreeting());
+    }
+}
+```
+
+#### 3. `build` Java Applicaiton
+
+- To build Java application when call `build` task.
+- `build` task depends on other tasks such as `compileJava` task.
+
+```
+C:\gradle-projects\gradle-java-app>gradle build
+
+BUILD SUCCESSFUL in 0s
+7 actionable tasks: 7 up-to-date
+```
+
+- To see all executed tasks call `--console=plain build`
+
+#### 4. `run` Java Application
+
+- `build.gradle` is pointing to the main class `mainClassName = 'App'`.
+- To run main class call `gradle run`
+
+```
+C:\gradle-projects\gradle-java-app>gradle run
+
+> Task :run
+Hello world.
+
+BUILD SUCCESSFUL in 0s
+2 actionable tasks: 1 executed, 1 up-to-date
 ```
