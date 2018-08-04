@@ -141,6 +141,8 @@ C:\gradle-projects\gradle-java-app>
 
 #### 2. `init` java-application
 
+- To create new Java application call `gradle init --type java-application`
+
 ```
 C:\gradle-projects\gradle-java-app>gradle init --type java-application
 
@@ -190,8 +192,8 @@ public class App {
 
 #### 3. `build` Java Applicaiton
 
-- To build Java application when call `build` task.
-- `build` task depends on other tasks such as `compileJava` task.
+- To build Java application call `gradle build` task.
+- `build` task depends on 6 other tasks such as `compileJava` task.
 
 ```
 C:\gradle-projects\gradle-java-app>gradle build
@@ -216,3 +218,120 @@ Hello world.
 BUILD SUCCESSFUL in 0s
 2 actionable tasks: 1 executed, 1 up-to-date
 ```
+
+## Building Java Web Application
+
+#### 1. Create new directory
+
+- Create a new directory e.g. `gradle-java-web-app`
+- Go to the directory
+
+```
+C:\gradle-projects>mkdir gradle-java-web-app
+
+C:\gradle-projects>cd gradle-java-web-app
+
+C:\gradle-projects\gradle-java-web-app>
+```
+
+#### 2. `init` java-application
+
+- So far, there is no init type for java web application, so we will use java-appliation as a starter.
+- While `gradle init --type java-application` will not create java web application, it will help creating src and build.gradle file.
+
+```
+C:\gradle-projects\gradle-java-web-app>gradle init --type java-application
+
+BUILD SUCCESSFUL in 0s
+2 actionable tasks: 2 executed
+```
+
+- Change the content of `build.gradle` to be as following
+  - use the `war` plugin 
+  - and add servlet-api to dependencies
+
+```
+plugins {
+    id 'war'  
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    providedCompile 'javax.servlet:javax.servlet-api:3.1.0' 
+    testCompile 'junit:junit:4.12'
+}
+
+```
+
+#### 3. Create a servlet class
+
+- Under `/scr/main/java/com/hmkcode/` create a Java class `HelloServlet.java`
+
+
+```
+package com.hmkcode;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet(name = "HelloServlet", urlPatterns = {"hello"}, loadOnStartup = 1) 
+public class HelloServlet extends HttpServlet {
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+        response.getWriter().print("Hello, World!");  
+    }
+
+}
+```
+
+#### 4. Add .html file
+
+- Add an index page to the root of the application by creating the file `index.html`.
+
+```
+<html>
+<head>
+  <title>Java Web App</title>
+</head>
+<body>
+<p>Say<a href="hello">Hello</a></p> 
+
+</body>
+</html>
+```
+
+#### 5. Add the gretty plugin and run the app
+
+- Gretty plugin makes it easy to run or test webapps 
+
+`build.gradle`
+
+```
+plugins {
+    id 'war'
+    id 'org.gretty' version '2.2.0' 
+}
+```
+
+#### 6. Run the web app
+
+- Use `gradle appRun` to run the web app.
+
+```
+C:\gradle-projects\gradle-java-web-app>gradle appRun
+
+```
+
+- Open your web browser and type `http://localhost:8080/gradle-java-web-app/`
+
+
+
+
