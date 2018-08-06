@@ -23,14 +23,14 @@ We will build a simple Spring MVC controller that returns JSON content when rece
 ![spring-mvc-test-files](https://hmkcode.github.io/images/spring/spring-mvc-test-files.png "spring-mvc-test-files")
 
 
-`Controller.java` : Simple Spring MVC controller responding to GET request mapped to **/rest/api/get**.
-`Link.java`: Simple Java model class.
-`rest-servlet`: Spring XML configuration file.
-`web.xml`: Defining **DispatcherServlet**.
-`index.html`: HTML file with one link calling REST service.
-`TestController`: Test class for testing our controller.
-`rest-servlet-test.xml`: Spring Configration for testing. 
-`pom.xml`: Maven pom.xml file listing dependencies and plugin used for this project.
+- `Controller.java` : Simple Spring MVC controller responding to GET request mapped to **/rest/api/get**.
+- `Link.java`: Simple Java model class.
+- `rest-servlet`: Spring XML configuration file.
+- `web.xml`: Defining **DispatcherServlet**.
+- `index.html`: HTML file with one link calling REST service.
+- `TestController`: Test class for testing our controller.
+- `rest-servlet-test.xml`: Spring Configration for testing. 
+- `pom.xml`: Maven pom.xml file listing dependencies and plugin used for this project.
 
 
 ### Source Code @ [GitHub](https://github.com/hmkcode/Spring-Framework/tree/master/spring-mvc-test)
