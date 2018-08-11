@@ -247,7 +247,7 @@ private void setPostRequestContent(HttpURLConnection conn,
 
 ## (5) Run & Check 
 
-- The Run the app
+- Run the app
 - Enter name, country & twitter.
 - Click Send
 - Visit [http://hmkcode.appspot.com/post-json/index.html](http://hmkcode.appspot.com/post-json/index.html) to check 
