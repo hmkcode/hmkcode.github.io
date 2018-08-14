@@ -32,6 +32,212 @@ We will build a simple Spring MVC controller that returns JSON content when rece
 - `rest-servlet-test.xml`: Spring Configration for testing. 
 - `pom.xml`: Maven pom.xml file listing dependencies and plugin used for this project.
 
+## Dependencies
+
+To develop, run and test the service you need the following libraries:
+
+- **Spring Framework**
+
+**`<spring.version>5.0.8.RELEASE</spring.version>`**
+
+```xml
+
+<dependency>
+	<groupId>org.springframework</groupId>
+	<artifactId>spring-context</artifactId>
+	<version>${spring.version}</version>
+</dependency>
+
+<dependency>
+	<groupId>org.springframework</groupId>
+	<artifactId>spring-core</artifactId>
+	<version>${spring.version}</version>
+</dependency>
+
+<dependency>
+	<groupId>org.springframework</groupId>
+	<artifactId>spring-beans</artifactId>
+	<version>${spring.version}</version>
+</dependency>
+
+<dependency>
+	<groupId>org.springframework</groupId>
+	<artifactId>spring-web</artifactId>
+	<version>${spring.version}</version>
+</dependency>
+
+<dependency>
+	<groupId>org.springframework</groupId>
+	<artifactId>spring-webmvc</artifactId>
+	<version>${spring.version}</version>
+</dependency>
+
+<dependency>
+	<groupId>org.springframework</groupId>
+	<artifactId>spring-expression</artifactId>
+	<version>${spring.version}</version>
+</dependency>
+
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-test</artifactId>
+    <version>${spring.version}</version>
+    <scope>test</scope>
+</dependency>
+```
+
+- **jUnit**
+
+**`<junit.version>4.12</junit.version>`**
+
+```xml
+<dependency>
+	<groupId>junit</groupId>
+	<artifactId>junit</artifactId>
+	<version>${junit.version}</version>
+	<scope>test</scope>
+</dependency>
+```
+
+- **hamcrest && jsonpath**
+
+Hamcrest and JSON path will be used to assert JSON results
+
+```xml
+<dependency>
+	<groupId>org.hamcrest</groupId>
+	<artifactId>hamcrest-library</artifactId>
+	<version>1.3</version>
+	<scope>test</scope>
+</dependency>
+<dependency>
+	<groupId>com.jayway.jsonpath</groupId>
+	<artifactId>json-path</artifactId>
+	<version>2.2.0</version>
+	<scope>test</scope>
+</dependency>
+```
+
+Complete Maven dependencies is included in [`pom.xml`](https://github.com/hmkcode/Spring-Framework/blob/master/spring-mvc-test/pom.xml)
+
+
+## Spring MVC Controller
+
+We will build a simple controller that returns JSON. The service will return a single `Link` object in json format. 
+
+**`Controller.java`**
+
+```java
+package com.hmkcode.controllers;
+
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.hmkcode.model.Link;
+
+@RestController
+@RequestMapping("api")
+public class Controller {
+	
+	@RequestMapping(value = "/get", method = RequestMethod.GET)
+	public @ResponseBody Link get(){
+		System.out.println("Get!");
+		
+		Link link = new Link();
+		link.setTitle("HMKCODE BLOG!");
+		link.setUrl("hmkcode.com");
+		
+		return link;
+		
+	}
+}
+```
+
+**`Link.java`**
+
+```java
+
+package com.hmkcode.model;
+
+public class Link {
+
+	private String title;
+	private String url;
+
+	// setters & getters
+}
+```
+
+[**`rest-servlet.xml`**](https://github.com/hmkcode/Spring-Framework/blob/master/spring-mvc-test/src/main/webapp/WEB-INF/rest-servlet.xml) 
+[**`web.xml`**](https://github.com/hmkcode/Spring-Framework/blob/master/spring-mvc-test/src/main/webapp/WEB-INF/web.xml) 
+[**`index.html`**](https://github.com/hmkcode/Spring-Framework/blob/master/spring-mvc-test/src/main/webapp/index.html) 
+
+## Spring MVC Test 
+
+**`TestController.java`**
+
+- **@RunWith(SpringJUnit4ClassRunner.class)** will run Spring test.
+- **@ContextConfiguration** loads the context configuration in `rest-servlet-test.xml`. 
+- **@WebAppConfiguration**  will load the web application context
+
+```java
+package com.hmkcode.test;
+
+import javax.servlet.ServletContext;
+
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockServletContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "/rest-servlet-test.xml")
+@WebAppConfiguration
+public class TestController {
+
+	@Autowired
+	private WebApplicationContext wac;
+	
+	private MockMvc mockMvc;
+	@Before
+	public void setup() throws Exception {
+	    this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+	}
+	
+	@Test
+	public void configTest() {
+	    ServletContext servletContext = wac.getServletContext();
+	     
+	    Assert.assertNotNull(servletContext);
+	    Assert.assertTrue(servletContext instanceof MockServletContext);
+	    Assert.assertNotNull(wac.getBean("controller"));
+	}
+	
+	@Test
+	public void test() throws Exception{
+		 this.mockMvc.perform(get("/api/get"))
+		 	.andExpect(status().isOk())
+		 	.andDo(print());
+		 
+	}
+}
+
+```
 
 ### Source Code @ [GitHub](https://github.com/hmkcode/Spring-Framework/tree/master/spring-mvc-test)
 

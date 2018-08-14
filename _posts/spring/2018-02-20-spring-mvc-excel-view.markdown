@@ -167,16 +167,31 @@ Complete Maven dependencies is included in [`pom.xml`](https://github.com/hmkcod
 
 #### `rest-servlet.xml`
 
-<pre style='color:#000000;background:#f1f0f0;'><span style='color:#004a43; '>&lt;?</span><span style='color:#400000; font-weight:bold; '>xml</span><span style='color:#004a43; '> </span><span style='color:#074726; '>version</span><span style='color:#806030; '>=</span><span style='color:#800000; '>"</span><span style='color:#007d45; '>1.0</span><span style='color:#800000; '>"</span><span style='color:#004a43; '> </span><span style='color:#074726; '>encoding</span><span style='color:#806030; '>=</span><span style='color:#800000; '>"</span><span style='color:#e60000; '>UTF-8</span><span style='color:#800000; '>"</span><span style='color:#004a43; '>?></span>
-<span style='color:#a65700; '>&lt;</span><span style='color:#5f5035; '>beans</span> <span style='color:#00dddd; '>xmlns</span><span style='color:#806030; '>=</span><span style='color:#800000; '>"</span><span style='color:#00dddd; '>http</span><span style='color:#806030; '>:</span><span style='color:#400000; font-weight:bold; '>//</span><span style='color:#5555dd; '>www.springframework.org</span><span style='color:#40015a; '>/schema/beans</span><span style='color:#800000; '>"</span>
-    <span style='color:#00dddd; '>xmlns</span><span style='color:#806030; '>:</span><span style='color:#074726; '>xsi</span><span style='color:#806030; '>=</span><span style='color:#800000; '>"</span><span style='color:#00dddd; '>http</span><span style='color:#806030; '>:</span><span style='color:#400000; font-weight:bold; '>//</span><span style='color:#5555dd; '>www.w3.org</span><span style='color:#40015a; '>/2001/XMLSchema-instance</span><span style='color:#800000; '>"</span>
-    <span style='color:#00dddd; '>xsi</span><span style='color:#806030; '>:</span><span style='color:#074726; '>schemaLocation</span><span style='color:#806030; '>=</span><span style='color:#800000; '>"</span><span style='color:#00dddd; '>http</span><span style='color:#806030; '>:</span><span style='color:#400000; font-weight:bold; '>//</span><span style='color:#5555dd; '>www.springframework.org</span><span style='color:#40015a; '>/schema/beans</span><span style='color:#e60000; '></span>
-<span style='color:#e60000; '>&#xa0;</span><span style='color:#e60000; '> </span><span style='color:#e60000; '> </span><span style='color:#e60000; '> </span><span style='color:#00dddd; '>http</span><span style='color:#806030; '>:</span><span style='color:#400000; font-weight:bold; '>//</span><span style='color:#5555dd; '>www.springframework.org</span><span style='color:#40015a; '>/schema/beans/spring-beans-3.0.xsd</span><span style='color:#800000; '>"</span><span style='color:#a65700; '>></span>
-     
-    <span style='color:#a65700; '>&lt;</span><span style='color:#5f5035; '>bean</span> <span style='color:#074726; '>id</span><span style='color:#806030; '>=</span><span style='color:#800000; '>"</span><span style='color:#e60000; '>ExcelXlsxView</span><span style='color:#800000; '>"</span> <span style='color:#074726; '>class</span><span style='color:#806030; '>=</span><span style='color:#800000; '>"</span><span style='color:#e60000; '>com.hmkcode.view.ExcelXlsxView</span><span style='color:#800000; '>"</span> <span style='color:#a65700; '>/></span>
-     
-<span style='color:#a65700; '>&lt;/</span><span style='color:#5f5035; '>beans</span><span style='color:#a65700; '>></span>
-</pre>
+```xml
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+
+	<context:component-scan base-package="com.hmkcode.controllers" />
+
+
+    <bean id="ExcelXlsxView" class="org.springframework.web.servlet.view.XmlViewResolver">
+        <property name="order" value="1"/>
+        <property name="location" value="/WEB-INF/views.xml"/>
+    </bean>
+    
+</beans>
+
+```
 
 
 ## Running the Service
