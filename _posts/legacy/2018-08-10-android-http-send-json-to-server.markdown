@@ -2,7 +2,7 @@
 layout: post
 title:  "Android | Send JSON Content to Server Using Http Post"
 date:   2018-08-10 12:00:00
-categories: android
+categories: 
 description: Sending data to the cloud is a common task. Here we will consume an open REST service to practice sending data to the server in JSON format. We will use HttpURLConnection to POST JSON data to the server.  
 ---
 

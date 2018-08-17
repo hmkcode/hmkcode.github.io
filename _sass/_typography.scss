@@ -274,16 +274,23 @@ code {
 }
 
 pre {
-  display: block;
+
+    overflow: auto;
+    //background-color: #eeeeee;
+   // word-break: normal !important;
+   // word-wrap: normal !important;
+    white-space: pre !important;
+	
+  // display: block;
   margin-top: 0;
   margin-bottom: 1rem;
   padding: .5rem;
   font-size: .8rem;
   line-height: 1.4;
-  white-space: pre;
-  white-space: pre-wrap;
+  //white-space: pre;
+  //white-space: pre-wrap;
   word-break: break-all;
-  // word-wrap: break-word;
+   //word-wrap: break-word;
   background-color: $code-background-color;
 }
 
@@ -341,6 +348,7 @@ img {
   max-width: 100%;
   margin: 0 0 1rem;
   border-radius: 5px;
+  border:0px solid #f3f3f3;
   margin-left: auto;
   margin-right: auto;
 }
