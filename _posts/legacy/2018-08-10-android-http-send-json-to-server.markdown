@@ -12,7 +12,7 @@ description: Sending data to the cloud is a common task. Here we will consume an
 		<img class="size-full wp-image-315 aligncenter" src="http://hmkcode.github.io/images/android/android-post-json.png" alt="get-location" />
 	</a>
 	
-	Sending data to the cloud is a common task. Here we will consume an open REST service to practice sending data to the server in JSON format . We will use `HttpURLConnection` to POST JSON data to the server. Then, we can verify that our request is successful by going to this <a href="http://hmkcode.appspot.com/post-json/index.html">page</a>.
+	Sending data to the cloud is a common task. Here we will consume an open REST service to practice sending data to the server in JSON format . We will use <b>HttpURLConnection</b> to POST JSON data to the server. Then, we can verify that our request is successful by going to this <a href="http://hmkcode.appspot.com/post-json/index.html">page</a>.
 	
 </p>
 
@@ -116,8 +116,8 @@ dependencies {
 
 #### a. Check network connectivity
 
-- Before making network operation check if notwork connectivity.
-- To check whether a network connection use **getActiveNetworkInfo()** & **isConnected()**.
+- Before making network operation check notwork connectivity status.
+- To check network connectivity use **getActiveNetworkInfo()** & **isConnected()**.
 
 	
 ```java
