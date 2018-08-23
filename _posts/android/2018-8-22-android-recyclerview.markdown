@@ -48,7 +48,9 @@ This app is targeting API 19 or later
 
 ## ( 2 ) Add the Support Library
 
-Add the v7 Support Libraries to `build.gradle`
+Add the v7 Support Libraries gradle build files
+
+**`build.gradle`**
 
 ```groovy
 dependencies {
@@ -58,7 +60,9 @@ dependencies {
 
 ## ( 3 ) Add RecyclerView to Layout
 
-- Add `RecyclerView` to layout `activity_main.xml`
+- Add `RecyclerView` to layout the activity layout.
+
+**`activity_main.xml`**
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -84,7 +88,7 @@ dependencies {
 
 - Attach an adapter for the data to be displayed **setAdapter()**.
 
-`MainActivity.java`
+**`MainActivity.java`**
 
 ```java
 package com.hmkcode.activities;
@@ -134,6 +138,8 @@ public class MainActivity extends AppCompatActivity {
 - **Adapter** is created by extending `RecyclerView.Adapter`
 - **Adapter** creates **view hoders** as needed by calling **onCreateViewHolder()** which returns instance of a class created by extending `RecyclerView.ViewHolder`.
 - **Adapter** also binds the view holders to their data using **onBindViewHolder()**.
+
+**`MyAdapter.java`**
 
 ```java
 package com.hmkcode.adapters;
@@ -208,6 +214,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
 - Below is the layout for `RecyclerView` items.
 - The layout displays `ImageView` on the left and two `TextView` below each other to the right of the `ImageView`
+
+**`item_layout.xml`**
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
