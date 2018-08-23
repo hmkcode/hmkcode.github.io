@@ -27,12 +27,12 @@ description: Creating a scrollable list of elements is a common pattern in mobil
 
 ## Overview
 
-We will build a simple app that lists a hard-coded `Link` in a `RecyclerView`. To display items on `RecyclerView` you need to have the following components:
+We will build a simple app that displays a list of hard-coded instances of class `Link` in a `RecyclerView`. To display items on `RecyclerView` you need to the following:
 
-- `RecyclerView` widget added to the activity layout.  
+- `RecyclerView` widget to be added to the activity layout.  
 - A class extending `RecyclerView.Adapter`. 
 - A class extending `RecyclerView.ViewHolder`. 
-- Layout for RecyclerView items.  
+- Layout for RecyclerView elements.  
 
 Files we need for this app are shown in the image below. 
 
@@ -48,7 +48,7 @@ This app is targeting API 19 or later
 
 ## ( 2 ) Add the Support Library
 
-Add the v7 Support Libraries gradle build files
+- Add the v7 Support Library to gradle build file
 
 **`build.gradle`**
 
@@ -60,7 +60,7 @@ dependencies {
 
 ## ( 3 ) Add RecyclerView to Layout
 
-- Add `RecyclerView` to layout the activity layout.
+- Add `RecyclerView` to the activity layout.
 
 **`activity_main.xml`**
 
