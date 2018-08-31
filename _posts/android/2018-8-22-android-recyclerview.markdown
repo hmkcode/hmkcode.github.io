@@ -3,9 +3,6 @@ layout: post
 title:  "Android | Create a List with RecyclerView"
 date:   2018-08-22 12:30:00
 categories: android
-post_url: http://hmkcode.com/android-creating-swipe-views-tabs/
-pre_url: http://hmkcode.com/material-design-app-android-design-support-library-appcompat/
-pre_title: "Building Material Design App Using Android Design Support Library and AppCompat Theme"
 description: Creating a scrollable list of elements is a common pattern in mobile application. Using RecyclerView we can list a large data sets or frequently changing one. RecyclerView is an advanced and flexible version of ListView, addressing serveral issues with existing listing views. 
 ---
 
@@ -15,9 +12,10 @@ description: Creating a scrollable list of elements is a common pattern in mobil
 		<img class="size-full wp-image-315 aligncenter" src="http://hmkcode.github.io/images/android/android-recyclerview-app_layout.png" alt="android-recyclerview-app_layout" />
 	</a>
 	
-	Creating a scrollable list of elements is a common pattern in mobile application. Using RecyclerView we can list a large data sets or frequently changing one. <b>RecyclerView</b> is an advanced and flexible version of ListView, addressing serveral issues with existing listing views. Here we will build a simple application with <b>RecyclerView</b>
+	Creating a scrollable list of elements is a common pattern in mobile application. Using RecyclerView we can list a large data sets or frequently changing one. <b>RecyclerView</b> is an advanced and flexible version of ListView, addressing serveral issues with existing listing views. Here we will build two identical versions of an application with <b>RecyclerView</b> one is written in <b><code>Java</code></b> and the other one in <b><code>Kotlin</code></b>. 
 	
 </p>
+
 
 
 #### Environment, Tools &amp; Library
@@ -27,12 +25,12 @@ description: Creating a scrollable list of elements is a common pattern in mobil
 
 ## Overview
 
-We will build a simple app that displays a list of hard-coded instances of class `Link` in a `RecyclerView`. To display items on `RecyclerView` you need to the following:
+We will build two versions of a simple app (one in Java and one in Kotlin) that displays a list of hard-coded instances of class `Link` in a `RecyclerView`. To display items on `RecyclerView` you need to the following:
 
-- `RecyclerView` widget to be added to the activity layout.  
+- `RecyclerView` widget added to the activity layout.  
 - A class extending `RecyclerView.Adapter`. 
 - A class extending `RecyclerView.ViewHolder`. 
-- Layout for RecyclerView elements.  
+- Layout for RecyclerView items.  
 
 Files we need for this app are shown in the image below. 
 
@@ -129,6 +127,42 @@ public class MainActivity extends AppCompatActivity {
 
 ```
 
+**`MainActivity.kt`**
+
+```java
+package com.hmkcode.activities
+
+import android.support.v7.app.AppCompatActivity
+import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import com.hmkcode.R
+import com.hmkcode.adapters.MyAdapter
+import com.hmkcode.model.Link
+import java.util.*
+
+class MainActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+
+        // layout manager
+        val layoutManager:RecyclerView.LayoutManager  = LinearLayoutManager(this)
+        recyclerView.layoutManager = layoutManager;
+
+        // adapter
+        val adapter:RecyclerView.Adapter<MyAdapter.MyViewHolder> = MyAdapter(getListData())
+        recyclerView.adapter = adapter;
+    }
+
+    //generate a list of Link
+    private fun getListData(): List<Link> {...}
+}
+```
+
 ## ( 5 )  Extending RecyclerView ViewHolder & Adapter
 
 - **View holder** objects represent views in the `RecyclerView` 
@@ -209,6 +243,52 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 }
 ```
+**`MyAdapter.kt`**
+
+```java
+package com.hmkcode.adapters
+
+import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import com.hmkcode.R
+import com.hmkcode.model.Link
+
+class MyAdapter(private val links:List<Link>): 
+    RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
+            MyViewHolder {
+
+        val itemLayoutView:View =  LayoutInflater.from(parent.context)
+                                    .inflate(R.layout.item_layout, null)
+
+        val vh:MyViewHolder = MyViewHolder(itemLayoutView)
+        return vh
+    }
+
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        holder.itemIcon.setImageResource(links[position].icon)
+        holder.itemTitle.text = links[position].title
+        holder.itemUrl.text = links[position].url
+    }
+
+    override fun getItemCount(): Int {
+        return links?.size ?: 0
+    }
+
+    class MyViewHolder(itemLayoutView: View):
+        RecyclerView.ViewHolder(itemLayoutView) {
+
+        val itemTitle = itemLayoutView.findViewById<TextView>(R.id.item_title)
+        val itemUrl = itemLayoutView.findViewById<TextView>(R.id.item_url)
+        val itemIcon = itemLayoutView.findViewById<ImageView>(R.id.item_icon)
+    }
+}
+```
 
 ## ( 6 ) RecyclerView Element Layout
 
@@ -247,7 +327,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
 </LinearLayout>
 ```
-
 
 
 
