@@ -15,7 +15,7 @@ description: "Given an array of size N, we will find all possible combinations o
 			alt="java-servlet-json" />
 	</a>
 	
-	Given an array of size N e.g. `e={'A','B','C','D','E'}` **N=5**, we want to find all possible combinations of K elements in that array. For example, if K=3 then one possible combination is of array **e** is `{'A','B','C'}. Here we have three different algorithms for finding *k*-combinations of an array. 
+	Given an array of size N e.g. <code>e={'A','B','C','D','E'}</code> <b>N=5</b>, we want to find all possible combinations of <b>k</b> elements in that array. For example, if <b>k=3</b> then one possible combination is <code>{'A','B','C'}</code>. Here we have three different algorithms for finding <i>k</i>-combinations of an array. 
 	
 </p>
 
@@ -37,22 +37,19 @@ Here we have two arrays and two main indices **r** & **i**:
 ![combinations_forwardbackward]({{ "http://hmkcode.github.io/images/java/combinations_forwardbackward.png" | absolute_url }})
 
 ```java
-public static void combination(Object[]  elements, int K){
+public static void combination(Object[]  elements, int k){
 
 	// get the length of the array
 	// e.g. for {'A','B','C','D'} => N = 4 
 	int N = elements.length;
 	
-	if(K > N){
+	if(k > N){
 		System.out.println("Invalid input, K > N");
 		return;
 	}
-	
-	// calculate the possible combinations
-	c(N,K);
-	
+		
 	// init combination index array
-	int pointers[] = new int[K];
+	int pointers[] = new int[k];
 	
 
 	int r = 0; // index for combination array
@@ -61,11 +58,11 @@ public static void combination(Object[]  elements, int K){
 	while(r >= 0){
 	
 		// forward step if i < (N + (r-K))
-		if(i <= (N + (r - K))){
+		if(i <= (N + (r - k))){
 			pointers[r] = i;
 				
 			// if combination array is full print and increment i;
-			if(r == K-1){
+			if(r == k-1){
 				print(pointers, elements);
 				i++;				
 			}
@@ -80,7 +77,8 @@ public static void combination(Object[]  elements, int K){
 		else{
 			r--;
 			if(r >= 0)
-				i = pointers[r]+1;				
+				i = pointers[r]+1;
+			
 		}			
 	}
 }
@@ -88,52 +86,50 @@ public static void combination(Object[]  elements, int K){
 
 ## Shifting Algorithm
 
-- This algorithm is move intuitive than the first one.
-- We virtually split the elements array into two types of elements, K elements that can be selected and N-K elements that will be ignored. 
-- After each iteration we shift the positions of ingnored elements as shown in the image below. 
+- This algorithm is more intuitive than the first one.
+- We virtually split the elements array into two types of elements, k elements that can be selected and N-k elements that will be ignored.
+- In each iteration we select **N-k** non-ignored elements. 
+- After each iteration we shift the positions of ignored elements as shown in the image below. 
 
 ![combinations_shifting]({{ "http://hmkcode.github.io/images/java/combinations_shifting.png" | absolute_url }})
 
 
 
 ```java
-public static void combination(Object[]  e, int K){
+public static void combination(Object[]  e, int k){
 
-	int[] ignore = new int[e.length-K]; // --> [0][0]
-	int[] combination = new int[K]; // --> [][][]
+	int[] ignore = new int[e.length-k]; // --> [0][0]
+	int[] combination = new int[k]; // --> [][][]
 	
-	for(int w = 0; w < ignore.length; w++){ // --> [3][4]
-		ignore[w] = e.length - K +(w+1);
-		//System.out.println(ignore[w]);
-	}
+	// set initial ignored elements 
+	//(last k elements will be ignored)
+	for(int w = 0; w < ignore.length; w++)
+		ignore[w] = e.length - k +(w+1);
 	
-	int i = 0;
-	int r = 0;
-	int g = 0;
+	int i = 0, r = 0, g = 0;
+	
 	boolean terminate = false;
-	while(!terminate){    		
-    	while(i < e.length && r < K){
+	while(!terminate){   
+		
+		// selecting N-k non-ignored elements
+		while(i < e.length && r < k){
     			
     		if(i != ignore[g]){
     			combination[r] = i;
-    			System.out.print(e[combination[r]]+" ");
-    			r++;
-    			i++;
+    			r++; i++;
     		}
-    		else{
-    			g++;
-    			
-    			if(g == ignore.length)
-    				g--;
-    			
+    		else{	    			
+    			if(g != ignore.length-1)
+    				g++;	    			
     			i++;
     		}
     	}
-    	i = 0; r=0; g =0;
-		System.out.println("");
+    	print(combination, e);
+    	i = 0; r = 0; g = 0;
 
     	terminate = true;
     	
+    	// shifting ignored indices
     	for(int w = 0 ; w < ignore.length; w++){
     		if(ignore[w] > w){	    			
     			ignore[w]--;
@@ -150,29 +146,41 @@ public static void combination(Object[]  e, int K){
 
 ## Recursive Algorithm
 
-- Recursion is the simplest to implement but a little harder to visuallize.
+- Recursive algorithm has shorter steps.
+- In each call to the function we pass List of elements, **k** and an accumulated combination.
+- Then we have four conditions:
+ 1. if `elements.length < k` then stop
+ 2. if `k == 1` then add each element to the accumulated combination 
+ 3. if `elements.length == k` then add all elements to the accumulated combination.
+ 4. if `elements.length > k` then for each element `e` make a recursive call passing sub list of the elements list, `k-1` and add element `e` to accumulated combination.
 - It works as shown below
 
 ![combinations_recursive]({{ "http://hmkcode.github.io/images/java/combinations_recursive.png" | absolute_url }})
 
 ```java
-public static void combination(List<String> e, int K, String c){
-	
-	if(e.size() < K)
+public static void combination(List<String> e, int k, String accumulated){
+
+	// 1. stop
+	if(e.size() < k)
 		return;
-			
-	if(K == 1)
+	
+	// 2. add each element in e to accumulated
+	if(k == 1)
 		for(String s:e)
-			print(c+s);
-	else if(e.size() == K){
+			print(accumulated+s);
+	
+	// 3. add all elements in e to accumulated
+	else if(e.size() == k){
 		for(String s:e)
-			c+=s;
-		print(c);
+			accumulated+=s;
+		print(accumulated);
 	}
-	else if(e.size() > K)
+	
+	// 4. for each element, call combination
+	else if(e.size() > k)
 		for(int i = 0 ; i < e.size() ; i++)
-			combination(e.subList(i+1, e.size()), K-1, c+e.get(i));
-		
+			combination(e.subList(i+1, e.size()), k-1, accumulated+e.get(i));
+	
 }
 ```
 
