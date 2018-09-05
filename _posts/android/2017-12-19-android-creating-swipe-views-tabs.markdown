@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Android | Creating Swipe Views with Tabs"
-date:   2017-12-19 20:30:00
+date:   2018-09-05 12:00:00
 categories: android
 post_url: http://hmkcode.com/android-creating-swipe-views-tabs/
 pre_url: http://hmkcode.com/material-design-app-android-design-support-library-appcompat/
@@ -16,21 +16,18 @@ description: You can navigate between sibling screens using horizontal finger ge
 	</a>
 	
 	You can navigate between sibling screens using horizontal finger gesture. 
-	This post shows you how to build swipe views and how to add tabs to action bar which will offer your users a familiar interface for horizontal navigation.
+	This post shows you how to build swipe views and how to add tabs to action bar offering users a familiar interfaces.
 	
 </p>
 
 #### Objectives
 1. Building an app with horizontal navigation between sibling screens "fragments".
-2. Adding tabs to action bar for navigating between an identified sibling screens in your app.
+2. Adding tabs to action bar for navigating between and identifying sibling screens in your app.
 
 ### Environment, Tools &amp; Library
-_used in this post_
 
-- Windows 8
-- Android Studio 3.0.1
-- Nexus 5
-- Design Support Library _com.android.support:design:26.1.0_
+- Android Studio 3.1.4
+- Design Support Library `com.android.support:design:27.1.1`
 
 
 ## ( 1 ) Create new Android Project
@@ -42,7 +39,7 @@ This app is targeting API 19 or later
 
 ## ( 2 ) Build Swipe Views
 
-- To create swipe views, use `ViewPager` widget.
+- To create swipe views use `ViewPager` widget.
 - Extends `FragmentPagerAdapter` to hold child views .
 - Create two fragments to be used as child views.
 
@@ -51,23 +48,24 @@ This app is targeting API 19 or later
 
 **activity_main.xml**
 
-<pre><span style='color:#004a43; '>&lt;?</span><span style='color:#800000; font-weight:bold; '>xml</span><span style='color:#004a43; '> </span><span style='color:#074726; '>version</span><span style='color:#808030; '>=</span><span style='color:#800000; '>"</span><span style='color:#7d0045; '>1.0</span><span style='color:#800000; '>"</span><span style='color:#004a43; '> </span><span style='color:#074726; '>encoding</span><span style='color:#808030; '>=</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>utf-8</span><span style='color:#800000; '>"</span><span style='color:#004a43; '>?></span>
-<span style='color:#a65700; '>&lt;</span><span style='color:#5f5035; '>RelativeLayout</span> <span style='color:#666616; '>xmlns</span><span style='color:#800080; '>:</span><span style='color:#074726; '>android</span><span style='color:#808030; '>=</span><span style='color:#800000; '>"</span><span style='color:#666616; '>http</span><span style='color:#800080; '>:</span><span style='color:#800000; font-weight:bold; '>//</span><span style='color:#5555dd; '>schemas.android.com</span><span style='color:#40015a; '>/apk/res/android</span><span style='color:#800000; '>"</span>
-    <span style='color:#666616; '>xmlns</span><span style='color:#800080; '>:</span><span style='color:#074726; '>app</span><span style='color:#808030; '>=</span><span style='color:#800000; '>"</span><span style='color:#666616; '>http</span><span style='color:#800080; '>:</span><span style='color:#800000; font-weight:bold; '>//</span><span style='color:#5555dd; '>schemas.android.com</span><span style='color:#40015a; '>/apk/res-auto</span><span style='color:#800000; '>"</span>
-    <span style='color:#666616; '>xmlns</span><span style='color:#800080; '>:</span><span style='color:#074726; '>tools</span><span style='color:#808030; '>=</span><span style='color:#800000; '>"</span><span style='color:#666616; '>http</span><span style='color:#800080; '>:</span><span style='color:#800000; font-weight:bold; '>//</span><span style='color:#5555dd; '>schemas.android.com</span><span style='color:#40015a; '>/tools</span><span style='color:#800000; '>"</span>
-    <span style='color:#007997; '>android</span><span style='color:#800080; '>:</span><span style='color:#274796; '>layout_width</span><span style='color:#808030; '>=</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>match_parent</span><span style='color:#800000; '>"</span>
-    <span style='color:#007997; '>android</span><span style='color:#800080; '>:</span><span style='color:#274796; '>layout_height</span><span style='color:#808030; '>=</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>match_parent</span><span style='color:#800000; '>"</span>
-    <span style='color:#007997; '>android</span><span style='color:#800080; '>:</span><span style='color:#274796; '>orientation</span><span style='color:#808030; '>=</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>vertical</span><span style='color:#800000; '>"</span>
-    <span style='color:#007997; '>tools</span><span style='color:#800080; '>:</span><span style='color:#274796; '>context</span><span style='color:#808030; '>=</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>com.hmkcode.android.MainActivity</span><span style='color:#800000; '>"</span><span style='color:#a65700; '>></span>
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
-     <span style='color:#a65700; '>&lt;</span><span style='color:#5f5035; '>android.support.v4.view.ViewPager</span>
-        <span style='color:#666616; '>xmlns</span><span style='color:#800080; '>:</span><span style='color:#074726; '>android</span><span style='color:#808030; '>=</span><span style='color:#800000; '>"</span><span style='color:#666616; '>http</span><span style='color:#800080; '>:</span><span style='color:#800000; font-weight:bold; '>//</span><span style='color:#5555dd; '>schemas.android.com</span><span style='color:#40015a; '>/apk/res/android</span><span style='color:#800000; '>"</span>
-        <span style='color:#007997; '>android</span><span style='color:#800080; '>:</span><span style='color:#274796; '>id</span><span style='color:#808030; '>=</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>@+id/pager</span><span style='color:#800000; '>"</span>
-        <span style='color:#007997; '>android</span><span style='color:#800080; '>:</span><span style='color:#274796; '>layout_width</span><span style='color:#808030; '>=</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>match_parent</span><span style='color:#800000; '>"</span>
-        <span style='color:#007997; '>android</span><span style='color:#800080; '>:</span><span style='color:#274796; '>layout_height</span><span style='color:#808030; '>=</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>match_parent</span><span style='color:#800000; '>"</span> <span style='color:#a65700; '>/></span>
+    <android.support.v4.view.ViewPager
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
-<span style='color:#a65700; '>&lt;/</span><span style='color:#5f5035; '>RelativeLayout</span><span style='color:#a65700; '>></span>
-</pre>
+</android.support.constraint.ConstraintLayout>
+```
 
 
 #### 2.2 Create two fragments 
@@ -76,75 +74,99 @@ Create two fragment `FirstFragment.java` & `SecondFragment.java`
 
 **FirstFragment.java**
 
-<pre><span style='color:#0000ff; font-weight:bold; '>public</span> <span style='color:#0000ff; font-weight:bold; '>class</span> FirstFragment <span style='color:#0000ff; font-weight:bold; '>extends</span> Fragment <span style='color:#0000ff; '>{</span>
+```java
+package com.hmkcode.fragments;
 
-    <span style='color:#0000ff; font-weight:bold; '>public</span> FirstFragment<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>{</span><span style='color:#0000ff; '>}</span>
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import com.hmkcode.R;
 
-    <span style='color:#0000ff; '>@</span>Override
-    <span style='color:#0000ff; font-weight:bold; '>public</span> <span style='color:#0000ff; font-weight:bold; '>void</span> onCreate<span style='color:#0000ff; '>(</span>Bundle savedInstanceState<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>{</span>
-        <span style='color:#0000ff; font-weight:bold; '>super</span><span style='color:#0000ff; '>.</span>onCreate<span style='color:#0000ff; '>(</span>savedInstanceState<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+public class FirstFragment extends Fragment {
+    
+    public FirstFragment() {}
 
-    <span style='color:#0000ff; '>}</span>
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
-    <span style='color:#0000ff; '>@</span>Override
-    <span style='color:#0000ff; font-weight:bold; '>public</span> View onCreateView<span style='color:#0000ff; '>(</span>LayoutInflater inflater<span style='color:#0000ff; '>,</span> ViewGroup container<span style='color:#0000ff; '>,</span>
-                             Bundle savedInstanceState<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>{</span>
-        <span style='color:#0000ff; font-weight:bold; '>return</span> inflater<span style='color:#0000ff; '>.</span>inflate<span style='color:#0000ff; '>(</span>R<span style='color:#0000ff; '>.</span>layout<span style='color:#0000ff; '>.</span>fragment_first<span style='color:#0000ff; '>,</span> container<span style='color:#0000ff; '>,</span> <span style='color:#0000ff; font-weight:bold; '>false</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
-    <span style='color:#0000ff; '>}</span>
-<span style='color:#0000ff; '>}</span>
-</pre>
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_first, container, false);
+    }
+}
+```
 
 **SecondFragment.java**
 
-<pre><span style='color:#0000ff; font-weight:bold; '>public</span> <span style='color:#0000ff; font-weight:bold; '>class</span> SecondFragment <span style='color:#0000ff; font-weight:bold; '>extends</span> Fragment <span style='color:#0000ff; '>{</span>
-    
-    <span style='color:#0000ff; font-weight:bold; '>public</span> SecondFragment<span style='color:#0000ff; '>(</span><span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>{</span><span style='color:#0000ff; '>}</span>
+```java
+package com.hmkcode.fragments;
 
-    <span style='color:#0000ff; '>@</span>Override
-    <span style='color:#0000ff; font-weight:bold; '>public</span> <span style='color:#0000ff; font-weight:bold; '>void</span> onCreate<span style='color:#0000ff; '>(</span>Bundle savedInstanceState<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>{</span>
-        <span style='color:#0000ff; font-weight:bold; '>super</span><span style='color:#0000ff; '>.</span>onCreate<span style='color:#0000ff; '>(</span>savedInstanceState<span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import com.hmkcode.R;
 
-    <span style='color:#0000ff; '>}</span>
+public class SecondFragment extends Fragment {
 
-    <span style='color:#0000ff; '>@</span>Override
-    <span style='color:#0000ff; font-weight:bold; '>public</span> View onCreateView<span style='color:#0000ff; '>(</span>LayoutInflater inflater<span style='color:#0000ff; '>,</span> ViewGroup container<span style='color:#0000ff; '>,</span>
-                             Bundle savedInstanceState<span style='color:#0000ff; '>)</span> <span style='color:#0000ff; '>{</span>
-        <span style='color:#0000ff; font-weight:bold; '>return</span> inflater<span style='color:#0000ff; '>.</span>inflate<span style='color:#0000ff; '>(</span>R<span style='color:#0000ff; '>.</span>layout<span style='color:#0000ff; '>.</span>fragment_second<span style='color:#0000ff; '>,</span> container<span style='color:#0000ff; '>,</span> <span style='color:#0000ff; font-weight:bold; '>false</span><span style='color:#0000ff; '>)</span><span style='color:#0000ff; '>;</span>
-    <span style='color:#0000ff; '>}</span>
-<span style='color:#0000ff; '>}</span>
-</pre>
+    public SecondFragment() {}
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_second, container, false);
+    }
+}
+```
 
 **fragment_first.xml**
-<pre><span style='color:#000080; '>&lt;</span><span style='color:#000080; '>LinearLayout</span> xmlns<span style='color:#0000ff; '>:</span><span style='color:#074726; '>android</span><span style='color:#0000ff; '>=</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>http</span><span style='color:#0000ff; '>:</span><span style='color:#0000ff; font-weight:bold; '>//</span><span style='color:#5555dd; '>schemas.android.com</span><span style='color:#40015a; '>/apk/res/android</span><span style='color:#0000e6; '>"</span>
-    xmlns<span style='color:#0000ff; '>:</span><span style='color:#074726; '>tools</span><span style='color:#0000ff; '>=</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>http</span><span style='color:#0000ff; '>:</span><span style='color:#0000ff; font-weight:bold; '>//</span><span style='color:#5555dd; '>schemas.android.com</span><span style='color:#40015a; '>/tools</span><span style='color:#0000e6; '>"</span>
-    android<span style='color:#0000ff; '>:</span><span style='color:#074726; '>layout_width</span><span style='color:#0000ff; '>=</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>match_parent</span><span style='color:#0000e6; '>"</span>
-    android<span style='color:#0000ff; '>:</span><span style='color:#074726; '>layout_height</span><span style='color:#0000ff; '>=</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>match_parent</span><span style='color:#0000e6; '>"</span>
-    tools<span style='color:#0000ff; '>:</span><span style='color:#074726; '>context</span><span style='color:#0000ff; '>=</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>com.hmkcode.android.fragments.FirstFragment</span><span style='color:#0000e6; '>"</span><span style='color:#000080; '>></span>
 
-    <span style='color:#000080; '>&lt;</span><span style='color:#000080; '>TextView</span>
-        android<span style='color:#0000ff; '>:</span><span style='color:#074726; '>layout_width</span><span style='color:#0000ff; '>=</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>match_parent</span><span style='color:#0000e6; '>"</span>
-        android<span style='color:#0000ff; '>:</span><span style='color:#074726; '>layout_height</span><span style='color:#0000ff; '>=</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>match_parent</span><span style='color:#0000e6; '>"</span>
-        android<span style='color:#0000ff; '>:</span><span style='color:#074726; '>text</span><span style='color:#0000ff; '>=</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>First Fragment</span><span style='color:#0000e6; '>"</span>
-        android<span style='color:#0000ff; '>:</span><span style='color:#074726; '>gravity</span><span style='color:#0000ff; '>=</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>center</span><span style='color:#0000e6; '>"</span><span style='color:#000080; '>/></span>
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-<span style='color:#000080; '>&lt;/</span><span style='color:#000080; '>LinearLayout</span><span style='color:#000080; '>></span>
-</pre>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="First Fragment"
+        android:gravity="center"/>
+
+</android.support.constraint.ConstraintLayout>
+```
 
 **fragment_second.xml**
-<pre><span style='color:#000080; '>&lt;</span><span style='color:#000080; '>LinearLayout</span> xmlns<span style='color:#0000ff; '>:</span><span style='color:#074726; '>android</span><span style='color:#0000ff; '>=</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>http</span><span style='color:#0000ff; '>:</span><span style='color:#0000ff; font-weight:bold; '>//</span><span style='color:#5555dd; '>schemas.android.com</span><span style='color:#40015a; '>/apk/res/android</span><span style='color:#0000e6; '>"</span>
-    xmlns<span style='color:#0000ff; '>:</span><span style='color:#074726; '>tools</span><span style='color:#0000ff; '>=</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>http</span><span style='color:#0000ff; '>:</span><span style='color:#0000ff; font-weight:bold; '>//</span><span style='color:#5555dd; '>schemas.android.com</span><span style='color:#40015a; '>/tools</span><span style='color:#0000e6; '>"</span>
-    android<span style='color:#0000ff; '>:</span><span style='color:#074726; '>layout_width</span><span style='color:#0000ff; '>=</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>match_parent</span><span style='color:#0000e6; '>"</span>
-    android<span style='color:#0000ff; '>:</span><span style='color:#074726; '>layout_height</span><span style='color:#0000ff; '>=</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>match_parent</span><span style='color:#0000e6; '>"</span>
-    tools<span style='color:#0000ff; '>:</span><span style='color:#074726; '>context</span><span style='color:#0000ff; '>=</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>com.hmkcode.android.fragments.SecondFragment</span><span style='color:#0000e6; '>"</span><span style='color:#000080; '>></span>
 
-    <span style='color:#000080; '>&lt;</span><span style='color:#000080; '>TextView</span>
-        android<span style='color:#0000ff; '>:</span><span style='color:#074726; '>layout_width</span><span style='color:#0000ff; '>=</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>match_parent</span><span style='color:#0000e6; '>"</span>
-        android<span style='color:#0000ff; '>:</span><span style='color:#074726; '>layout_height</span><span style='color:#0000ff; '>=</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>match_parent</span><span style='color:#0000e6; '>"</span>
-        android<span style='color:#0000ff; '>:</span><span style='color:#074726; '>text</span><span style='color:#0000ff; '>=</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>Second Fragment</span><span style='color:#0000e6; '>"</span>
-        android<span style='color:#0000ff; '>:</span><span style='color:#074726; '>gravity</span><span style='color:#0000ff; '>=</span><span style='color:#0000e6; '>"</span><span style='color:#0000e6; '>center</span><span style='color:#0000e6; '>"</span><span style='color:#000080; '>/></span>
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Second Fragment"
+        android:gravity="center"/>
 
-<span style='color:#000080; '>&lt;/</span><span style='color:#000080; '>LinearLayout</span><span style='color:#000080; '>></span>
-</pre>
+</android.support.constraint.ConstraintLayout>
+```
 
 #### 2.3 Extends `FragmentPagerAdapter` to hold child views 
 
@@ -154,54 +176,77 @@ Create two fragment `FirstFragment.java` & `SecondFragment.java`
  2.[FragmentStatePagerAdapter](https://developer.android.com/reference/android/support/v4/app/FragmentStatePagerAdapter.html) for undetermined number of pages. It destroys fragments as the user navigates to other pages, minimizing memory usage.
 
 **MyFragmentPagerAdapter.java**
-<pre><span style='color:#000084; font-weight:bold; '>public</span> <span style='color:#000084; font-weight:bold; '>class</span> MyFragmentPagerAdapter <span style='color:#000084; font-weight:bold; '>extends</span> FragmentPagerAdapter {
+
+```java
+package com.hmkcode.adapters;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import com.hmkcode.fragments.FirstFragment;
+import com.hmkcode.fragments.SecondFragment;
+
+public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
 
-    <span style='color:#000084; font-weight:bold; '>public</span> MyFragmentPagerAdapter(FragmentManager fm) {
-        <span style='color:#000084; font-weight:bold; '>super</span>(fm);
+    public MyFragmentPagerAdapter(FragmentManager fm) {
+        super(fm);
     }
 
     @Override
-    <span style='color:#000084; font-weight:bold; '>public</span> Fragment getItem(<span style='color:#000084; font-weight:bold; '>int</span> position) {
-        <span style='color:#000084; font-weight:bold; '>switch</span> (position) {
-            <span style='color:#000084; font-weight:bold; '>case</span> 0:
-                <span style='color:#000084; font-weight:bold; '>return</span> <span style='color:#000084; font-weight:bold; '>new</span> FirstFragment();
-            <span style='color:#000084; font-weight:bold; '>case</span> 1:
-                <span style='color:#000084; font-weight:bold; '>return</span> <span style='color:#000084; font-weight:bold; '>new</span> SecondFragment();
-            <span style='color:#000084; font-weight:bold; '>default</span>:
-                <span style='color:#000084; font-weight:bold; '>return</span> <span style='color:#000084; font-weight:bold; '>null</span>;
+    public Fragment getItem(int position) {
+        switch (position) {
+            case 0:
+                return new FirstFragment();
+            case 1:
+                return new SecondFragment();
+            default:
+                return null;
         }
     }
 
     @Override
-    <span style='color:#000084; font-weight:bold; '>public</span> <span style='color:#000084; font-weight:bold; '>int</span> getCount() {
-        <span style='color:#000084; font-weight:bold; '>return</span> 2;
+    public int getCount() {
+        return 2;
     }
 }
-</pre>
+```
 
 #### Put it all together!
 
 **MainActivity.java**
-<pre><span style='color:#000084; font-weight:bold; '>public</span> <span style='color:#000084; font-weight:bold; '>class</span> MainActivity <span style='color:#000084; font-weight:bold; '>extends</span> AppCompatActivity {
+
+```java
+package com.hmkcode;
+
+import android.support.v7.app.AppCompatActivity;
+import android.support.v4.view.ViewPager;
+import android.os.Bundle;
+import com.hmkcode.adapters.MyFragmentPagerAdapter;
+
+public class MainActivity extends AppCompatActivity {
 
     MyFragmentPagerAdapter myFragmentPagerAdapter;
-    ViewPager mViewPager;
-
+    ViewPager viewPager;
 
     @Override
-    <span style='color:#000084; font-weight:bold; '>protected</span> <span style='color:#000084; font-weight:bold; '>void</span> onCreate(Bundle savedInstanceState) {
-        <span style='color:#000084; font-weight:bold; '>super</span>.onCreate(savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
 
-        myFragmentPagerAdapter = <span style='color:#000084; font-weight:bold; '>new</span> MyFragmentPagerAdapter(getSupportFragmentManager());
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(myFragmentPagerAdapter);
-
+        setPagerAdapter();
     }
+
+    private void setPagerAdapter(){
+        myFragmentPagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(myFragmentPagerAdapter);
+    }
+
 }
-</pre>
+
+```
 
 ![android-tabs]({{"http://hmkcode.github.io/images/android/android-swipe.gif" | absolute_url }})
 
@@ -215,76 +260,86 @@ While you can swipe between screens using horizontal finger gesture, android als
 
 **gradel.build (app)**
 
-<pre>
-compile 'com.android.support:design:26.1.0'
-</pre>
+> implementation 'com.android.support:design:27.1.1'
 
 **activity_main.xml**
 
-<pre><span style='color:#000084; '>&lt;?</span><span style='color:#000084; font-weight:bold; '>xml</span><span style='color:#000084; '> </span><span style='color:#000084; '>version</span><span style='color:#000084; '>=</span><span style='color:#0000ff; '>"</span><span style='color:#000084; font-weight:bold; '>1.0</span><span style='color:#0000ff; '>"</span><span style='color:#000084; '> </span><span style='color:#000084; '>encoding</span><span style='color:#000084; '>=</span><span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>utf-8</span><span style='color:#0000ff; '>"</span><span style='color:#000084; '>?></span>
-<span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>RelativeLayout</span> xmlns:android=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>http</span><span style='color:#0000ff; '>:</span><span style='color:#000084; font-weight:bold; '>//</span><span style='color:#3f3fbf; '>schemas.android.com</span><span style='color:#3f3fbf; '>/apk/res/android</span><span style='color:#0000ff; '>"</span>
-    xmlns:app=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>http</span><span style='color:#0000ff; '>:</span><span style='color:#000084; font-weight:bold; '>//</span><span style='color:#3f3fbf; '>schemas.android.com</span><span style='color:#3f3fbf; '>/apk/res-auto</span><span style='color:#0000ff; '>"</span>
-    xmlns:tools=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>http</span><span style='color:#0000ff; '>:</span><span style='color:#000084; font-weight:bold; '>//</span><span style='color:#3f3fbf; '>schemas.android.com</span><span style='color:#3f3fbf; '>/tools</span><span style='color:#0000ff; '>"</span>
-    android:layout_width=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>match_parent</span><span style='color:#0000ff; '>"</span>
-    android:layout_height=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>match_parent</span><span style='color:#0000ff; '>"</span>
-    android:orientation=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>vertical</span><span style='color:#0000ff; '>"</span>
-    tools:context=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>com.hmkcode.android.MainActivity</span><span style='color:#0000ff; '>"</span><span style='color:#7f0055; '>></span>
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
-     <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>android.support.v4.view.ViewPager</span>
-        xmlns:android=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>http</span><span style='color:#0000ff; '>:</span><span style='color:#000084; font-weight:bold; '>//</span><span style='color:#3f3fbf; '>schemas.android.com</span><span style='color:#3f3fbf; '>/apk/res/android</span><span style='color:#0000ff; '>"</span>
-        android:id=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>@+id/pager</span><span style='color:#0000ff; '>"</span>
-        android:layout_width=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>match_parent</span><span style='color:#0000ff; '>"</span>
-        android:layout_height=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>match_parent</span><span style='color:#0000ff; '>"</span> <span style='color:#7f0055; '>/></span>
+    <android.support.v4.view.ViewPager
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
-     <span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>android.support.design.widget.TabLayout</span>
-         android:id=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>@+id/tabLayout</span><span style='color:#0000ff; '>"</span>
-         android:layout_width=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>match_parent</span><span style='color:#0000ff; '>"</span>
-         android:layout_height=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>wrap_content</span><span style='color:#0000ff; '>"</span>
-         app:tabMode=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>fixed</span><span style='color:#0000ff; '>"</span>
-         app:tabGravity=<span style='color:#0000ff; '>"</span><span style='color:#0000ff; '>fill</span><span style='color:#0000ff; '>"</span> <span style='color:#7f0055; '>/></span>
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabMode="fixed"
+        app:tabGravity="fill"/>
 
-<span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>RelativeLayout</span><span style='color:#7f0055; '>></span>
-</pre>
+</android.support.constraint.ConstraintLayout>
+```
 
 **MainActivity.java**
-<pre><span style='color:#000084; font-weight:bold; '>public</span> <span style='color:#000084; font-weight:bold; '>class</span> MainActivity <span style='color:#000084; font-weight:bold; '>extends</span> AppCompatActivity {
+
+```java
+package com.hmkcode;
+
+import android.support.v7.app.AppCompatActivity;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
+import android.os.Bundle;
+import com.hmkcode.adapters.MyFragmentPagerAdapter;
+
+public class MainActivity extends AppCompatActivity {
 
     MyFragmentPagerAdapter myFragmentPagerAdapter;
-    ViewPager mViewPager;
+    ViewPager viewPager;
     TabLayout tabLayout;
-    
+
     @Override
-    <span style='color:#000084; font-weight:bold; '>protected</span> <span style='color:#000084; font-weight:bold; '>void</span> onCreate(Bundle savedInstanceState) {
-        <span style='color:#000084; font-weight:bold; '>super</span>.onCreate(savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mViewPager = (ViewPager) findViewById(R.id.pager);
+
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
         setPagerAdapter();
         setTabLayout();
-    }
-
-    <span style='color:#000084; font-weight:bold; '>private</span> <span style='color:#000084; font-weight:bold; '>void</span> setPagerAdapter(){
-
-        myFragmentPagerAdapter = <span style='color:#000084; font-weight:bold; '>new</span> MyFragmentPagerAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(myFragmentPagerAdapter);
 
     }
 
-    <span style='color:#000084; font-weight:bold; '>private</span> <span style='color:#000084; font-weight:bold; '>void</span> setTabLayout() {
+    private void setPagerAdapter(){
+        myFragmentPagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(myFragmentPagerAdapter);
+    }
 
-        tabLayout.setupWithViewPager(mViewPager);
+    private void setTabLayout() {
+        tabLayout.setupWithViewPager(viewPager);
 
-        tabLayout.getTabAt(0).setText(<span style='color:#0000ff; '>"First"</span>);
-        tabLayout.getTabAt(1).setText(<span style='color:#0000ff; '>"Second"</span>);
+        tabLayout.getTabAt(0).setText("First");
+        tabLayout.getTabAt(1).setText("Second");
     }
 }
-</pre>
+
+```
 
 ![android-tabs]({{ "http://hmkcode.github.io/images/android/android-swipe-tabs.gif" | absolute_url }})
 
 
 
-### Source Code @ [GitHub](https://github.com/hmkcode/Android/tree/master/user-interface/android-swipe-views-tabs)
+### Source Code @ [GitHub](https://github.com/hmkcode/Android/tree/master/android-swipe-views-tabs)
 
