@@ -52,7 +52,7 @@ This app is targeting API 19 or later
 
 ```groovy
 dependencies {
-    implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
 }
 ```
 
