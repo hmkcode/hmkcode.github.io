@@ -21,7 +21,7 @@ description: Creating a scrollable list of elements is a common pattern in mobil
 #### Environment, Tools &amp; Library
 
 - Android Studio 3.1.1
-- Android Support Library `com.android.support:recyclerview-v7:27.1.1`
+- Android Support Library `com.android.support:recyclerview-v7:28.0.0`
 
 ## Overview
 

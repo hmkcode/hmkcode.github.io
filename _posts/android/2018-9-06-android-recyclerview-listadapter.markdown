@@ -21,7 +21,7 @@ description: ListAdapter for RecyclerView has been introduced in Revision 27.1.0
 #### Environment, Tools &amp; Library
 
 - Android Studio 3.1.4
-- Android Support Library `com.android.support:recyclerview-v7:27.1.1`
+- Android Support Library `com.android.support:recyclerview-v7:28.0.0`
 - Java 1.8+ for Lambda experssions support
 
 ## Overview
