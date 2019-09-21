@@ -10,6 +10,7 @@ html,
 body {
   margin: 0;
   padding: 0;
+  // background-color: #fcfcfc;
 }
 
 .content-container {
@@ -170,7 +171,7 @@ body {
         }
 
         a:hover {
-          background-color: $oc-gray-7;
+           background-color: $oc-gray-7;
         }
       }
     }
@@ -188,12 +189,14 @@ body {
 
 .list {
   &-post {
+    // background-color: #fff;
+    // border-radius: 3px;
     padding: 1% 2%;
-    
+    margin-bottom: .5rem;
     &:hover {
-      background-color: #ececec;
-      border-color: transparent;
-      border-radius: 10px;
+      // background-color: #ececec;
+      // border-color: transparent;
+      // border-radius: 10px;
     }
 
     a {
@@ -414,3 +417,8 @@ body {
     font-size: 0.8rem;
   }
 }
+
+
+/* ------------
+Categoruy
+--------------- */
