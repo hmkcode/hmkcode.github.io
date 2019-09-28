@@ -6,7 +6,7 @@ categories: android
 post_url: http://hmkcode.com/android-network-connection-httpurlconnection/
 pre_url: http://hmkcode.com/material-design-app-android-design-support-library-appcompat/
 pre_title: "Building Material Design App Using Android Design Support Library and AppCompat Theme"
-description: One common task for most Android apps is connecting to the Internet. Most network-connected Android apps use HTTP to send and receive data. This article shows you how to write a simple application that connects to the Internet, send HTTP GET request & display the response. 
+description: One common task for most Android apps is connecting to the Internet. Most network-connected Android apps use HTTP to send and receive data. This article shows you how to write a simple application that connects to the Internet, send HTTP GET request & display the response using Kotlin. 
 ---
 
 ![android-recyclerview-listadapter_files.png]({{ "http://hmkcode.github.io/images/android/android-http-async.png" 
@@ -32,6 +32,7 @@ _Tools used in this post_
 
 - Android Studio 3.5
 - Google Pixel 3
+- Kotlin
 - <a href='http://hmkcode-api.appspot.com/rest/api/hello/[NAME]'>http://hmkcode-api.appspot.com/rest/api/hello/[NAME]</a> this URL will return simple string **"Hello, [NAME]"**
 
 
