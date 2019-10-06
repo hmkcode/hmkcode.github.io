@@ -28,7 +28,7 @@ _used in this post_
 
 - Android Studio 3.5.1
 - `HttpURLConnection` client.
-- REST service `http://hmkcode.appspot.com/rest/link/add` to post data.
+- REST service `http://hmkcode-api.appspot.com/rest/link/add` to post data.
 - [https://hmkcode-api.appspot.com/links.html](https://hmkcode-api.appspot.com/links.html) to view our stored data.
 
 ## About the app
@@ -367,7 +367,7 @@ class MainActivity : AppCompatActivity() {
 - Run the app
 - Enter title, URL & tags.
 - Click Send
-- Visit [http://hmkcode.appspot.com/post-json/index.html](http://hmkcode-api.appspot.com/links.html) to check 
+- Visit [http://hmkcode-api.appspot.com/post-json/index.html](http://hmkcode-api.appspot.com/links.html) to check 
 
 
 ### Source Code @ [GitHub](https://github.com/hmkcode/Android/tree/master/android-http/post-json)
