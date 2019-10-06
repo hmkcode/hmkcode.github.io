@@ -367,7 +367,7 @@ class MainActivity : AppCompatActivity() {
 - Run the app
 - Enter title, URL & tags.
 - Click Send
-- Visit [http://hmkcode-api.appspot.com/post-json/index.html](http://hmkcode-api.appspot.com/links.html) to check 
+- Visit [http://hmkcode-api.appspot.com/link.html](http://hmkcode-api.appspot.com/links.html) to check 
 
 
 ### Source Code @ [GitHub](https://github.com/hmkcode/Android/tree/master/android-http/post-json)
