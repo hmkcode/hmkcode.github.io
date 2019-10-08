@@ -39,7 +39,7 @@ Developers should instead use [`ConnectivityManager.NetworkCallback`](https://de
 
 ## ConnectivityManager.NetworkCallback
 
-Checking network connectivity and getting notifications about network changes can be achieved by registering `ConnectivityManager.NetworkCallback`. Interested applications should extend this static class and override the wanted methods such as `.onAvailable(Network)` & `.onLost(Network)`.
+Checking network connectivity and getting notifications about network changes can be achieved by registering `ConnectivityManager.NetworkCallback`. Interested applications should extend this class and override the wanted methods such as `.onAvailable(Network)` & `.onLost(Network)`.
 
 
 
