@@ -129,3 +129,15 @@ Now, using the new **weights** we will repeat the forward passed
 
 We can notice that the **prediction** `0.26` is a little bit closer to **actual output** than the previously predicted one `0.191`. We can repeat the same process of backward and forward pass until **error** is close or equal to zero.
 
+## Backpropagation Visualization
+
+You can see visualization of the forward pass and backpropagation [here](https://hmkcode.com/netflow/).
+
+You can build your neural network using [**netflow.js**](https://github.com/hmkcode/netflow.js) 
+
+
+![netflow-sample]({{ "http://hmkcode.github.io/images/ai/netflow-sample.gif" | absolute_url }})
+
+
+
+
