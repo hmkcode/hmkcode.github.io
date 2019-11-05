@@ -18,6 +18,8 @@ description: Backpropagation is a technique used for training neural network. Th
 	but this post will explain backpropagation with concrete example in a very detailed colorful steps.
 </p>
 
+> You can see visualization of the forward pass and backpropagation [here](https://hmkcode.com/netflow/). You can build your neural network using [**netflow.js**](https://github.com/hmkcode/netflow.js) 
+
 ## Overview
 
 In this post, we will build a neural network with three layers:
