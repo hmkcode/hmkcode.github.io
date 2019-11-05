@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Backpropagation Step by Step"
-date:   2019-11-04 12:00:00
+date:   2019-11-03 12:00:00
 categories: ai
 description: Backpropagation is a technique used for training neural network. There are many resources explaining the technique, but this post will explain backpropagation with concrete example in a very detailed colorful steps. 
 ---
