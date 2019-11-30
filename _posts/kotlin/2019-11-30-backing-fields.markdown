@@ -5,7 +5,7 @@ date:   2019-11-30 12:00:00
 categories: kotlin
 description: Kotlin auto-generates a field referencing a class property within its accessors "get() or set()". This field is called a backing field and it will be generated if a property uses the default accessors implementation or if one of the accessors references it through field identifier
 ---
-
+ 
 
 <p style="text-align: justify;">
 	
