@@ -9,8 +9,8 @@ description: Inheritance is a common solution for code reusability. Extending cl
 
 <p style="text-align: justify;">
 	
-	<a href="http://hmkcode.github.io/images/kotlin/mode-delegation-design-pattern-uml.png">
-		<img class="size-full wp-image-315 aligncenter" src="http://hmkcode.github.io/images/kotlin/mode-delegation-design-pattern-uml.png" 
+	<a href="https://hmkcode.github.io/images/kotlin/mode-delegation-design-pattern-uml.png">
+		<img class="size-full wp-image-315 aligncenter" src="https://hmkcode.github.io/images/kotlin/mode-delegation-design-pattern-uml.png" 
 		alt="mode-delegation-design-pattern-uml" />
 	</a>
 	
