@@ -9,8 +9,8 @@ description: Inheritance is a common solution for code reusability. Extending cl
 
 <p style="text-align: justify;">
 	
-	<a href="https://hmkcode.github.io/images/kotlin/mode-delegation-design-pattern-uml.png">
-		<img class="size-full wp-image-315 aligncenter" src="https://hmkcode.github.io/images/kotlin/mode-delegation-design-pattern-uml.png" 
+	<a href="https://hmkcode.com/images/kotlin/mode-delegation-design-pattern-uml.png">
+		<img class="size-full wp-image-315 aligncenter" src="https://hmkcode.com/images/kotlin/mode-delegation-design-pattern-uml.png" 
 		alt="mode-delegation-design-pattern-uml" />
 	</a>
 	
@@ -24,7 +24,7 @@ description: Inheritance is a common solution for code reusability. Extending cl
 - We initially have two classes implementing `Mode` interface namely `DarkMode` and `LightMode`. 
 
 
-![mode-initial-architecture]({{ "http://hmkcode.github.io/images/kotlin/mode-initial-architecture.png" | absolute_url }})
+![mode-initial-architecture]({{ "https://hmkcode.com/images/kotlin/mode-initial-architecture.png" | absolute_url }})
 
 
 ```java
@@ -56,7 +56,7 @@ class LightMode(override val color:String) : Mode {
 - Inheritance allow subclasses to reuse the implementation from the extended classes `DarkMode` & `LightMode`.
 - So, we will create two new subclasses `MyCustomDarkMode` & `MyCustomLightMode` each extending one of the implemented modes.
 
-![mode-inheritance-uml]({{ "http://hmkcode.github.io/images/kotlin/mode-inheritance-uml.png" | absolute_url }})
+![mode-inheritance-uml]({{ "https://hmkcode.com/images/kotlin/mode-inheritance-uml.png" | absolute_url }})
 
 ```java
 interface Mode{
@@ -96,7 +96,7 @@ fun main() {
 - We can create *one* custom mode that reuses `display()` function of each initial mode.
 - The custom mode class will implement the interface `Mode` as well as taking a parameter of type `Mode` in its constructor.
 
-![mode-delegation-design-pattern-uml.png]({{ "http://hmkcode.github.io/images/kotlin/mode-delegation-design-pattern-uml.png" | absolute_url }})
+![mode-delegation-design-pattern-uml.png]({{ "https://hmkcode.com/images/kotlin/mode-delegation-design-pattern-uml.png" | absolute_url }})
 
 ```java
 interface Mode{
