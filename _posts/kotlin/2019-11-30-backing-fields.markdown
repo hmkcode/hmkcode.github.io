@@ -9,7 +9,7 @@ description: Kotlin auto-generates a field referencing a class property within i
 
 <p style="text-align: justify;">
 	
-	<a href="https://hmkcode.github.io/images/kotlin/kotlin-backing-fields.png">
+	<a href="https://hmkcode.com/images/kotlin/kotlin-backing-fields.png">
 		<img class="size-full wp-image-315 aligncenter" src="https://hmkcode.github.io/images/kotlin/kotlin-backing-fields.png" 
 		alt="mode-delegation-design-pattern-uml" />
 	</a>
