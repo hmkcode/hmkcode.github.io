@@ -105,7 +105,7 @@ public class App
 ## Converting HTML File to PDF
 
 - We can convert HTML file to PDF using the same method **convertToPdf()** that takes HTML as `InputStream` and write the PDF content into `OutputStream`.
-- The HTML file can contain CSS file and images. However, they need to be in the same location of HTML file. If referenced file are located in different directories we need to use `ConverterProperties` to set the base URL. 
+- The HTML file can contain CSS file and images. However, they need to be in the same location of the HTML file. If CSS and images are located in different directories, we need to use `ConverterProperties` to set the base URL. 
 
 **index.html**
 
