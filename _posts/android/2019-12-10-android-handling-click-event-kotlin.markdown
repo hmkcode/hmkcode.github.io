@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 - Use object expression to create an instance from an anonymous class implementing `OnClickListener`.
 
 ```kotlin
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var textView:TextView
 
@@ -92,11 +92,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
 
     }
-
-    // 3. override onClick()
-    override fun onClick(v: View?) {
-        textView.setText("Clicked!")
-    }
 }
 ```
 
@@ -107,7 +102,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 - So, the function type of the lambda should be `(View) -> Unit`
 
 ```kotlin
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var textView:TextView
 
@@ -121,11 +116,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         // create an instance from anonymous class
        button.setOnClickListener{ v -> textView.setText("Clicked!") }
 
-    }
-
-    // 3. override onClick()
-    override fun onClick(v: View?) {
-        textView.setText("Clicked!")
     }
 }
 ```
