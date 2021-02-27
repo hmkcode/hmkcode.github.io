@@ -12,7 +12,7 @@ description: Spring provides a global exception handling mechanism that can be i
 		<img class="size-full wp-image-315 aligncenter" src="https://hmkcode.github.io/images/spring/spring-exception-handling-controlleradvice.PNG" alt="spring-exception-handling" />
 	</a>
 	
-	For several reasons, you may want to a global solution to handle exceptions thrown by controllers across the whole application. Spring provides a mechanism that enables such functionality using <code>@ControllerAdvice</code> annotation.
+	For several reasons, you may want a global solution to handle exceptions thrown by controllers across the whole application. Spring provides a mechanism that enables such functionality using <code>@ControllerAdvice</code> annotation.
 </p>
 
 ## Overview
@@ -47,7 +47,7 @@ Complete Maven dependencies is included in [`pom.xml`](https://github.com/hmkcod
 
 ## Spring MVC Controller
 
-We will build a simple controller has two services:
+We will build a simple controller which has two services:
 
 - First service `ok()` returns **OK**
 - The second service `exception()` throws an `Exception`.
