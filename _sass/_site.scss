@@ -421,43 +421,44 @@ body {
 /*--------------
   Ads
   -------------- */
-.ads {
-text-align: left;
-font-size: 1.2rem;
-padding:4px;
-border-radius:3px;
-border:1px solid #cecece;
-height: 174px;
-&-image {
-  float: left;
+  .ads {
+    text-align: left;
+    font-size: 1.2rem;
+    padding:4px;
+    border-radius:3px;
+    border:1px solid #cecece;
+    height: 164px;
+    &-image {
+      float: left;
+      
+      img {
+       
+        margin:2px;
+      }
+     
+      
+    }
   
-  img {
-   
-	margin:2px;
+    &-content {
+      
+      display: inline;
+      margin-left: 2px;
+      margin-right: 2px;
+      
+      a {
+        font-weight: bold;
+        margin: 4px;
+      }
+      p{
+        font-size: 1.0rem;
+        margin: 4px;
+      }
+    }
+
+    
   }
- 
+
   
-}
-
-&-content {
-  
-  display: inline;
-  margin-left: 2px;
-  margin-right: 2px;
-  
-  a {
-	font-weight: bold;
-	margin: 4px;
-  }
-  p{
-	font-size: 1.0rem;
-	margin: 4px;
-  }
-}
-
-
-}
-
 /* ------------
 Categoruy
 --------------- */
