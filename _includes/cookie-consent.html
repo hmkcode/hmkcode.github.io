@@ -30,16 +30,10 @@
     function eraseCookie(name) {
         createCookie(name,"",-1);
     }
-	if(readCookie('cookie-notice-dismissed')=='true') {
-							
-          window.dataLayer = window.dataLayer || [];
-		  function gtag(){dataLayer.push(arguments);}
-		  gtag('js', new Date());
-
-		  gtag('config', 'UA-111515110-1');
- 
+   if(readCookie('cookie-notice-dismissed')=='true') {							        			 		  
+ 	document.getElementById('cookie-notice').style.display = 'none';
     } else {
-        document.getElementById('cookie-notice').style.display = 'block';
+        document.getElementById('cookie-notice').style.display = 'block';	    	    	   	    
     }
    
     document.getElementById('cookie-notice-accept').addEventListener("click",function() {
