@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Java | Singleton Pattern"
-date:   2022-05-24 12:00:00
+date:   2022-05-26 12:00:00
 categories: java
 description: Some objects are required to be singleton such as "builder, facade, state, logging, ...etc". Singleton pattern can be used to enforce the creation of exactly one instance of those objects. 
 ---
