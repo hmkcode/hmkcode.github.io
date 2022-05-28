@@ -116,6 +116,9 @@ class Serializer{
 - To overcome this issue we need to add the following 
 	- Declare all instance feilds `transient`
 	- Implement **readResolve()** method
+		- **readResolve()** is called when an object is deserialized.
+		- A class implementing the **readResolve()** method, can directly control the return of the deserialization process. 
+		- So will use this trick to replace deserialized object with the original "INSTANCE" object. 
 
 ```java
 public class Universe implements Serializable  {
@@ -128,7 +131,7 @@ public class Universe implements Serializable  {
 	}
 
 	private Object readResolve() {
-		return INSTANCE;
+		return INSTANCE; //not deserialized one!
 	}
 }
 ```
