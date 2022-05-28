@@ -7,7 +7,7 @@ description: Serialization is the process of converting an object into a stream 
 ---
 
 
-![java-serialization.png]({{ "/images/java/java-serialization.png" }})
+![java-serialization.jpg]({{ "/images/java/java-serialization.jpg" }})
 
 
 Serialization is the process of converting an object into a stream of bytes which can be deserialized back to a copy of the object. A serialized object can be stored in a file and deserialized later into an object. 
