@@ -27,7 +27,7 @@ public final class MyUtility{
 }
 ```
 
-##  How to Enforce Nonnstantiability?  
+##  How to Enforce Non-instantiability?  
 
 **No explicit constructor**
 
