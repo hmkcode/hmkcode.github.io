@@ -31,7 +31,7 @@ public final class MyUtility{
 
 **No explicit constructor**
 
-- Writing a class with an explicit constructor is the first step but it is not enough since the compiler will implicitly provide the **default constructor**.
+- Writing a class without an explicit constructor is the first step. However, it is not enough since the compiler will implicitly provide the **default constructor**.
 - `MyUtility` is still instantiable using the default constructor. 
 
 ```java
@@ -57,8 +57,8 @@ class MySubUtility extends MyUtility{}
 
 **Include a private constructor**
 
-- private constructor will prevent the creation of new instances even if it is extended.
-- One exception, the call can still be instantiated from within the class. 
+- private constructor will prevent the creation of new instances even if the class is extended.
+- One exception is that the private constructor can be called from within the class. 
 
 ```java
 public class MyUtility {
