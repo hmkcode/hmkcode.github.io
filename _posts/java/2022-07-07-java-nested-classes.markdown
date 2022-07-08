@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Java | Nested Classes"
-date:   2022-06-04 12:00:00
+date:   2022-07-07 12:00:00
 categories: java
 description: Nested class is a class that is define within another class. This post explains different types of nested classes. 
 ---
