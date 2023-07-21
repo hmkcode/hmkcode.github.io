@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "CSS | Understanding CSS @keyframes and Animation Timing Functions"
-date:   2023-07-21 12:00:00
+date:   2023-07-21 00:00:00
 categories: css
 description: CSS animations are a powerful way to add dynamic and engaging elements to your web pages. They allow you to create smooth and visually appealing transitions between different states of an element. Among the various techniques available in CSS animations, @keyframes and animation-timing-function play crucial roles in defining animation behavior. 
 ---
