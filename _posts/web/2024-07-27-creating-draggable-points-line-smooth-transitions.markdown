@@ -2,7 +2,7 @@
 layout: post
 title:  "Creating Dynamic and Draggable Points on a Line with Smooth Transitions"
 date:   2024-07-27 00:00:00
-categories: css
+categories: js
 description: In the ever-evolving world of web development, interactive elements enhance user experience by making web pages more engaging and intuitive. One such feature is creating dynamic and draggable points on a line, which can be used in various applications like data visualization, interactive timelines, or educational tools. This blog post delves into how to implement draggable points on a line with smooth transitions to handle overlaps and ensure a seamless user experience. 
 ---
 
@@ -32,4 +32,4 @@ Creating draggable points on a line involves several steps, including handling m
 
 
 
-### Source Code @ [GitHub](https://github.com/hmkcode/Web/tree/master/animation-timing-function)
+### Source Code @ [GitHub](https://github.com/hmkcode/Web/tree/master/tripline)
