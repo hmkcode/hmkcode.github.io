@@ -1,44 +1,36 @@
-fill = (data) => {
-    
-    $val($e('rqst_by'), data.request.rqst_by);
-    $text($e('rqst_by_r'), data.request.rqst_by);
-    $val($e('vehicle_types'), data.request.vihecle_type);
-    $val($e('vehicle_number'), data.request.vihecle_number);
-   
-    
+// #JIR-001
+document.addEventListener("load", onload);
+
+
+
+// #JIR-001
+onload = async() => {   
+    $log("loaded");
+
+    // servics
+    const user = await getUser();
+    const vehicleTypes = await getVehicleTypes();
+
+    // fill view with data
+    fillVehicleTypes(vehicleTypes);
+    fillTripline(models.jir.points);
+    fillPassengers(models.jir.points[0].passengers);
+    fill(models.jir);   
+
+    // add event listeners
+    addEventListeners($e("submit"), "click" , onsubmit, "registered 'onsubmit' listener for submit button");
+
+    addEventListeners($s(".one"), "click" , onsubmit, "registered 'click' listener for .one");
+    $add_event($e("add_passenger"), "click", onAddPassenger, "registered 'click' listener for passenger button");
+
 }
 
-collect = (data) => {
-    data.rqst_by = $val('rqst_by');
+onsubmit = () => {
+    $log('Form submitted');
+    collect(models.jir);
 }
 
-fillTripline = (data) => {
-    $e('tripline').setPoints(data);
-}
-
-fillVehicleTypes = (data) => {
-    $build($e('vehicle_types'), $e('vihecle-type-template'), data, fillVehicleTypesClone);
-}
-
-fillPassengers = (data) => {
-    $build($e('passengers'), $e('passenger-template'), data, fillPassengerClone);
-}
-
-addPassenger = (data) => {
-    $build($e('passengers'), $e('passenger-template'), data, fillPassengerClone);
-}
-
-// ======================
-
-fillRolesClone = (clone, data) => {
-    clone.querySelector('li').innerText = data;
-}
-
-fillVehicleTypesClone = (clone, data) => {
-    $text($s('option', clone), data.description);
-    $val($s('option', clone), data.code);    
-}
-
-fillPassengerClone = (clone, data) => {
-    $text($s('h3', clone), data);
+onAddPassenger = () => {
+    $log('Add passenger');
+    addPassenger(['MAXIMUS']);
 }
