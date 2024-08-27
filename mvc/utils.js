@@ -1,6 +1,14 @@
-addEventListeners = (elements, events, callback, info = null) => {
+$e = $element = (elementId, container = document) => container.getElementById(elementId);
 
-    if(info) console.log(info);
+$s = $sel = $select_one = (elementSelector, container = document) => container.querySelector(elementSelector);
+
+$s_all = $select_all = (elementSelector, container = document) => Array.from(container.querySelectorAll(elementSelector));
+
+$add_event = addEventListeners = (elements, events, callback, info = null) => {
+
+    $log(info);
+
+    if(!elements || !events || !callback) return;
 
     if (!Array.isArray(elements)) {
         elements = [elements];
@@ -10,19 +18,22 @@ addEventListeners = (elements, events, callback, info = null) => {
         events = [events];
     }
 
-    elements.forEach(element => {
-        events.forEach(event => {
-            e = document.getElementById(element);
-            e.addEventListener(event, callback);
+
+    elements?.forEach(element => {
+        events?.forEach(event => {
+            element?.addEventListener(event, callback);
         });
     });
    
 };
 
 
-removeEventListeners = (elements, events, callback, info = null) => {
+$remove_event = removeEventListeners = (elements, events, callback, info = null) => {
     
-    if(info) console.log(info);
+    $log(info);
+
+    if(!elements || !events || !callback) return;
+
 
     if (!Array.isArray(elements)) {
         elements = [elements];
@@ -32,21 +43,20 @@ removeEventListeners = (elements, events, callback, info = null) => {
         events = [events];
     }
 
-    elements.forEach(element => {
-        events.forEach(event => {
-            e = document.getElementById(element);
-            e.removeEventListener(event, callback);
+    elements?.forEach(element => {
+        events?.forEach(event => {
+            element?.removeEventListener(event, callback);
         });
     });
 
 };
 
-$val = (elementName, value, info = null) => {
+$val = (element, value, info = null) => {
 
-    if(info) 
-        console.log(info);
+    $log(info);
+    //element = $select_one(element)
 
-    const element = document.getElementById(elementName);
+
     if (!element) return null; // Return null if the element doesn't exist
 
     // Set value if provided
@@ -76,16 +86,107 @@ $val = (elementName, value, info = null) => {
     return null; // Return null if the element is not supported
 };
 
-$build = (elementName, templateName, data, fillClone, info = null) => {  
-    if(info) console.log(info);
+$text = (element, text, info = null) => {
+    $log(info);
+    //element = $select_one(element)
 
-    const element = document.getElementById(elementName);
-    const template = document.getElementById(templateName);
-    if (!element || !template) return null; // Return null if the element doesn't exist
+    if (!element) return null; // Return null if the element doesn't exist
 
+    // Set text if provided
+    if (text !== undefined) {
+        element.innerText = text;
+    }
+
+    return element.innerText;
+}
+
+$build = (container, template, data, fillClone, info = null) => {  
+    $log(info);
+    if (!container || !template) return null; // Return null if the element doesn't exist
     data.forEach((item) => {
         const clone = template.content.cloneNode(true);
         fillClone(clone, item);
-        element.appendChild(clone);
+        container.appendChild(clone);
     });  
+}
+
+$log = (msg) => {
+    if(msg)console.log(msg);
+}
+
+$debug = (msg) => {
+    console.debug(msg);
+}
+
+// can take one on array of elements
+$show = (elements, info = null) => {
+    
+    $log(info);
+
+    if (!elements) return;
+
+    if (!Array.isArray(elements)) 
+        elements = [elements];
+    
+    elements?.forEach(element => {
+        if(element)
+            element.style.display = 'block';
+    });
+}
+
+$hide = (elements, info = null) => {
+
+    $log(info);
+
+    if (!elements) return;
+
+    if (!Array.isArray(elements)) 
+        elements = [elements];
+    
+    elements?.forEach(element => {
+        if(element)
+            element.style.display = 'none';
+    });
+}
+
+$fadeOut = (elements, duration = 500, callback, info = null) => {
+
+    $log(info);
+
+    if (!elements) return;
+
+    if (!Array.isArray(elements)) 
+        elements = [elements];
+    
+    elements?.forEach(element => {
+        if(element){
+            element.style.transition = `opacity ${duration}ms`;
+            element.style.opacity = 0;
+        }
+    });
+
+    setTimeout(() => {
+        callback();
+    }, duration);
+}
+
+$fadeIn = (elements, duration = 500, callback, info = null) => {
+
+    $log(info);
+
+    if (!elements) return;
+
+    if (!Array.isArray(elements)) 
+        elements = [elements];
+    
+    elements?.forEach(element => {
+        if(element){
+            element.style.transition = `opacity ${duration}ms`;
+            element.style.opacity = 1;
+        }
+    });
+
+    setTimeout(() => {
+        callback();
+    }, duration);
 }
