@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workflow Status Custom Element</title>
+</head>
+<body>
+    <workflow-status></workflow-status>
+
+    <script>
+        class WorkflowStatus extends HTMLElement {
+            constructor() {
+                super();
+                this.attachShadow({ mode: 'open' });
+
+                // Workflow steps data
+                const steps = [
+                    {
+                        title: "INITIATE",
+                        subtitle: "by John Dimer",
+                        status: "completed",
+                        detail: "Request #122 created by John Dimer (DIMERJHX) on 10/10/2024"
+                    },
+                    {
+                        title: "REVIEW",
+                        subtitle: "by AMC",
+                        status: "completed",
+                        detail: "Request #122 reviewed by AMC member ROJER SASWAN (SAWANRJ) on 10/10/2024"
+                    },
+                    {
+                        title: "APPROVE",
+                        subtitle: "by RUNALRT",
+                        status: "rejected",
+                        detail: "Request #122 rejected by RUAEDQT on 10/10/2024"
+                    },
+                    {
+                        title: "CONFIRM",
+                        subtitle: "by AMC",
+                        status: "pending",
+                        detail: ""
+                    }
+                ];
+
+                // Create a container for the workflow
+                const container = document.createElement('div');
+                container.classList.add('workflow-container');
+
+                steps.forEach(step => {
+                    const stepElement = document.createElement('div');
+                    stepElement.className = `step ${step.status}`;
+
+                    const title = document.createElement('div');
+                    title.className = 'step-title';
+                    title.textContent = step.title;
+
+                    const subtitle = document.createElement('div');
+                    subtitle.className = 'step-subtitle';
+                    subtitle.textContent = step.subtitle;
+
+                    const iconContainer = document.createElement('div');
+                    iconContainer.className = 'icon-container';
+
+                    const icon = document.createElement('div');
+                    icon.className = `icon ${step.status}`;
+                    
+                    // Set icon based on status
+                    switch (step.status) {
+                        case 'completed':
+                            icon.innerHTML = '&#10003;'; // Checkmark
+                            break;
+                        case 'rejected':
+                            icon.innerHTML = '&#10005;'; // X mark
+                            break;
+                        case 'pending':
+                            icon.innerHTML = '&#9679;'; // Circle
+                            break;
+                    }
+
+                    iconContainer.appendChild(icon);
+
+                    const detail = document.createElement('div');
+                    detail.className = 'step-detail';
+                    detail.textContent = step.detail;
+
+                    stepElement.appendChild(title);
+                    stepElement.appendChild(subtitle);
+                    stepElement.appendChild(iconContainer);
+                    stepElement.appendChild(detail);
+
+                    container.appendChild(stepElement);
+                });
+
+                const style = document.createElement('style');
+                style.textContent = `
+                    .workflow-container {
+                        font-family: Arial, sans-serif;
+                        display: flex;
+                        align-items: center;
+                        background-color: white;
+                        border-radius: 12px;
+                        padding: 10px;
+                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                        width: 90%;
+                        max-width: 1000px;
+                        margin: 0 auto;
+                    }
+                    .step {
+                        text-align: center;
+                        flex: 1;
+                        position: relative;
+                    }
+                    .icon-container {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        border: 2px solid #d3d3d3;
+                        margin: 0 auto 10px auto;
+                        z-index: 1;
+                    }
+                    .icon {
+                        font-size: 20px;
+                       
+                        width: 36px;
+                        height: 36px;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                    .icon.completed {
+                        background-color: #5cb85c;
+                         color: white;
+                    }
+                    .icon.rejected {
+                        background-color: red;
+                        color: white;
+                    }
+                    .icon.pending {
+                        background-color: #ffff3e;
+                        color: balck;
+                    }
+                    .step-title {
+                        font-weight: bold;
+                        font-size: 16px;
+                        margin-bottom: 5px;
+                    }
+                    .step-subtitle {
+                        font-size: 12px;
+                        color: #888;
+                        margin-bottom: 10px;
+                    }
+                    .step-detail {
+                        font-size: 12px;
+                        color: #949090;
+                        padding-left: 10px;
+                        max-height: 80px;
+                        height: 60px;
+                        text-align: left;
+                    }
+                `;
+
+                this.shadowRoot.append(style, container);
+            }
+        }
+
+        customElements.define('workflow-status', WorkflowStatus);
+    </script>
+</body>
+</html>

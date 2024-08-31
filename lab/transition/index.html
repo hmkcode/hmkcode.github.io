@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Div Transition Example</title>
+    <script src="scripts.js"></script>
+    <script src="PopupComp.js"></script>
+    <style>
+        .hidden {
+            opacity: 0;
+            display: none;
+        }
+        .visiable {
+            display: block;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div id="div1" class="visiable">
+        <p>This is the content of the first div.</p>
+        <button id="next1">Next</button>
+    </div>
+
+    <div id="div2" class="hidden">
+        <p>This is the content of the second div.</p>
+        <button id="back2">Back</button>
+        <button id="next2">Next</button>
+    </div>
+
+    <div id="div3" class="hidden">
+        <p>This is the content of the third div.</p>
+        <button id="back3">Back</button>
+    </div>
+
+
+        
+
+    <script>
+        const divs = ["div1", "div2", "div3"];
+        let currentDiv = 0;
+
+       
+        next = (currentDiv, nextDiv) => {
+                $fadeOut(currentDiv, 1000, () => {
+                    $fadeIn(nextDiv, 1000, () => {}, "next to "+nextDiv.id);
+                }, "next to "+nextDiv.id);	            
+        }
+
+        back = (currentDiv, backDiv) => {
+                $fadeOut(currentDiv, 1000, () => {
+                    $fadeIn(backDiv, 1000, () => {}, "back to "+currentDiv.id);
+                }, "back to "+currentDiv.id);        
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("next1").addEventListener("click", () => next($e('div1'), $e('div2')));
+            document.getElementById("back2").addEventListener("click", () => back($e('div2'), $e('div1')));
+            document.getElementById("next2").addEventListener("click", () => next($e('div2'), $e('div3')));
+            document.getElementById("back3").addEventListener("click", () => back($e('div3'), $e('div2')));
+
+            // Initialize the first div as visible
+            //document.getElementById(divs[currentDiv]).classList.add('active');
+
+          
+        });
+        
+    </script>
+</body>
+</html>

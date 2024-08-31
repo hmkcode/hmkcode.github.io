@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Component Example</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/nonmodule.js"></script>
+   
+</head>
+<body>
+    <!-- Use the custom component -->
+    <my-custom-element id="mce"></my-custom-element>
+
+
+    <script type="module">
+        import { greet } from './js/module.js';
+        // Ensure the script runs after the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('mce').doSomething(greet);
+        });
+    </script>
+   
+    <script src="js/script.js"></script>
+
+</body>
+</html>

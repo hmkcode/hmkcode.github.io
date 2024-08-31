@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Component Example</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/utils.js"></script>
+   
+</head>
+<body>
+    <!-- Use the custom component -->
+
+    <div id="app">
+        <h1 id="title">Custom Component Example</h1>
+        <div id="container">
+            <div id="input">
+                <input type="text" id="inputText" placeholder="Enter your name">
+                <button id="btnAdd">Add</button>
+            </div>
+            <div id="list">
+                <ul id="listItem">
+                    <!-- <li>Item 1</li>
+                    <li>Item 2</li>
+                    <li>Item 3</li> -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" >
+        import $controller from './js/controller.js';
+        import $model from './js/model.js';
+        import $view from './js/view.js';
+        import $service from './js/services.js';
+        $controller.inject($model, $view, $service);
+        $controller.init();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,92 @@
+body {
+   
+    background-color: #f9f9f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.workflow-container {
+    font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 1000px;
+}
+
+.step {
+    text-align: center;
+    flex: 1;
+    position: relative;
+}
+
+.icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #d3d3d3;
+    margin: 0 auto 10px auto; /* Ensure it's centered horizontally */
+    z-index: 1; /* Make sure the icon is above the line */
+}
+
+.icon {
+    font-size: 20px;
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon.completed  {
+    background-color: #5cb85c;
+}
+
+.icon.rejected {
+    background-color: red;
+    color: white;
+}
+
+.icon.pending  {
+    background-color: #f8f8f8;
+    border: none;
+}
+
+.step-title {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.step-subtitle {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 10px;
+}
+
+.step-detail {
+    font-size: 12px;
+    color: #949090;
+    /* border-left: 2px solid #5cb85c; */
+    padding-left: 10px;
+    max-height: 80px;
+    height: 60px;
+    text-align: left;
+}
+
+
+
+
+
+
