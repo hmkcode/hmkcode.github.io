@@ -4,18 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Custom Popup Element</title>
-    <script src="CustomPopup.js"></script>
+
+
 </head>
 <body>
     <custom-popup id="popup"></custom-popup>
 
-    <div id="content" style="display:block;">
-        <h1>Popup Content</h1>
-        <p>This is the content inside the popup.</p>
-    </div>
+    
 
     <button onclick="document.getElementById('popup').show('content')">Show Popup</button>
-
+    <button onclick="document.getElementById('popup').create()">Create</button>
+    
     <script>
         
       
@@ -23,5 +22,7 @@
        
 
     </script>
+        <Script src="CustomText.js"></Script>
+        <script src="CustomPopup.js"></script>
 </body>
 </html>

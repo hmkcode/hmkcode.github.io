@@ -13,14 +13,18 @@ const $controller =
 
     init: function()
     {
-        document.addEventListener('DOMContentLoaded', () =>
-        {
-            console.log('DOM is ready');
-            console.log('this', this)
-            this.$services.getUser();
-            this.$view.changeTitle('Hello World 3');
-        });
-        console.log('Controller is ready');
+        
+        console.log('DOM is ready');
+        this.$services.init();
+        this.$model.init();
+        this.$view.init();
+        console.log('Controller is ready');    
+        console.log('MVC is ready');
+    },
+
+    changeTitle: function(title)
+    {
+        this.$view.title.innerHTML = title;
     }
 }
 

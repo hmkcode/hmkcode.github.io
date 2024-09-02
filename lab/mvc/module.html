@@ -33,8 +33,13 @@
         import $model from './js/model.js';
         import $view from './js/view.js';
         import $service from './js/services.js';
-        $controller.inject($model, $view, $service);
-        $controller.init();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            $controller.inject($model, $view, $service);
+            $controller.init();
+            $controller.changeTitle('POPUP');
+        });
+       
     </script>
 
 </body>

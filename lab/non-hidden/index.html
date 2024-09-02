@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Visible Inputs</title>
+    <script src="../validate/validate.js"></script>
+</head>
+<body>
+
+    <div style="display: none;">
+        <input type="text" id="hiddenInput" name="hiddenInput1" />
+    </div>
+
+    <div style="display: none;">
+        <div>
+            <div>
+                <input type="text" id="hiddenInput" name="hiddenInput2" validate="a"/>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <input type="text" id="visibleInput1" name="visibleInput1" validate="required"/>
+    </div>
+
+    <div>
+        <div>
+            <input type="text" id="visibleInput2" name="visibleInput2" >
+        </div>
+    </div>
+
+    <script>
+        // Select all inputs that are not hidden by any parent elements
+        document.addEventListener('DOMContentLoaded', () => {
+            const allInputs = document.querySelectorAll('input[validate]');
+
+            // Filter inputs that are visible
+            const visibleInputs = Array.from(allInputs).filter(input => {
+                return input.offsetParent !== null;
+            });
+
+            visibleInputs.forEach(input => {
+                console.log(input.id); // Logs each visible input
+            });
+
+            validateInput(visibleInputs);
+
+
+        });
+      
+    </script>
+
+</body>
+</html>

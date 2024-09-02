@@ -62,6 +62,13 @@ class CustomPopup extends HTMLElement {
         }
     }
 
+    create(){
+        const ctext = document.createElement("custom-text");
+        ctext.id = "customText";
+        this.popupContent.appendChild(ctext);
+        this.style.display = 'flex';
+    }
+
     // Close the popup
     close() {
         this.style.display = 'none';

@@ -1,9 +1,16 @@
 const $view =
 {
-    changeTitle: (title) =>
+   
+
+    title:null,
+
+    init: function()
     {
-        $e('title').innerHTML = title;
+        console.log('View is ready');     
+        this.title = $e('title');     
+          
     }
+    
 }
 
 export default $view;
