@@ -1,11 +1,7 @@
 class CustomText extends HTMLElement {
     constructor() {
         super();
-        
-        // Define the HTML structure as a string
-      
-
-      
+              
     }
 
     connectedCallback() {
@@ -22,11 +18,7 @@ class CustomText extends HTMLElement {
       // Get the button and text elements after they have been rendered
       this.buttonElement = this.querySelector('button');
       this.textElement = this.querySelector('span');
-
-      // Add event listener to the button to change the text
-      this.buttonElement.addEventListener('click', () => {
-          this.text('New Text');
-      });
+     
     }
     // Method to update the text
     text(newText) {

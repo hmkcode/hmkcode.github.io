@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Toast Message</title>
+</head>
+<body>
+
+  <toast-comp id="toastElement"></toast-comp>
+
+  <script src="ToastComponent.js"></script>
+  <script>
+    // Example usage:
+    const toastElement = document.getElementById('toastElement');
+
+    // Show different types of toasts
+     //toastElement.show('This is an error message!', 'error');
+    // toastElement.show('This is an info message!', 'info');
+     toastElement.show('This is a success message!', 'success');
+    // toastElement.show('This is a confirm message!', 'confirm');
+  </script>
+
+</body>
+</html>

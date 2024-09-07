@@ -4,7 +4,19 @@ const $model =
    {
        console.log('Model is ready');     
    },
-   obj : {id: 1, name: 'John'},
+
+   // users model
+   //============ 
+   _users: null,
+   get users() {
+       return this._users;
+   },
+   set users(value) {
+       this._users = value;
+   },
+
+   
+
 }
 
 export default $model;

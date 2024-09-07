@@ -1,0 +1,41 @@
+.toast {
+    visibility: hidden;
+    min-width: 300px;
+    margin: 0 auto;
+    padding: 15px;
+    text-align: center;
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.5s, visibility 0.5s;
+  }
+
+  .toast.show {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  /* Default styles for different types of toasts */
+  .error {
+    background-color: #f42011;
+    color: white;
+  }
+
+  .info {
+    background-color: #2196F3;
+    color: white;
+  }
+
+  .success {
+    background-color: #4CAF50;
+    color: white;
+  }
+
+  .confirm {
+    background-color: #FF9800;
+    color: white;
+  }

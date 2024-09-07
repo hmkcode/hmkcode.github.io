@@ -6,25 +6,35 @@
     <title>Custom Component Example</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="js/utils.js"></script>
+    <script src="../popup/CustomText.js"></script>
+    <script src="../toast/ToastComponent.js"></script>
    
 </head>
 <body>
     <!-- Use the custom component -->
 
+    <toast-comp id="toast"></toast-comp>
     <div id="app">
         <h1 id="title">Custom Component Example</h1>
         <div id="container">
             <div id="input">
                 <input type="text" id="inputText" placeholder="Enter your name">
-                <button id="btnAdd">Add</button>
+                <button id="add-button">Add</button>
             </div>
+            <custom-text id="custom-text"></custom-text>
             <div id="list">
-                <ul id="listItem">
+                <ul id="users">
                     <!-- <li>Item 1</li>
                     <li>Item 2</li>
                     <li>Item 3</li> -->
                 </ul>
             </div>
+            <template id="user-template">
+                <li>
+                    <span class="name"></span>
+                    <span class="email"></button>
+                </li>   
+            </template>
         </div>
     </div>
 
@@ -34,10 +44,12 @@
         import $view from './js/view.js';
         import $service from './js/services.js';
 
-        document.addEventListener('DOMContentLoaded', () => {
-            $controller.inject($model, $view, $service);
-            $controller.init();
-            $controller.changeTitle('POPUP');
+        document.addEventListener('DOMContentLoaded', async () => {
+            $controller.init($model, $view, $service);
+
+            $controller.render('title','Hope you enjoy the custom component');
+            $controller.render('users', await $service.users);
+
         });
        
     </script>
