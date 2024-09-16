@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Limit with Tooltip</title>
+    <style>
+        #textContainer {
+            width: 350px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3; /* Show only 3 lines, change for more/less lines */
+            line-clamp: 3; /* Standard property */
+           
+            cursor: help;
+        }
+     
+    </style>
+</head>
+<body>
+
+    <h1>Text Limit with Tooltip</h1>
+    
+    <div id="textContainer"></div>
+
+    <script>
+        const textContainer = document.getElementById('textContainer');
+        const fullText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.";
+
+        // Display only the first 300 characters with ellipsis if longer
+      
+            textContainer.textContent = fullText;
+        
+
+        // Show full text on hover
+        textContainer.title = fullText; // This creates the tooltip
+    </script>
+
+</body>
+</html>

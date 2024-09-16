@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expand Div on Hover</title>
+    <style>
+        #expandableDiv {
+            width: 300px;
+            max-height: 50px; /* Initial max height */
+            overflow: hidden; /* Hide overflowed content */
+            background-color: lightblue;
+            border: 1px solid black;
+            
+            line-clamp: 3; /* Standard property */
+            padding: 10px;
+            transition: max-height 0.8s ease; /* Smooth transition for max-height */
+        }
+
+        #expandableDiv:hover {
+            max-height: 500px; /* Expand smoothly to 500px (or more if needed) */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Expand Div on Hover to Show Full Text</h1>
+    
+    <div id="expandableDiv">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere. Curabitur in ligula non enim gravida tincidunt. Donec ac orci odio. Praesent ac turpis at enim eleifend auctor. Etiam vitae dictum lacus. Nullam tincidunt, lacus sed fermentum pharetra, eros odio suscipit risus, nec feugiat tortor urna id justo.
+    </div>
+
+</body>
+</html>

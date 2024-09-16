@@ -1,10 +1,11 @@
-$e = $element = (elementId, container = document) => container.getElementById(elementId);
 
-$s = $sel = $select_one = (elementSelector, container = document) => container.querySelector(elementSelector);
+const $e = (elementId) => document.getElementById(elementId);
 
-$s_all = $select_all = (elementSelector, container = document) => Array.from(container.querySelectorAll(elementSelector));
+const $s = (elementSelector, container = document) => container.querySelector(elementSelector);
 
-$onEvent = addEventListeners = (elements, events, callback, info = null) => {
+const $s_all =(elementSelector, container = document) => Array.from(container.querySelectorAll(elementSelector));
+
+const $on = (elements, events, callback, info = null) => {
 
     $log(info);
 
@@ -28,7 +29,7 @@ $onEvent = addEventListeners = (elements, events, callback, info = null) => {
 };
 
 
-$remove_event = removeEventListeners = (elements, events, callback, info = null) => {
+const $remove_event = (elements, events, callback, info = null) => {
     
     $log(info);
 
@@ -51,7 +52,7 @@ $remove_event = removeEventListeners = (elements, events, callback, info = null)
 
 };
 
-$val = (element, value, info = null) => {
+const $val = (element, value, info = null) => {
 
     $log(info);
     //element = $select_one(element)
@@ -67,7 +68,7 @@ $val = (element, value, info = null) => {
             } else {
                 element.value = value;
             }
-        } else if (element.tagName === 'SELECT' || element.tagName === 'TEXTAREA') {
+        } else if (element.tagName === 'SELECT' || element.tagName === 'TEXTAREA' || element.tagName === 'OPTION') {
             element.value = value;
         }
     }
@@ -79,14 +80,14 @@ $val = (element, value, info = null) => {
         } else {
             return element.value;
         }
-    } else if (element.tagName === 'SELECT' || element.tagName === 'TEXTAREA') {
+    } else if (element.tagName === 'SELECT' || element.tagName === 'TEXTAREA' || element.tagName === 'OPTION') {
         return element.value;
     }
     
     return null; // Return null if the element is not supported
 };
 
-$text = (element, text, info = null) => {
+const $text = (element, text, info = null) => {
     $log(info);
     //element = $select_one(element)
 
@@ -100,26 +101,29 @@ $text = (element, text, info = null) => {
     return element.innerText;
 }
 
-$build = (container, template, data, fillClone, info = null) => {  
+const $build = (container, template, data, fillClone, info = null) => {  
     $log(info);
     if (!container || !template || !data) return null; // Return null if the element doesn't exist
+    const fragment = document.createDocumentFragment(); // Create a document fragment
     data.forEach((item) => {
         const clone = template.content.cloneNode(true);
         fillClone(clone, item);
-        container.appendChild(clone);
+        fragment.appendChild(clone); 
     });  
+    container.appendChild(fragment);
+
 }
 
-$log = (msg) => {
+const $log = (msg) => {
     if(msg)console.log(msg);
 }
 
-$debug = (msg) => {
+const $debug = (msg) => {
     console.debug(msg);
 }
 
 // can take one on array of elements
-$show = (elements, info = null) => {
+const $show = (elements, info = null) => {
     
     $log(info);
 
@@ -134,7 +138,7 @@ $show = (elements, info = null) => {
     });
 }
 
-$hide = (elements, info = null) => {
+const $hide = (elements, info = null) => {
 
     $log(info);
 
@@ -149,7 +153,7 @@ $hide = (elements, info = null) => {
     });
 }
 
-$fadeOut = (elements, duration = 500, callback, info = null) => {
+const $fadeOut = (elements, duration = 500, callback, info = null) => {
 
     $log(info);
 
@@ -170,7 +174,7 @@ $fadeOut = (elements, duration = 500, callback, info = null) => {
     }, duration);
 }
 
-$fadeIn = (elements, duration = 500, callback, info = null) => {
+const $fadeIn = (elements, duration = 500, callback, info = null) => {
 
     $log(info);
 
@@ -190,3 +194,13 @@ $fadeIn = (elements, duration = 500, callback, info = null) => {
         callback();
     }, duration);
 }
+
+const $emit  = (eventName, detail = null) => {
+    console.log('Event: ', eventName, detail);
+    const event = new CustomEvent(eventName,  {detail});
+    document.dispatchEvent(event);
+}
+
+// export all const 
+export {$e, $s, $s_all, $on, $remove_event, $val, $text, $build, $log, $debug, $show, $hide, $fadeOut, $fadeIn, $emit};
+

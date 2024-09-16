@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Component Example</title>
+    <link rel="stylesheet" >
+   
+</head>
+<body>
+    <!-- Use the custom component -->
+    <my-custom-element id="mce"></my-custom-element>
+
+
+    <script >
+        // Ensure the script runs after the DOM is fully loaded
+       
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            function logExecution(target, key, descriptor) {
+                const originalMethod = descriptor.value;
+                
+                descriptor.value = function(...args) {
+                console.log(`Executing ${key} with arguments:`, args);
+                return originalMethod.apply(this, args);
+                };
+            
+                return descriptor;
+            }
+
+            
+            class Example {
+                @logExecution
+                doSomething(x, y) {
+                console.log('Result:', x + y);
+                }
+            }
+            
+            // Usage
+            const example = new Example();
+            example.doSomething(2, 3);
+            
+        });
+    </script>
+   
+
+</body>
+</html>
+

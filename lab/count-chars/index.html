@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Countdown</title>
+</head>
+<body>
+
+    <h1>Character Countdown</h1>
+    
+    <textarea id="textInput" rows="10" cols="50" placeholder="Start typing..."></textarea>
+    <p>Remaining characters: <span id="charCount">200</span></p>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const textInput = document.getElementById('textInput');
+            const charCountDisplay = document.getElementById('charCount');
+            const maxLength = 200;
+
+            textInput.addEventListener('input', function () {
+                const remaining = maxLength - textInput.value.length;
+                charCountDisplay.textContent = remaining;
+
+                if (remaining < 0) {
+                    charCountDisplay.textContent = 0;
+                    textInput.value = textInput.value.substring(0, maxLength); // Trim if more than 200 chars
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

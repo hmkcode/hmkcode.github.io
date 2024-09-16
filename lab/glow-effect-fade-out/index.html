@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glow Effect Example</title>
+  <style>
+    .glow-effect {
+      animation: glowFadeOut 2s ease-out forwards;
+    }
+
+    @keyframes glowFadeOut {
+      0% {
+        box-shadow: 0 0 10px rgb(114, 168, 230);
+      }
+      100% {
+        box-shadow: 0 0 0 rgba(255, 255, 0, 0);
+      }
+    }
+
+    /* Optional: Style for the element */
+    #myElement {
+      padding: 20px;
+      border: 1px solid #ccc;
+      display: inline-block;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Update and Glow Effect</h2>
+
+  <button onclick="updateElement()">Update Text</button>
+
+  <div id="myElement">Original Text</div>
+
+  <script>
+    function updateElement() {
+      // Get the element
+      const element = document.getElementById('myElement');
+
+      // Update its content
+      element.textContent = "Updated Text!";
+
+      // Add the glow effect class
+      element.classList.add('glow-effect');
+
+       // Listen for the 'animationend' event to remove the class
+       element.addEventListener('animationend', function() {
+        element.classList.remove('glow-effect');
+        }, { once: true }); // 'once: true' ensures the event listener runs only once
+    
+    }
+  </script>
+
+</body>
+</html>

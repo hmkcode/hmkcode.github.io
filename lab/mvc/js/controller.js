@@ -1,72 +1,94 @@
+import { VIEWS, $view } from "./view.js";
+import { SERVICES, $services } from "./services.js";
+import { MODEL, $model } from "./model.js";
+import { $emit, $on } from "./utils.js";
+
+const  CONTROLLER = {
+
+    EVENTS: {
+        INITALIZED: 'CONTROLLER.EVENTS:INITIALIZED',        
+    }
+    
+};
+
 const $controller =
 {
    
-    $model: null,
-    $view:null,
-    $services:null,
 
-    init: function(model, view, services)
+    init:  function()
     {
-        this.$model = model;
-        this.$view = view;
-        this.$services = services;
-
-        if(!this.$model || !this.$view || !this.$services)
-        {
-            console.error('MVC is not ready');
-            return;
-        }
-
-        this.$services.init();
-        this.$model.init();
-        this.$view.init();
+        $services.init();
+        $model.init();
+        $view.init();
         console.log('Controller is ready');  
-        
-        this.initEventListeners();
-        this.initServices();
+        this.$regsiter_listeners();
+      
+
+        //this.users();
+
+        $emit(CONTROLLER.EVENTS.INITALIZED, {source:'$controller.init'});
+
     },
-
-
-    // REGISTERING EVENT LISTENERS ...
-    initEventListeners() {
-        this.$view.addButton.click = this.onAddButtonClicked.bind(this);
-        this.$view.title.hover = this.onTitleHovered.bind(this);
-        this.$view.customText.click = this.onCustomTextButtonClicked.bind(this);
-        this.$view.GLOBAL_ERROR_EVENT = this.onGlobalError.bind(this);
-    },
-
-    async initServices() {
-        this.$model.users= await this.$services.users;
-    },
-
+ 
 
     // EVENT HANDLERS ...
-    onAddButtonClicked: function()
-    {
-        console.log('Add button clicked');
-        this.$view.title = 'New Title';
+    $listeners: {
+
+        [CONTROLLER.EVENTS.INITALIZED]: function(event){
+            $services.users;
+            $services.destinations;
+        },
+
+        [VIEWS.EVENTS.ADD_BUTTON_CLICK]:function(){
+            $view.title = 'New Title';
+        },
+
+        [VIEWS.EVENTS.TITLE_MOUSEOVER]: function() {
+            console.log('Title hovered');
+        },
+
+        [VIEWS.EVENTS.CUSTOME_TEXT_CLICK]:function(){
+            $view.customText = 'Custom Text Clicked!'
+        },
+
+        [SERVICES.EVENTS.ERROR]:function(event){
+            $view.toast = {message: event.error.detail, style:'error'}
+        },        
+
+        [SERVICES.EVENTS.USERS_FETCHED]:function(event){
+            $model.users = event.detail.data
+        },
+        [SERVICES.EVENTS.DESTINATIONS_FETCHED]:function(event){
+            $model.destinations = event.detail.data
+        },
+
+        [MODEL.EVENTS.USERS_SET]:function(event){
+            $view.users = event.detail.data
+        },
+        [MODEL.EVENTS.DESTINATIONS_SET]:function(event){
+            $view.countries = event.detail.data.countries
+        },
+       
     },
 
-    onTitleHovered() {
-        console.log('Title hovered');
+    $regsiter_listeners: function(){       
+        Object.keys(this.$listeners).forEach(event => {
+                $on(document, event, this.$listeners[event].bind(this));
+        });
     },
 
-    onCustomTextButtonClicked: function()
-    {
-        console.log('Custome button clicked');
-        this.$view.customText = 'Custom Text Clicked!';
+    async users(){
+        console.log('Fetching users...');
+        $view.users = $model.users = await $services.users;
     },
+   
 
-    onGlobalError: function(event)
-    {
-        this.$view.toast.show(event.detail, 'error');	
-    },
 
     // RENDEREING ...
 
     render: function(view, model)
     {
-        this.$view[view] = model;
+        $view[view] = model;
     },
 
 }

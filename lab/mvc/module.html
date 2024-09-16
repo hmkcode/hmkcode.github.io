@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Custom Component Example</title>
     <link rel="stylesheet" href="css/style.css">
-    <script src="js/utils.js"></script>
     <script src="../popup/CustomText.js"></script>
     <script src="../toast/ToastComponent.js"></script>
    
@@ -18,17 +17,25 @@
         <h1 id="title">Custom Component Example</h1>
         <div id="container">
             <div id="input">
-                <input type="text" id="inputText" placeholder="Enter your name">
+                <input type="text" id="input-name" placeholder="Enter your name">
                 <button id="add-button">Add</button>
             </div>
-            <custom-text id="custom-text"></custom-text>
-            <div id="list">
+            <custom-text id="custom-text" emit="VIEWS.EVENTS:CHANGE_TEXT_CLICK"></custom-text>
+            <div>
                 <ul id="users">
-                    <!-- <li>Item 1</li>
-                    <li>Item 2</li>
-                    <li>Item 3</li> -->
+                   
                 </ul>
             </div>
+            <label for="countries">Choose a country:</label>
+            <input list="country-list" id="countries" name="countries" placeholder="Select or type a country">
+            
+            <datalist id="country-list">
+              
+            </datalist>
+            <template id="country-template">
+                <option class="country-option" value="">
+            </template>
+
             <template id="user-template">
                 <li>
                     <span class="name"></span>
@@ -40,15 +47,12 @@
 
     <script type="module" >
         import $controller from './js/controller.js';
-        import $model from './js/model.js';
-        import $view from './js/view.js';
-        import $service from './js/services.js';
 
         document.addEventListener('DOMContentLoaded', async () => {
-            $controller.init($model, $view, $service);
+            $controller.init();
 
-            $controller.render('title','Hope you enjoy the custom component');
-            $controller.render('users', await $service.users);
+           // $controller.render('title','Hope you enjoy the custom component');
+           // $controller.render('users', await $service.users);
 
         });
        
