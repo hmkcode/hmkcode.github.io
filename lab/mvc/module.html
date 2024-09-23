@@ -5,9 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Custom Component Example</title>
     <link rel="stylesheet" href="css/style.css">
+
+    <script src="js/config.js" type="module"></script>
     <script src="../popup/CustomText.js"></script>
     <script src="../toast/ToastComponent.js"></script>
-   
+
+    <script src="js/extensions/table_ext.js"></script>
+    <script src="js/extensions/customtext_ext.js"></script>
+    <script src="js/extensions/input_ext.js"></script>
 </head>
 <body>
     <!-- Use the custom component -->
@@ -17,29 +22,51 @@
         <h1 id="title">Custom Component Example</h1>
         <div id="container">
             <div id="input">
-                <input type="text" id="input-name" placeholder="Enter your name">
-                <button id="add-button">Add</button>
+                <input type="text" id="input-name"  validate="required">
+                <span errmsg="input-name" class="error" style="display: none;"></span>
+
+                <input type="text" id="input-networkid" validate="required" style="display: block;">
+                <span errmsg="input-networkid" class="error" style="display: none;"></span>
+
+                <select id="select-number" validate="required" style="display: block;">
+                    <option value="" selected>Select a number</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+                <span errmsg="select-number" class="error" style="display: none;"></span>
+
+                <button id="validate-button">Validate</button>
             </div>
-            <custom-text id="custom-text" emit="VIEWS.EVENTS:CHANGE_TEXT_CLICK"></custom-text>
+            <custom-text id="custom-text" emit="CHANGE_TEXT_CLICK"></custom-text>
             <div>
                 <ul id="users">
                    
                 </ul>
             </div>
             <label for="countries">Choose a country:</label>
-            <input list="country-list" id="countries" name="countries" placeholder="Select or type a country">
+            <input list="destination-list" id="input-destination" validate="required, indatalist">
+            <span errmsg="input-destination" class="error" style="display: none;"></span>
+
+            <datalist id="destination-list"></datalist>
+
+             <!-- Search box for filtering the table -->
             
-            <datalist id="country-list">
-              
-            </datalist>
-            <template id="country-template">
-                <option class="country-option" value="">
-            </template>
+            <input type="text" id="table-search" placeholder="Search table...">
+
+            <table id="table">
+
+            </table>
+
+          
+
+       
 
             <template id="user-template">
                 <li>
                     <span class="name"></span>
-                    <span class="email"></button>
+                    <span class="email"></span>
+                    <span class="username"></span>
                 </li>   
             </template>
         </div>

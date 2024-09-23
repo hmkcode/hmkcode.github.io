@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 50px;
+            background-color: #fff;
+        }
+    </style>
+
+    <title>Custom Trip Line Component</title>
+</head>
+<body>
+    <!-- Use the custom element here -->
+    <trip-line id="tripline"></trip-line>
+
+    <button id="add-point-button" class="add-point-button">Add Point</button>
+    <script src="tripline-v2.js"></script>
+
+    <script>
+        // set trip-line points 
+        const tripLine = document.getElementById('tripline');
+        const points = [
+            { point_id: 101, location_name: "AB", distance: 0, point_order: 0},
+            { point_id: 201, location_name: "YZ", distance: 100, point_order: 100},
+            { point_id: 151, location_name: "SP", distance: 200, point_order: 10},
+        ]
+        tripline.render(points);
+
+        const addPointButton = document.getElementById('add-point-button');
+        addPointButton.addEventListener('click', () => {
+            const newPointObject = { point_id: (128+tripLine._points.length), 
+                location_name: "AIRPORT"+tripLine._points.length, distance: 130, point_order: 20}
+            tripline.addPoint(newPointObject);
+            
+        });
+        document.body.appendChild(addPointButton);
+
+        tripline.addEventListener('orderupdatedevent', (event) => {
+                console.log('Order updated:', event.detail.points);
+        });
+
+       
+        // #TODO: to be removed 
+    
+    </script>
+</body>
+</html>

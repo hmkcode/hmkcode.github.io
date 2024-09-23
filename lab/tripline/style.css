@@ -1,0 +1,142 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 50px;
+    background-color: #fff;
+}
+.line-container {
+    position: relative;
+    width: 700px;
+    height: 50px; /* Increased height to fit the labels */
+   /* background-color: #efefef; */
+    margin-top: 20px;
+}
+.dashed-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border-top: 1.6px dashed gray;
+    transform: translateY(-50%);
+}
+.filled-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 33%; /* Adjust this dynamically for the progress percentage */
+    border-top: 2px solid #ffc107;
+    transform: translateY(-50%);
+  }
+.point {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background-color: #fff;
+    border:1.2px solid #c0c0c0;
+    
+    border-radius: 50%;
+    cursor: pointer;
+    transform: translate(-50%, -8px);
+    user-select: none; /* Prevent text selection */
+}
+
+.start-point{
+    background-color: #fff;
+    border:1px solid #47c433 !important;
+    /* box-shadow: 0 0 0 4px #47c433 inset; /* Inner circle */ 
+
+}
+.start-point::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 10px;
+    height: 10px;
+    border: 5px solid #47c433;
+    border-radius: 50%;
+    box-sizing: border-box;
+}
+.end-point{
+    background-color: #fff;
+    border:1.2px solid #eb2626 !important;
+}
+.end-point::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 10px;
+    height: 10px;
+    border: 5px solid #eb2626;
+    border-radius: 50%;
+    box-sizing: border-box;
+}
+.label-container {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translateX(-58px) translateY(-100%);
+    user-select: none; /* Prevent text selection */
+    background-color: transparent;
+}
+
+
+.label-container-start {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translateX(-140px) translateY(-32%);
+    user-select: none; /* Prevent text selection */
+    background-color: transparent;
+}
+
+.label-container-end {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translateX(25px) translateY(-32%);
+    user-select: none; /* Prevent text selection */
+    background-color: transparent;
+}
+.label {
+    width: 130px;
+    height: 60px;
+    background-color: transparent;
+    border:1.2px solid #c0c0c0;
+    
+    color: #1e1d1d;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 3px;
+    margin-bottom: 0px; /* Space between label and point */
+    user-select: none; /* Prevent text selection */
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1); /* Add shadow */
+}
+.label.dragging{
+    border: 1px dashed #cfcfcf !important;
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.0); /* Add shadow */
+}
+.line {
+    width: 1px;
+    background-color: #c0c0c0;
+    height: 20px; /* Adjust height to fit the distance between point and label */
+    user-select: none; /* Prevent text selection */
+}
+.start-end-line{
+    width: 0px;
+    background-color: transparent;
+}
+.add-point-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    user-select: none; /* Prevent text selection */
+}

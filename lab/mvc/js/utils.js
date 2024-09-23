@@ -104,15 +104,21 @@ const $text = (element, text, info = null) => {
 const $build = (container, template, data, fillClone, info = null) => {  
     $log(info);
     if (!container || !template || !data) return null; // Return null if the element doesn't exist
+    
     const fragment = document.createDocumentFragment(); // Create a document fragment
+    
     data.forEach((item) => {
         const clone = template.content.cloneNode(true);
         fillClone(clone, item);
         fragment.appendChild(clone); 
     });  
-    container.appendChild(fragment);
+
+     container.appendChild(fragment);
+     return container;
 
 }
+
+const $create = (tag) => document.createElement(tag);
 
 const $log = (msg) => {
     if(msg)console.log(msg);
@@ -201,6 +207,22 @@ const $emit  = (eventName, detail = null) => {
     document.dispatchEvent(event);
 }
 
+const $validate = (inputs) =>{
+    const visibleInputs = Array.from(inputs).filter(input => {
+        return input.offsetParent !== null;
+    });
+
+    var areAllValid = true;
+    visibleInputs.forEach(input => {
+        const isValid = input.validate();
+        console.log(input.id, isValid); 
+        if(!isValid) 
+            areAllValid = false;
+    });
+    return areAllValid;
+}
+
 // export all const 
-export {$e, $s, $s_all, $on, $remove_event, $val, $text, $build, $log, $debug, $show, $hide, $fadeOut, $fadeIn, $emit};
+export {$e, $s, $s_all, $on, $remove_event, $val, $text, 
+    $build, $log, $debug, $show, $hide, $fadeOut, $fadeIn, $emit, $create, $validate};
 

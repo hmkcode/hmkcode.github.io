@@ -4,6 +4,7 @@ const  MODEL = {
 
     EVENTS: {
         USERS_SET: 'MODEL.EVENTS:USERS_SET',        
+        DESTINATIONS_SET: 'MODEL.EVENTS:DESTINATIONS_SET',
     }
     
 };
@@ -26,6 +27,9 @@ const $model =
        $emit(MODEL.EVENTS.USERS_SET, {data:value});
    },
 
+   // destinations model
+   //=================== 
+
    _destinations: null,
     get destinations() {
          return this._destinations;
@@ -35,16 +39,33 @@ const $model =
         $emit(MODEL.EVENTS.DESTINATIONS_SET, {data:value});
     },
 
-    // <option value="Netherland">
-    // <option value="Nigeria">
-    // <option value="Norway">
-    // <option value="Oman">
-    // <option value="Pakistan">
-    // <option value="Palau">
-    // <option value="Panama">
-    // <option value="Papua New Guinea">
+    // createGetterSetter: function(propertyName, eventName) {
+    //     let value = null;
+    //     Object.defineProperty(this, propertyName, {
+    //         get: function() {
+    //             return value;
+    //         },
+    //         set: function(newValue) {
+    //             value = newValue;
+    //             $emit(eventName, { data: newValue });
+    //         }
+    //     });
+    // }
    
-
+    // cols 
+    // ====
+    _cols: [
+        {name: 'ID', data: 'id', sortable: true, index:true, data_type:'number'},
+        {name: 'Name', data: 'name', sortable: true},
+        {name: 'Email', data: 'email'},
+    ],
+    get cols() {
+        return this._cols;
+    },
 }
+
+// $model.createGetterSetter('_users', MODEL.EVENTS.USERS_SET);
+// $model.createGetterSetter('_destinations', MODEL.EVENTS.DESTINATIONS_SET);
+
 
 export {$model, MODEL};

@@ -1,7 +1,7 @@
 import { VIEWS, $view } from "./view.js";
 import { SERVICES, $services } from "./services.js";
 import { MODEL, $model } from "./model.js";
-import { $emit, $on } from "./utils.js";
+import { $emit, $on, $validate, $s_all } from "./utils.js";
 
 const  CONTROLLER = {
 
@@ -22,11 +22,14 @@ const $controller =
         $view.init();
         console.log('Controller is ready');  
         this.$regsiter_listeners();
-      
-
+        
+        $view.title = 'Hello World';
+        $view.customText = 'Validate';
         //this.users();
 
-        $emit(CONTROLLER.EVENTS.INITALIZED, {source:'$controller.init'});
+        window.onload = () => {
+            $emit(CONTROLLER.EVENTS.INITALIZED, {source:'$controller.init'});
+        };
 
     },
  
@@ -49,6 +52,7 @@ const $controller =
 
         [VIEWS.EVENTS.CUSTOME_TEXT_CLICK]:function(){
             $view.customText = 'Custom Text Clicked!'
+            console.log($validate($s_all('input[validate]', VIEWS.CUSTOM_TEXT.shadowRoot)));
         },
 
         [SERVICES.EVENTS.ERROR]:function(event){
@@ -64,9 +68,11 @@ const $controller =
 
         [MODEL.EVENTS.USERS_SET]:function(event){
             $view.users = event.detail.data
+            $view.table = {cols:$model.cols, data:event.detail.data};
+
         },
         [MODEL.EVENTS.DESTINATIONS_SET]:function(event){
-            $view.countries = event.detail.data.countries
+            $view.destinations = event.detail.data.countries
         },
        
     },

@@ -13,3 +13,43 @@
 div{
     color: #333;
 }
+
+
+
+tfoot tr td{
+    background-color: #efefef;
+    text-align: center;
+    padding: 4px;
+}
+.xtable-head-sortable{
+    cursor: pointer;
+    color: #0000ff;
+
+}
+
+.xtable-body-cell{
+    color: #333;
+    padding: 4px;
+    min-width: 100px;
+}
+
+.xtable-body-row{
+    cursor: pointer;
+}
+
+/* glow effect */
+.xtable-body-row:hover{
+    box-shadow: 0 0 10px #f0f0f0;
+    animation: glowFadeOut 2s ease-out forwards;
+
+    
+}
+
+ @keyframes glowFadeOut {
+    0% {
+      box-shadow: 0 0 10px rgb(114, 168, 230);
+    }
+    100% {
+      box-shadow: 0 0 0 rgba(255, 255, 0, 0);
+    }
+  }
