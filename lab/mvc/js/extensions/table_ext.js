@@ -32,32 +32,71 @@ Object.defineProperty(HTMLTableElement.prototype, 'tfoot', {
     },
 });
 
-// Function to filter rows based on search query
-HTMLTableElement.prototype.filterRows = function(query) {
-    const rows = this.tbody ? this.tbody.rows : [];
-    const lowerCaseQuery = query.toLowerCase();
-
-    Array.from(rows).forEach(row => {
-        const cells = Array.from(row.cells);
-        const matches = cells.some(cell => cell.textContent.toLowerCase().includes(lowerCaseQuery));
-        row.dataset.matches = matches ? 'true' : 'false';
-        row.style.display = matches ? '' : 'none';
+HTMLTableElement.prototype.render = function(cols, data, pageLength = 5) {
+    this.maxRowsPerPage = pageLength;
+    // Build table header
+    this.innerHTML = '';
+    const thead = this.createTHead();
+    const headerRow = thead.insertRow();
+    cols.forEach((col, index) => {
+        const th = document.createElement('th');
+        th.textContent = col.name;
+        if (col.sortable) 
+            th.setAttribute('d-sortable', 'true');
+        if(col.data_type)
+            th.setAttribute('d-datatype', col.data_type);
+        else
+            th.setAttribute('d-datatype', 'text');
+        
+        headerRow.appendChild(th);
     });
 
-    this.paginate(5, true);
+    // Build table body
+    const tbody = this.createTBody();
+    data.forEach((item, rowIndex) => {
+        const row = tbody.insertRow();
+        row.dataset.matches = 'true';
+        row.classList.add('xtable-body-row');
+        cols.forEach(col => {
+            const cell = row.insertCell();
+            cell.classList.add('xtable-body-cell');
+            cell.textContent = item[col.data];
+            if (col.index) {
+                row.setAttribute('d-index', item[col.data]);
+            }
+        });
+
+        // Add click event listener to row
+        row.addEventListener('click', () => {
+            const dIndexValue = row.getAttribute('d-index');
+            const event = new CustomEvent('XTABLE.EVENT:ROW_CLICK', {
+                detail: {
+                    key: dIndexValue
+                }
+            });
+            this.dispatchEvent(event);
+        });
+    });
+
+    // Initialize pagination and sortable columns
+    this.paginate(); // Set the maximum number of rows per page to 10
+    this.makeColumnsSortable(cols);
 };
 
+
+
 // Function to paginate rows
-HTMLTableElement.prototype.paginate = function(maxRowsPerPage, isFiltered = false) {
-    this.maxRowsPerPage = maxRowsPerPage;
+HTMLTableElement.prototype.paginate = function() {
+
     const rows = Array.from(this.tbody ? this.tbody.rows : []);
-    const filteredRows = isFiltered ? rows.filter(row => row.dataset.matches === 'true') : rows;
-    const totalPages = Math.ceil(filteredRows.length / maxRowsPerPage);
-    let currentPage = 1;
+    const filteredRows = rows.filter(row => row.dataset.matches === 'true') ;
+    const totalPages = Math.ceil(filteredRows.length / this.maxRowsPerPage);
+    this.currentPage = this.currentPage? this.currentPage : 1;
 
     const renderPage = (page) => {
-        const start = (page - 1) * maxRowsPerPage;
-        const end = start + maxRowsPerPage;
+        this.currentPage = page;
+        const start = (page - 1) * this.maxRowsPerPage;
+        const end = start + this.maxRowsPerPage;
 
         rows.forEach(row => {
             row.style.display = 'none';
@@ -104,61 +143,29 @@ HTMLTableElement.prototype.paginate = function(maxRowsPerPage, isFiltered = fals
         tfoot.appendChild(footerRow);
     };
 
-    renderPage(currentPage);
+    renderPage(this.currentPage);
 };
 
-HTMLTableElement.prototype.build = function(cols, data, pageLength = 5) {
-    // Build table header
-    this.innerHTML = '';
-    const thead = this.createTHead();
-    const headerRow = thead.insertRow();
-    cols.forEach((col, index) => {
-        const th = document.createElement('th');
-        th.textContent = col.name;
-        if (col.sortable) 
-            th.setAttribute('d-sortable', 'true');
-        if(col.data_type)
-            th.setAttribute('d-datatype', col.data_type);
-        else
-            th.setAttribute('d-datatype', 'text');
-        
-        headerRow.appendChild(th);
+// Function to filter rows based on search query
+HTMLTableElement.prototype.filterRows = function(query) {
+    const rows = this.tbody ? this.tbody.rows : [];
+    const lowerCaseQuery = query.toLowerCase();
+
+    Array.from(rows).forEach(row => {
+        const cells = Array.from(row.cells);
+        const matches = cells.some(cell => cell.textContent.toLowerCase().includes(lowerCaseQuery));
+        row.dataset.matches = matches ? 'true' : 'false';
+        row.style.display = matches ? '' : 'none';
     });
 
-    // Build table body
-    const tbody = this.createTBody();
-    data.forEach((item, rowIndex) => {
-        const row = tbody.insertRow();
-        row.classList.add('xtable-body-row');
-        cols.forEach(col => {
-            const cell = row.insertCell();
-            cell.classList.add('xtable-body-cell');
-            cell.textContent = item[col.data];
-            if (col.index) {
-                row.setAttribute('d-index', item[col.data]);
-            }
-        });
-
-        // Add click event listener to row
-        row.addEventListener('click', () => {
-            const dIndexValue = row.getAttribute('d-index');
-            const event = new CustomEvent('XTABLE.EVENT:ROW_CLICK', {
-                detail: {
-                    key: dIndexValue
-                }
-            });
-            this.dispatchEvent(event);
-        });
-    });
-
-    // Initialize pagination and sortable columns
-    this.paginate(pageLength); // Set the maximum number of rows per page to 10
-    this.makeColumnsSortable(cols);
+    this.currentPage = 1;
+    this.paginate();
 };
+
 
 HTMLTableElement.prototype.sortRows = function(columnIndex, ascending = true, dataType = 'text') {
     const rows = Array.from(this.tbody ? this.tbody.rows : []);
-    const filteredRows = rows.filter(row => row.dataset.matches !== 'false');
+    const filteredRows = rows.filter(row => row.dataset.matches === 'true') ;
     filteredRows.sort((a, b) => {
         let aText = a.cells[columnIndex].textContent.trim();
         let bText = b.cells[columnIndex].textContent.trim();
@@ -172,7 +179,11 @@ HTMLTableElement.prototype.sortRows = function(columnIndex, ascending = true, da
         }
     });
 
-    filteredRows.forEach(row => this.tbody.appendChild(row));
+    filteredRows.forEach(row => {
+         row.style.display = '';
+        this.tbody.appendChild(row)
+    });
+    this.paginate();
 };
 
 HTMLTableElement.prototype.makeColumnsSortable = function(cols) {
