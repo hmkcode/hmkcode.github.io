@@ -1,8 +1,21 @@
-```
+import pandas as pd
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.impute import SimpleImputer
+import matplotlib.pyplot as plt
+import numpy as np
+import math
+
+
+
 file_path = "data-v3.csv"
 df = pd.read_csv(file_path)
 
-df = df[~((df["PT"] == "N1") | (df["F"] == "F13"))]
+df = df[~((df["PT"] == "NF") | (df["F"] == "F13"))]
 
 
 # Define a function to compute success ratio and Laplace-smoothed ratio for a given group
@@ -41,8 +54,7 @@ def merge_ratios_into_main(main_df, ratio_df, group_cols):
 
     # Merge into main dataframe
     return main_df.merge(renamed[group_cols + [raw_col, lap_col]], on=group_cols, how="left")
-
-
+    
 def apply_success_ratios(df, group_k_pairs):
     for group_cols, k, show in group_k_pairs:
         ratios = compute_success_ratios_by_cols(df, group_cols, k=k, show=show)
@@ -70,33 +82,18 @@ def map_ratios_to_df(source_df, target_df, group_cols):
     merged = target_df.merge(ratio_df, on=group_cols, how="left")
     return merged
 
+def merge_on(df_source, df_target, merge=[], on=[]):
+    # Create a smaller df_source with only the needed columns
+    df_merge = df_source[on + merge].drop_duplicates()
 
-dummy_data = {
-    "F": ["F1", "F2", "F3", "F4", "F5"],
-    "PT": ["P1", "P2", "P1", "P2", "P3"],
-    "D": [11390, 12748, 8000, 12000, 13000]  # Example values
-}
+    # Perform the merge
+    df_result = df_target.merge(df_merge, on=on, how='left')
 
-dummy_df = pd.DataFrame(dummy_data)
-dummy_df = map_ratios_to_df(df_ratios, dummy_df, ["F"])
-dummy_df = map_ratios_to_df(df_ratios, dummy_df, ["F", "PT"])
-
-# Extract bin categories from df_ratios
-f_bins = df_ratios["F(S)_bin"].cat.categories
-d_bins = df_ratios["D_bin"].cat.categories
-
-# Convert IntervalIndex (categories) to bin edges (a list of numbers)
-f_bin_edges = [interval.left for interval in f_bins] + [f_bins[-1].right]
-d_bin_edges = [interval.left for interval in d_bins] + [d_bins[-1].right]
-
-# Apply to new_df
-dummy_df["F(S)_bin"] = pd.cut(dummy_df["F(S)_ratio"], bins=f_bin_edges)
-dummy_df["D_bin"] = pd.cut(dummy_df["D"],  bins=d_bin_edges)
-
-display(dummy_df)
+    return df_result
 
 
-import numpy as np
+------------------
+
 
 def haversine(lat1, lon1, lat2, lon2, radius=6371):
     lat1, lon1, lat2, lon2 = map(np.radians, [lat1, lon1, lat2, lon2])
@@ -106,84 +103,111 @@ def haversine(lat1, lon1, lat2, lon2, radius=6371):
     c = 2 * np.arcsin(np.sqrt(a))
     return radius * c
 
-def add_nearest_from_success(df_source, df_target, lat_col="LT", lon_col="LG"):
+def find_nearest_success_point(
+    df_s,
+    df_t,
+    lat_col="LT",
+    lon_col="LG",
+    not_matching=["INDX"],
+    matching_on=[]
+):
+    distances = []
 
-    # Filter only successful points from source
-    successful = df_source[df_source["S"] == 1]
-    src_coords = successful[[lat_col, lon_col]].to_numpy()
-    tgt_coords = df_target[[lat_col, lon_col]].to_numpy()
+    for _, t_row in df_t.iterrows():
+        # Exclude self-matching based on `not_matching`
+        mask = np.ones(len(df_s), dtype=bool)
+        for col in not_matching:
+            mask &= df_s[col] != t_row[col]
 
-    nearest_distances = []
+        # Include only rows that match on `matching_on`
+        for col in matching_on:
+            mask &= df_s[col] == t_row[col]
 
-    for lat_tgt, lon_tgt in tgt_coords:
-        distances = [haversine(lat_tgt, lon_tgt, lat_src, lon_src) for lat_src, lon_src in src_coords]
-        min_dist = min(distances) if distances else np.nan
-        nearest_distances.append(round(min_dist, 2))
+        # Filter to successful source rows
+        success_rows = df_s[(df_s["S"] == 1) & mask]
+        coords = success_rows[[lat_col, lon_col]].to_numpy()
+        lat_tgt, lon_tgt = t_row[lat_col], t_row[lon_col]
 
-    df_target["nearest_distance_km"] = nearest_distances
-    return df_target
+        if len(coords) > 0:
+            dists = [haversine(lat_tgt, lon_tgt, lat_s, lon_s) for lat_s, lon_s in coords]
+            min_dist = round(min(dists), 2)
+        else:
+            min_dist = -1
+
+        distances.append(min_dist)
+
+    # Create dynamic column name
+    suffix = "_" + "_".join(matching_on) if matching_on else ""
+    col_name = f"NEAREST_1{suffix}"
+
+    df_t[col_name] = distances
+    return df_t
 
 
-def count_success_within_radii(df_source, df_target, lat_col="LT", lon_col="LG", radii=[25, 50, 75]):
-    """
-    For each point in df_target, count how many S==1 points in df_source are within given radii (in km).
-    
-    Parameters:
-    - df_source: DataFrame with source points (must contain 'S' column)
-    - df_target: DataFrame to annotate with counts
-    - lat_col, lon_col: column names for latitude and longitude
-    - radii: list of radii in kilometers (default: [25, 50, 75])
-    
-    Returns:
-    - df_target with new columns: 'near_25km', 'near_50km', ...
-    """
-    successful = df_source[df_source["S"] == 1]
-    src_coords = successful[[lat_col, lon_col]].to_numpy()
-    tgt_coords = df_target[[lat_col, lon_col]].to_numpy()
 
-    result = {f"near_{r}km": [] for r in radii}
+def count_success_within_radii(
+    df_source,
+    df_target,
+    lat_col="LT",
+    lon_col="LG",
+    radii=[25, 50, 75],
+    not_matching=["INDX"],
+    matching_on=[]
+):
+    result = {f"WITHIN_{r}km": [] for r in radii}
 
-    for lat_tgt, lon_tgt in tgt_coords:
+    for _, target_row in df_target.iterrows():
+        # Exclude rows that match on any of the `not_matching` columns
+        mask = np.ones(len(df_source), dtype=bool)
+        for col in not_matching:
+            mask &= df_source[col] != target_row[col]
+
+        # Include only rows that match on all `matching_on` columns
+        for col in matching_on:
+            mask &= df_source[col] == target_row[col]
+
+        # Filter to success points
+        matching = df_source[(df_source["S"] == 1) & mask]
+        coords = matching[[lat_col, lon_col]].to_numpy()
+        lat_tgt, lon_tgt = target_row[lat_col], target_row[lon_col]
+
+        # Count number of points within each radius
         counts = {r: 0 for r in radii}
-        for lat_src, lon_src in src_coords:
-            dist = haversine(lat_tgt, lon_tgt, lat_src, lon_src)
+        for lat_s, lon_s in coords:
+            dist = haversine(lat_tgt, lon_tgt, lat_s, lon_s)
             for r in radii:
                 if dist <= r:
                     counts[r] += 1
-        for r in radii:
-            result[f"near_{r}km"].append(counts[r])
 
-    # Add result columns to df_target
+        for r in radii:
+            result[f"WITHIN_{r}km"].append(counts[r])
+
     for col in result:
         df_target[col] = result[col]
 
     return df_target
 
-```
 
-### 1.1 Success Ratio by F, PT, (F,PT), ...
+----------------------
 
-```
+
+df_ratios = df.copy(deep=True)
+
+
 group_k_pairs = [
     (["F"], 5, False),
     #(["F", "PT"], 3, False),
-    (["F", "SHR"], 5, False),
-    (["F", "HT"], 2, False),
-    (["PT"], 10, False),
-    (["PT", "SHR"], 5, False),
-    (["PT", "HT"], 5, False),
+
 ]
-
-
-
-#group by categroy
-df_ratios = df.copy(deep=True)
-df_ratios = apply_success_ratios(df_ratios, group_k_pairs)
 
 post_group_k_pairs = [
     (["F(S)_bin", "PT(S)_bin"], 2, False),
     (["F(S)_bin", "D_bin"], 2, False),
 ]
+
+#group by categroy
+df_ratios = apply_success_ratios(df_ratios, group_k_pairs)
+
 
 
 #group by bin
@@ -198,18 +222,25 @@ df_ratios = apply_success_ratios(df_ratios, post_group_k_pairs)
 #multi divide
 df_ratios["F(S)*PT(S)"] = df_ratios["F(S)_ratio"]/df_ratios["PT(S)_ratio"]
 display(df_ratios)
-```
 
-### PLOT Boxplot for all generated ratios 
+--------------------
+df_ratios = find_nearest_success_point(df_ratios, df_ratios)
+df_ratios = find_nearest_success_point(df_ratios, df_ratios, matching_on=["F"])
+df_ratios = count_success_within_radii(df_ratios, df_ratios)
 
-```
+
+----------------------
+
+
 import matplotlib.pyplot as plt
 import seaborn as sns
 
 # List of all ratio columns to plot
 ratio_columns = generate_ratio_column_names(group_k_pairs)
 post_ration_columns = generate_ratio_column_names(post_group_k_pairs)
-all_columns = ratio_columns + post_ration_columns + [ "F(S)*PT(S)", "nearest_distance_km", "near_25km", "near_50km", "near_75km"]
+all_columns = ratio_columns + post_ration_columns + []
+
+all_columns = ["NEAREST_1", "NEAREST_1_F", "WITHIN_25km","WITHIN_50km","WITHIN_75km"]
 
 # Create subplots
 max_per_row = 4
@@ -231,4 +262,132 @@ for j in range(i + 1, len(axes)):
     
 plt.tight_layout()
 plt.show()
-```
+
+
+-----------------
+
+filtered_df = df_ratios[(df_ratios["S"] == 0) & (df_ratios["NEAREST_1"] < 100)][["INDX", "S", "NEAREST_1"]]
+display(filtered_df)
+
+--------------
+
+import matplotlib.pyplot as plt
+
+# Separate success and failure points
+success = df_ratios[df_ratios["S"] == 1]
+failure = df_ratios[df_ratios["S"] == 0]
+
+# Plot
+plt.figure(figsize=(10, 6))
+plt.scatter(success["LG"], success["LT"], c='green', label='Success (S=1)', alpha=0.6)
+plt.scatter(failure["LG"], failure["LT"], c='red', label='Failure (S=0)', alpha=0.6)
+plt.xlabel("Longitude (LG)")
+plt.ylabel("Latitude (LT)")
+plt.title("Scatter Plot of Points (Success vs Failure)")
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+------------
+
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as plt
+
+# Ensure NEAREST_1 exists
+if "NEAREST_1" in df_ratios.columns:
+    fig = plt.figure(figsize=(12, 8))
+    ax = fig.add_subplot(111, projection='3d')
+
+    # Success
+    s1 = df_ratios[df_ratios["S"] == 1]
+    ax.scatter(s1["LG"], s1["LT"], s1["NEAREST_1"], c='green', label='Success (S=1)', alpha=0.6)
+
+    # Failure
+    s0 = df_ratios[df_ratios["S"] == 0]
+    ax.scatter(s0["LG"], s0["LT"], s0["NEAREST_1"], c='red', label='Failure (S=0)', alpha=0.6)
+
+    ax.set_xlabel("Longitude (LG)")
+    ax.set_ylabel("Latitude (LT)")
+    ax.set_zlabel("NEAREST_1 (km)")
+    ax.set_title("3D Scatter Plot: Location vs Nearest Success Distance")
+    ax.legend()
+    plt.tight_layout()
+    plt.show()
+else:
+    print("Column 'NEAREST_1' not found in the dataframe.")
+
+---------------
+
+dummy_data = {
+}
+
+dummy_df = pd.DataFrame(dummy_data)
+dummy_df = map_ratios_to_df(df_ratios, dummy_df, ["F"])
+dummy_df = map_ratios_to_df(df_ratios, dummy_df, ["F", "PT"])
+
+# Extract bin categories from df_ratios
+f_bins = df_ratios["F(S)_bin"].cat.categories
+d_bins = df_ratios["D_bin"].cat.categories
+
+# Convert IntervalIndex (categories) to bin edges (a list of numbers)
+f_bin_edges = [interval.left for interval in f_bins] + [f_bins[-1].right]
+d_bin_edges = [interval.left for interval in d_bins] + [d_bins[-1].right]
+
+# Apply to new_df
+dummy_df["F(S)_bin"] = pd.cut(dummy_df["F(S)_ratio"], bins=f_bin_edges)
+dummy_df["D_bin"] = pd.cut(dummy_df["D"],  bins=d_bin_edges)
+
+display(dummy_df)
+
+-------------------------
+
+
+categorical_cols = df_ratios.select_dtypes(include=["object", "category"]).columns.tolist()
+df_ratios = df_ratios.drop(columns=categorical_cols)
+
+df_numeric = df_ratios.dropna()
+
+display(df_numeric)
+
+X = df_numeric.drop(columns=["S"])
+y = df_numeric["S"]
+
+# Train-test split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train Random Forest classifier
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+
+feature_importance = pd.DataFrame({
+    "Feature": X.columns,
+    "Importance": model.feature_importances_
+}).sort_values(by="Importance", ascending=False).reset_index(drop=True)
+
+display(feature_importance)
+
+
+--------------------
+
+selected_features = [
+    "NEAREST_1",...
+
+]
+
+df_selected = df_ratios.dropna(subset=selected_features + ["S"])
+
+X = df_selected[selected_features]
+y = df_selected["S"]
+
+# Train-test split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train Random Forest classifier
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+report = classification_report(y_test, y_pred, output_dict=True)
+report_df = pd.DataFrame(report).transpose()
+display(report_df)
